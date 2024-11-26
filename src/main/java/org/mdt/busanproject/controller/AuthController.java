@@ -3,7 +3,6 @@ package org.mdt.busanproject.controller;
 import org.mdt.busanproject.provider.JwtTokenProvider;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,12 +13,10 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
-    private final PasswordEncoder passwordEncoder;
 
-    public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, PasswordEncoder passwordEncoder) {
+    public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/login")
@@ -28,15 +25,14 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
         );
 
-        List<String> roles = List.of("ROLE_USER", "ROLE_ADMIN"); // Replace with user roles from the DB
-        return jwtTokenProvider.createToken(loginRequest.getUsername(), roles);
+        return jwtTokenProvider.createToken(loginRequest.getUsername(), List.of("ROLE_USER"));
     }
 
     public static class LoginRequest {
         private String username;
         private String password;
 
-        // Getters and Setters
+        // Getters and setters
         public String getUsername() {
             return username;
         }

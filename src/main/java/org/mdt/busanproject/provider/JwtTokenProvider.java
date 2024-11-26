@@ -48,14 +48,4 @@ public class JwtTokenProvider {
                 .getBody()
                 .getSubject();
     }
-
-    @SuppressWarnings("unchecked")
-    public List<String> getRoles(String token) {
-        return (List<String>) Jwts.parserBuilder()
-                .setSigningKey(secretKey)
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .get("roles", List.class);
-    }
 }
