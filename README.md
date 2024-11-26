@@ -42,7 +42,7 @@ It demonstrates a simple and secure way to manage users, roles, and permissions 
 
 ### Clone the Repository
 ```bash
-git clone https://github.com/your-repo/busanproject.git
+git clone https://github.com/htetaungkyawmx/busanproject.git
 cd busanproject
 ```
 
