@@ -4,7 +4,6 @@ import org.mdt.busanproject.provider.JwtTokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,34 +17,24 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final UserDetailsService userDetailsService;
     private final JwtTokenFilter jwtTokenFilter;
+    private final UserDetailsService userDetailsService;
 
-    public SecurityConfig(UserDetailsService userDetailsService, JwtTokenFilter jwtTokenFilter) {
-        this.userDetailsService = userDetailsService;
+    public SecurityConfig(JwtTokenFilter jwtTokenFilter, UserDetailsService userDetailsService) {
         this.jwtTokenFilter = jwtTokenFilter;
+        this.userDetailsService = userDetailsService;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
+        http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/**").permitAll() // Open for authentication
-                .requestMatchers("/api/users/register").permitAll() // Open for registration
-                .requestMatchers("/api/users/{username}/roles").hasRole("ADMIN") // Only admins can fetch roles
-                .anyRequest().authenticated() // Protect other endpoints
+                .requestMatchers("/auth/**", "/api/roles/create", "/api/users/create").permitAll() // Allow public access
+                .requestMatchers("/api/users/**").authenticated() // Protect other user endpoints
+                .anyRequest().authenticated() // Protect everything else
                 .and()
-                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class); // JWT validation
         return http.build();
-    }
-
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(passwordEncoder());
-        return provider;
     }
 
     @Bean
