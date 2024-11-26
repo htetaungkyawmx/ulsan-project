@@ -1,9 +1,12 @@
 package org.mdt.busanproject.controller;
 
 import org.mdt.busanproject.provider.JwtTokenProvider;
+import org.mdt.busanproject.request.LoginRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -19,33 +22,12 @@ public class AuthController {
 
     @PostMapping("/login")
     public String login(@RequestBody LoginRequest loginRequest) {
-        var authentication = authenticationManager.authenticate(
+        authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
         );
 
-        return jwtTokenProvider.createToken(authentication); // Return JWT token
+        List<String> roles = List.of("ROLE_USER", "ROLE_ADMIN"); // Replace with actual user roles from DB
+        return jwtTokenProvider.createToken(loginRequest.getUsername(), roles);
     }
 
-    // DTO for login request
-    public static class LoginRequest {
-        private String username;
-        private String password;
-
-        // Getters and Setters
-        public String getUsername() {
-            return username;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-    }
 }
