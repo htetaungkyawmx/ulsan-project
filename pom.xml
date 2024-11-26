@@ -35,11 +35,11 @@
             <version>0.12.6</version>
         </dependency>
 
-        <!-- H2 Database (for simplicity in this example, replace with your DB) -->
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
         </dependency>
 
         <!-- Spring Boot Starter Web (for REST API) -->
