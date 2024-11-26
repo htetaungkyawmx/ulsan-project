@@ -5,7 +5,6 @@ import org.mdt.busanproject.entity.User;
 import org.mdt.busanproject.repository.RoleRepository;
 import org.mdt.busanproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -20,9 +19,6 @@ public class UserService {
     private RoleRepository roleRepository;
 
     public void registerUser(User user) {
-        // Encrypt password
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-
         // Assign default role
         Role defaultRole = roleRepository.findByName("USER")
                 .orElseThrow(() -> new RuntimeException("Default role not found"));
@@ -48,4 +44,3 @@ public class UserService {
         userRepository.save(user);
     }
 }
-
