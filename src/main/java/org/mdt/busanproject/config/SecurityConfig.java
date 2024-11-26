@@ -29,11 +29,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/**", "/api/roles/create", "/api/users/create").permitAll() // Allow public access
-                .requestMatchers("/api/users/**").authenticated() // Protect other user endpoints
-                .anyRequest().authenticated() // Protect everything else
+                .requestMatchers("/auth/**", "/api/roles/create", "/api/users/create").permitAll() // Public endpoints
+                .requestMatchers("/api/users/**").authenticated() // Protect other endpoints
+                .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class); // JWT validation
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
