@@ -22,4 +22,3 @@ public class RoleController {
         return roleRepository.save(role);
     }
 }
-
