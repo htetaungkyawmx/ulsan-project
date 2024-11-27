@@ -48,4 +48,13 @@ public class JwtTokenProvider {
                 .getBody()
                 .getSubject();
     }
+
+    public List<String> getRoles(String token) {
+        return (List<String>) Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("roles");
+    }
 }
