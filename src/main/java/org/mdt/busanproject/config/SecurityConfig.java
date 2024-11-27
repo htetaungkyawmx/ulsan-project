@@ -25,11 +25,11 @@ public class SecurityConfig {
         http.csrf().disable()
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll() // Allow access to authentication endpoints
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/pilot/**").hasRole("PILOT")
-                        .requestMatchers("/guest/**").hasRole("GUEST")
-                        .requestMatchers("/company/**").hasRole("COMPANY")
-                        .requestMatchers("/vessel/**").hasRole("VESSEL")
+                        .requestMatchers("/admin/**").hasRole("ADMIN") // Restrict admin endpoints
+                        .requestMatchers("/pilot/**").hasRole("PILOT") // Restrict pilot endpoints
+                        .requestMatchers("/guest/**").hasRole("GUEST") // Restrict guest endpoints
+                        .requestMatchers("/vessel/**").hasRole("VESSEL") // Restrict vessel endpoints
+                        .requestMatchers("/company/**").hasRole("COMPANY") // Restrict company endpoints
                         .anyRequest().authenticated() // Protect other endpoints
                 )
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);

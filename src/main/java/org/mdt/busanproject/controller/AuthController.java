@@ -1,10 +1,9 @@
 package org.mdt.busanproject.controller;
 
 import org.mdt.busanproject.provider.JwtTokenProvider;
+import org.mdt.busanproject.service.CustomUserDetailsService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,54 +14,51 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
+    private final CustomUserDetailsService userDetailsService;
 
-    public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
+    public AuthController(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, CustomUserDetailsService userDetailsService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.userDetailsService = userDetailsService;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        try {
-            // Authenticate the user
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
-            );
+    public String login(@RequestBody LoginRequest loginRequest) {
+        // Authenticate the user
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+        );
 
-            // Extract role from the email domain
-            String email = loginRequest.getUsername();
-            String domain = email.split("@")[1]; // Get domain from email
+        // Extract domain from the email
+        String domain = extractDomainFromEmail(loginRequest.getUsername());
 
-            // Assign roles based on the domain
-            List<String> roles = List.of(getRoleForDomain(domain));
+        // Assign roles based on the domain
+        List<String> roles = assignRolesBasedOnDomain(domain);
 
-            // Generate the JWT token
-            String token = jwtTokenProvider.createToken(loginRequest.getUsername(), roles);
-
-            // Return the token as a response
-            return ResponseEntity.ok(new LoginResponse(token));
-
-        } catch (Exception e) {
-            // Return error response if authentication fails
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("Invalid username or password");
-        }
+        // Create and return the JWT token
+        return jwtTokenProvider.createToken(loginRequest.getUsername(), roles);
     }
 
-    private String getRoleForDomain(String domain) {
+    // Extract the domain from email address
+    private String extractDomainFromEmail(String email) {
+        return email.substring(email.indexOf('@') + 1, email.indexOf('.'));
+    }
+
+    // Assign roles based on the domain
+    private List<String> assignRolesBasedOnDomain(String domain) {
         switch (domain) {
-            case "admin.co.kr":
-                return "ROLE_ADMIN";
-            case "pilot.co.kr":
-                return "ROLE_PILOT";
-            case "guest.co.kr":
-                return "ROLE_GUEST";
-            case "company.co.kr":
-                return "ROLE_COMPANY";
-            case "vessel.co.kr":
-                return "ROLE_VESSEL";
+            case "admin":
+                return List.of("ROLE_ADMIN");
+            case "pilot":
+                return List.of("ROLE_PILOT");
+            case "guest":
+                return List.of("ROLE_GUEST");
+            case "vessel":
+                return List.of("ROLE_VESSEL");
+            case "company":
+                return List.of("ROLE_COMPANY");
             default:
-                return "ROLE_USER"; // Default role
+                return List.of("ROLE_USER");
         }
     }
 
@@ -85,22 +81,6 @@ public class AuthController {
 
         public void setPassword(String password) {
             this.password = password;
-        }
-    }
-
-    public static class LoginResponse {
-        private String token;
-
-        public LoginResponse(String token) {
-            this.token = token;
-        }
-
-        public String getToken() {
-            return token;
-        }
-
-        public void setToken(String token) {
-            this.token = token;
         }
     }
 }
