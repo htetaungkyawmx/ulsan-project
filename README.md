@@ -1,165 +1,163 @@
+AIOCEANEYE: Tuna Fish Group Detection
+AIOCEANEYE is a web application designed to detect tuna fish groups using drone technology. It features role-based authentication, with access tailored to different user roles including Admin, Pilot, Captain, Guest, and Company. Each role is assigned a unique dashboard with custom functionality, ensuring a personalized and secure experience.
 
-# BusanProject - User Management System
+Table of Contents
+Project Overview
+Project Structure
+Features
+Technologies Used
+Prerequisites
+Setup Instructions
+API Endpoints
+Contributing
+License
+Acknowledgements
+Project Overview
+AIOCEANEYE leverages advanced drone technology to monitor and detect tuna fish groups. It supports multiple user roles, with each role being directed to different pages after authentication. Whether you're an Admin, Pilot, Captain, Guest, or Company user, the platform ensures a seamless, secure, and intuitive experience.
 
-## Overview
-The BusanProject is a Spring Boot-based application designed to provide:
-- **User Registration** with Role Assignment
-- **JWT-based Authentication**
-- **Role-Based Access Control** for endpoints
+Project Structure
+Frontend (React.js)
+Login Form: A login page where users input their credentials and select their role. The role is automatically detected based on the email domain.
+Dashboard: Role-based redirection sends users to the correct dashboard (e.g., Admin, Pilot, Captain, etc.).
+UI Library: Built with CoreUI for responsive layout components and @coreui/icons-react for icons.
+Backend (Spring Boot)
+Role-based Authentication: Validates user credentials and assigns roles based on the email domain (e.g., admin.co.kr → Admin, pilot.co.kr → Pilot).
+Role-Based Redirection: After login, users are redirected to role-specific endpoints.
+Security: API endpoints are secured using Spring Security, ensuring sensitive data protection.
+Features
+Role Detection: Automatically assigns user roles based on email domains. For example:
+admin.co.kr → Admin
+pilot.co.kr → Pilot
+captain.co.kr → Captain
+User Authentication: Secure login system with email and password.
+Role-Based Dashboards: Separate dashboards for each user role, including Admin, Pilot, Captain, Guest, and Company.
+Feedback Messages: Clear success and error messages displayed after login attempts, ensuring users are informed about the login status.
+Technologies Used
+Frontend
+React.js: A powerful JavaScript library for building user interfaces.
+CoreUI: A UI component library for React, providing pre-designed elements and layouts.
+React Router: For navigation between different views.
+Axios / Fetch API: For making HTTP requests to the backend API.
+Backend
+Spring Boot: A Java-based framework for building production-grade backend applications.
+Spring Security: Manages user authentication and role-based authorization.
+REST API: To communicate between the frontend and backend.
+Java 11+: The programming language used for the backend.
+JPA/Hibernate: For seamless database interaction and ORM functionality.
+Prerequisites
+Before running the project, ensure you have the following installed:
 
-It demonstrates a simple and secure way to manage users, roles, and permissions using Spring Security 6.
+Node.js (for frontend development)
+Java 11+ (for backend development)
+Maven (for backend build automation)
+MySQL (or a preferred database)
+Setup Instructions
+1. Clone the Repository
+Clone the repository to your local machine:
 
----
+bash
+Copy code
+git clone https://github.com/busan_project/busan_project.git
+Navigate into the project directory:
 
-## Features
-- **User Registration**: Register users with encrypted passwords.
-- **Login Authentication**: Authenticate users and return a JWT token.
-- **Role-Based Authorization**: Restrict access to specific endpoints based on user roles.
-- **JWT Token Integration**: Secure API endpoints using JWT.
+bash
+Copy code
+cd aioceane-eye
+2. Frontend Setup (React)
+Install Frontend Dependencies
+Navigate to the frontend directory and install the required dependencies:
 
----
+bash
+Copy code
+cd frontend
+npm install
+Run the Frontend
+Start the React development server:
 
-## Technologies Used
-- **Spring Boot 3**: Backend framework for rapid development.
-- **Spring Security 6**: Secure the application with authentication and authorization.
-- **JWT (JSON Web Token)**: Stateless token-based authentication.
-- **H2 Database**: Lightweight in-memory database for testing.
-- **Hibernate**: ORM framework for database interactions.
+bash
+Copy code
+npm start
+This will launch the frontend on http://localhost:3000.
 
----
+3. Backend Setup (Spring Boot)
+Install Backend Dependencies
+Navigate to the backend directory:
 
-## Endpoints Overview
+bash
+Copy code
+cd backend
+Build the project using Maven:
 
-| **Endpoint**                | **HTTP Method** | **Description**                              | **Authorization**     |
-|-----------------------------|-----------------|----------------------------------------------|-----------------------|
-| `/api/users/register`       | `POST`          | Register a new user                          | Public (No auth)      |
-| `/auth/login`               | `POST`          | Authenticate user and return a JWT token     | Public (No auth)      |
-| `/api/users/{username}/roles` | `GET`         | Retrieve roles of a specific user            | Requires `ROLE_ADMIN` |
-
----
-
-## Setup and Installation
-
-### Clone the Repository
-```bash
-git clone https://github.com/htetaungkyawmx/busanproject.git
-cd busanproject
-```
-
-### Build the Project
-Make sure you have **Java 17+** and **Maven** installed:
-```bash
+bash
+Copy code
 mvn clean install
-```
+Run the Backend
+Start the Spring Boot backend:
 
-### Run the Application
-Start the application with:
-```bash
+bash
+Copy code
 mvn spring-boot:run
-```
+The backend will be available at http://localhost:8080.
 
-### Access the Application
-- Base URL: `http://localhost:8080`
-- **H2 Console** (if enabled): `http://localhost:8080/h2-console`
+4. Database Configuration
+Ensure that MySQL is running and configure the database connection in application.properties (or application.yml):
 
----
+properties
+Copy code
+spring.datasource.url=jdbc:mysql://localhost:3306/aioceane
+spring.datasource.username=root
+spring.datasource.password=root
+Adjust the database credentials as needed to match your setup.
 
-## Using Postman to Test
+API Endpoints
+POST /api/login
+Purpose: Authenticate the user and return role-specific data.
 
-### Register a New User
-- **URL**: `POST http://localhost:8080/api/users/register`
-- **Body**:
-  ```json
-  {
-      "username": "testuser",
-      "password": "password123"
-  }
-  ```
+Request Body:
 
-### Login to Get JWT Token
-- **URL**: `POST http://localhost:8080/auth/login`
-- **Body**:
-  ```json
-  {
-      "username": "testuser",
-      "password": "password123"
-  }
-  ```
+json
+Copy code
+{
+  "email": "user@admin.co.kr",
+  "password": "your-password"
+}
+Response (on success):
 
-### Fetch User Roles
-- **URL**: `GET http://localhost:8080/api/users/testuser/roles`
-- **Headers**:
-  ```
-  Authorization: Bearer <JWT-TOKEN>
-  ```
+json
+Copy code
+{
+  "message": "Login successful",
+  "role": "admin"
+}
+Response (on error):
 
----
+json
+Copy code
+{
+  "message": "Invalid credentials"
+}
+Role-Based Dashboards
+/admin-dashboard: Admin user dashboard.
+/pilot-dashboard: Pilot user dashboard.
+/captain-dashboard: Captain user dashboard.
+/guest-dashboard: Guest user dashboard (limited access).
+/company-dashboard: Company user dashboard.
+Contributing
+We welcome contributions! To contribute, follow these steps:
 
-## Project Structure
+Fork the repository.
+Create a new branch (git checkout -b feature/feature-name).
+Commit your changes (git commit -am 'Add new feature').
+Push the changes to the branch (git push origin feature/feature-name).
+Open a pull request.
+License
+This project is licensed under the MIT License. See the LICENSE file for more details.
 
-```
-src/main/java/org/mdt/busanproject
-├── config                   # Spring Security configuration
-├── controller               # REST controllers
-├── entity                   # JPA entities for User, Role, Permission
-├── provider                 # JWT token generation and validation
-├── repository               # Repositories for User and Role
-├── service                  # Service layer for business logic
-└── BusanProjectApplication  # Main Spring Boot application class
-```
+Acknowledgements
+We would like to acknowledge the following tools and libraries:
 
----
-
-## Database Structure
-
-### Tables
-1. **User Table**
-   - Stores user details such as `username`, `password`, and associated roles.
-
-2. **Role Table**
-   - Stores roles such as `ROLE_USER`, `ROLE_ADMIN`.
-
-3. **Permission Table**
-   - Optional: Stores specific permissions assigned to roles.
-
-### Relationships
-- A **User** can have multiple **Roles** (Many-to-Many).
-- A **Role** can have multiple **Permissions** (Many-to-Many).
-
----
-
-## Configuration
-
-### `application.properties`
-```properties
-# Server Configuration
-server.port=8080
-
-# H2 Database
-spring.h2.console.enabled=true
-spring.h2.console.path=/h2-console
-spring.datasource.url=jdbc:h2:mem:busan
-spring.datasource.driver-class-name=org.h2.Driver
-spring.datasource.username=sa
-spring.datasource.password=password
-spring.jpa.hibernate.ddl-auto=update
-
-# JWT Configuration
-jwt.secret=1cba37a2c7bc14bfe27585c2b40f368ce4e57b08f2a507932504e7e4cae38c7a4
-jwt.expiration=3600000
-
-# Logging
-logging.level.org.springframework.security=DEBUG
-```
-
----
-
-## Future Enhancements
-- Add Swagger API documentation.
-- Implement refresh tokens for long-lived sessions.
-- Integrate with a production-grade database (e.g., MySQL or PostgreSQL).
-
----
-
-## License
-This project is licensed under the MIT License.
+CoreUI: For providing a rich set of React components and UI elements.
+Spring Boot: For building the backend.
+MySQL: For handling database management.
+Font Awesome: For providing icons used in the UI.
+React: For enabling dynamic web application development.
