@@ -1,7 +1,7 @@
 package org.mdt.busanproject.service;
 
-import org.mdt.aioceaneye.dto.CaptainDto;
-import org.mdt.aioceaneye.model.Captain;
+import org.mdt.busanproject.dto.CaptainDto;
+import org.mdt.busanproject.model.Captain;
 
 import java.util.List;
 import java.util.Optional;
