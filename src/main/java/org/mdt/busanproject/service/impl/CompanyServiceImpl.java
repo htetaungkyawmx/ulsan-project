@@ -1,9 +1,9 @@
 package org.mdt.busanproject.service.impl;
 
-import org.mdt.aioceaneye.dto.CompanyDto;
-import org.mdt.aioceaneye.model.Company;
-import org.mdt.aioceaneye.repository.CompanyRepository;
-import org.mdt.aioceaneye.service.CompanyService;
+import org.mdt.busanproject.dto.CompanyDto;
+import org.mdt.busanproject.model.Company;
+import org.mdt.busanproject.repository.CompanyRepository;
+import org.mdt.busanproject.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

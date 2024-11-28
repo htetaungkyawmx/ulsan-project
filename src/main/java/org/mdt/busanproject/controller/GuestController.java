@@ -1,8 +1,8 @@
 package org.mdt.busanproject.controller;
 
-import org.mdt.aioceaneye.dto.GuestDto;
-import org.mdt.aioceaneye.model.Guest;
-import org.mdt.aioceaneye.service.GuestService;
+import org.mdt.busanproject.dto.GuestDto;
+import org.mdt.busanproject.model.Guest;
+import org.mdt.busanproject.service.GuestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
