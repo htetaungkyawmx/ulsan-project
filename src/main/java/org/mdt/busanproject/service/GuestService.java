@@ -1,7 +1,7 @@
 package org.mdt.busanproject.service;
 
-import org.mdt.aioceaneye.dto.GuestDto;
-import org.mdt.aioceaneye.model.Guest;
+import org.mdt.busanproject.dto.GuestDto;
+import org.mdt.busanproject.model.Guest;
 
 import java.util.List;
 import java.util.Optional;

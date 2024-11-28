@@ -1,6 +1,6 @@
 package org.mdt.busanproject.repository;
 
-import org.mdt.aioceaneye.model.Pilot;
+import org.mdt.busanproject.model.Pilot;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
