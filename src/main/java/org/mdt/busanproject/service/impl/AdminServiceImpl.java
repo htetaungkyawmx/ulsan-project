@@ -1,9 +1,9 @@
 package org.mdt.busanproject.service.impl;
 
-import org.mdt.aioceaneye.dto.AdminDto;
-import org.mdt.aioceaneye.model.Admin;
-import org.mdt.aioceaneye.repository.AdminRepository;
-import org.mdt.aioceaneye.service.AdminService;
+import org.mdt.busanproject.dto.AdminDto;
+import org.mdt.busanproject.model.Admin;
+import org.mdt.busanproject.repository.AdminRepository;
+import org.mdt.busanproject.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
