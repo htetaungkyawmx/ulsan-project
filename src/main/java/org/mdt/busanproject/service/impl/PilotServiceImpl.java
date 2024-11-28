@@ -1,9 +1,9 @@
 package org.mdt.busanproject.service.impl;
 
-import org.mdt.aioceaneye.dto.PilotDto;
-import org.mdt.aioceaneye.model.Pilot;
-import org.mdt.aioceaneye.repository.PilotRepository;
-import org.mdt.aioceaneye.service.PilotService;
+import org.mdt.busanproject.dto.PilotDto;
+import org.mdt.busanproject.model.Pilot;
+import org.mdt.busanproject.repository.PilotRepository;
+import org.mdt.busanproject.service.PilotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
