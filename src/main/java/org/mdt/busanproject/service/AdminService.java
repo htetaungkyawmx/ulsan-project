@@ -1,7 +1,7 @@
 package org.mdt.busanproject.service;
 
-import org.mdt.aioceaneye.dto.AdminDto;
-import org.mdt.aioceaneye.model.Admin;
+import org.mdt.busanproject.dto.AdminDto;
+import org.mdt.busanproject.model.Admin;
 
 import java.util.List;
 import java.util.Optional;
