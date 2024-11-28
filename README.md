@@ -1,165 +1,70 @@
+# AIOCEANEYE: Tuna Fish Group Detection
 
-# BusanProject - User Management System
+**AIOCEANEYE** is a web application designed to detect tuna fish groups using drone technology. It features role-based authentication, with access tailored to different user roles, including Admin, Pilot, Captain, Guest, and Company. Each role is assigned a unique dashboard with custom functionality, ensuring a personalized and secure experience.
 
-## Overview
-The BusanProject is a Spring Boot-based application designed to provide:
-- **User Registration** with Role Assignment
-- **JWT-based Authentication**
-- **Role-Based Access Control** for endpoints
+## Table of Contents
+- [Project Overview](#project-overview)
+- [Project Structure](#project-structure)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Prerequisites](#prerequisites)
+- [Setup Instructions](#setup-instructions)
+- [API Endpoints](#api-endpoints)
+- [Contributing](#contributing)
+- [License](#license)
+- [Acknowledgements](#acknowledgements)
 
-It demonstrates a simple and secure way to manage users, roles, and permissions using Spring Security 6.
-
----
-
-## Features
-- **User Registration**: Register users with encrypted passwords.
-- **Login Authentication**: Authenticate users and return a JWT token.
-- **Role-Based Authorization**: Restrict access to specific endpoints based on user roles.
-- **JWT Token Integration**: Secure API endpoints using JWT.
-
----
-
-## Technologies Used
-- **Spring Boot 3**: Backend framework for rapid development.
-- **Spring Security 6**: Secure the application with authentication and authorization.
-- **JWT (JSON Web Token)**: Stateless token-based authentication.
-- **H2 Database**: Lightweight in-memory database for testing.
-- **Hibernate**: ORM framework for database interactions.
-
----
-
-## Endpoints Overview
-
-| **Endpoint**                | **HTTP Method** | **Description**                              | **Authorization**     |
-|-----------------------------|-----------------|----------------------------------------------|-----------------------|
-| `/api/users/register`       | `POST`          | Register a new user                          | Public (No auth)      |
-| `/auth/login`               | `POST`          | Authenticate user and return a JWT token     | Public (No auth)      |
-| `/api/users/{username}/roles` | `GET`         | Retrieve roles of a specific user            | Requires `ROLE_ADMIN` |
-
----
-
-## Setup and Installation
-
-### Clone the Repository
-```bash
-git clone https://github.com/htetaungkyawmx/busanproject.git
-cd busanproject
-```
-
-### Build the Project
-Make sure you have **Java 17+** and **Maven** installed:
-```bash
-mvn clean install
-```
-
-### Run the Application
-Start the application with:
-```bash
-mvn spring-boot:run
-```
-
-### Access the Application
-- Base URL: `http://localhost:8080`
-- **H2 Console** (if enabled): `http://localhost:8080/h2-console`
-
----
-
-## Using Postman to Test
-
-### Register a New User
-- **URL**: `POST http://localhost:8080/api/users/register`
-- **Body**:
-  ```json
-  {
-      "username": "testuser",
-      "password": "password123"
-  }
-  ```
-
-### Login to Get JWT Token
-- **URL**: `POST http://localhost:8080/auth/login`
-- **Body**:
-  ```json
-  {
-      "username": "testuser",
-      "password": "password123"
-  }
-  ```
-
-### Fetch User Roles
-- **URL**: `GET http://localhost:8080/api/users/testuser/roles`
-- **Headers**:
-  ```
-  Authorization: Bearer <JWT-TOKEN>
-  ```
-
----
+## Project Overview
+**AIOCEANEYE** leverages advanced drone technology to monitor and detect tuna fish groups. It supports multiple user roles, with each role being directed to different pages after authentication. Whether you're an Admin, Pilot, Captain, Guest, or Company user, the platform ensures a seamless, secure, and intuitive experience.
 
 ## Project Structure
 
-```
-src/main/java/org/mdt/busanproject
-├── config                   # Spring Security configuration
-├── controller               # REST controllers
-├── entity                   # JPA entities for User, Role, Permission
-├── provider                 # JWT token generation and validation
-├── repository               # Repositories for User and Role
-├── service                  # Service layer for business logic
-└── BusanProjectApplication  # Main Spring Boot application class
-```
+### Frontend (React.js)
+- **Login Form**: A login page where users input their credentials and select their role. The role is automatically detected based on the email domain.
+- **Dashboard**: Role-based redirection sends users to the correct dashboard (e.g., Admin, Pilot, Captain, etc.).
+- **UI Library**: Built with CoreUI for responsive layout components and @coreui/icons-react for icons.
 
----
+### Backend (Spring Boot)
+- **Role-based Authentication**: Validates user credentials and assigns roles based on the email domain (e.g., admin.co.kr → Admin, pilot.co.kr → Pilot).
+- **Role-Based Redirection**: After login, users are redirected to role-specific endpoints.
+- **Security**: API endpoints are secured using Spring Security, ensuring sensitive data protection.
 
-## Database Structure
+## Features
+- **Role Detection**: Automatically assigns user roles based on email domains. For example:
+  - admin.co.kr → Admin
+  - pilot.co.kr → Pilot
+  - captain.co.kr → Captain
+- **User Authentication**: Secure login system with email and password.
+- **Role-Based Dashboards**: Separate dashboards for each user role, including Admin, Pilot, Captain, Guest, and Company.
+- **Feedback Messages**: Clear success and error messages displayed after login attempts, ensuring users are informed about the login status.
 
-### Tables
-1. **User Table**
-   - Stores user details such as `username`, `password`, and associated roles.
+## Technologies Used
 
-2. **Role Table**
-   - Stores roles such as `ROLE_USER`, `ROLE_ADMIN`.
+### Frontend
+- **React.js**: A powerful JavaScript library for building user interfaces.
+- **CoreUI**: A UI component library for React, providing pre-designed elements and layouts.
+- **React Router**: For navigation between different views.
+- **Axios / Fetch API**: For making HTTP requests to the backend API.
 
-3. **Permission Table**
-   - Optional: Stores specific permissions assigned to roles.
+### Backend
+- **Spring Boot**: A Java-based framework for building production-grade backend applications.
+- **Spring Security**: Manages user authentication and role-based authorization.
+- **REST API**: To communicate between the frontend and backend.
+- **Java 11+**: The programming language used for the backend.
+- **JPA/Hibernate**: For seamless database interaction and ORM functionality.
 
-### Relationships
-- A **User** can have multiple **Roles** (Many-to-Many).
-- A **Role** can have multiple **Permissions** (Many-to-Many).
+## Prerequisites
+Before running the project, ensure you have the following installed:
 
----
+- **Node.js** (for frontend development)
+- **Java 11+** (for backend development)
+- **Maven** (for backend build automation)
+- **MySQL** (or a preferred database)
 
-## Configuration
+## Setup Instructions
 
-### `application.properties`
-```properties
-# Server Configuration
-server.port=8080
+### 1. Clone the Repository
+Clone the repository to your local machine:
 
-# H2 Database
-spring.h2.console.enabled=true
-spring.h2.console.path=/h2-console
-spring.datasource.url=jdbc:h2:mem:busan
-spring.datasource.driver-class-name=org.h2.Driver
-spring.datasource.username=sa
-spring.datasource.password=password
-spring.jpa.hibernate.ddl-auto=update
-
-# JWT Configuration
-jwt.secret=1cba37a2c7bc14bfe27585c2b40f368ce4e57b08f2a507932504e7e4cae38c7a4
-jwt.expiration=3600000
-
-# Logging
-logging.level.org.springframework.security=DEBUG
-```
-
----
-
-## Future Enhancements
-- Add Swagger API documentation.
-- Implement refresh tokens for long-lived sessions.
-- Integrate with a production-grade database (e.g., MySQL or PostgreSQL).
-
----
-
-## License
-This project is licensed under the MIT License.
+```bash
+git clone https://github.com/busan_project/busan_project.git
