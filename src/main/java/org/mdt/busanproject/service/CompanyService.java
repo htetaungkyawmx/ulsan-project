@@ -1,7 +1,7 @@
 package org.mdt.busanproject.service;
 
-import org.mdt.aioceaneye.dto.CompanyDto;
-import org.mdt.aioceaneye.model.Company;
+import org.mdt.busanproject.dto.CompanyDto;
+import org.mdt.busanproject.model.Company;
 
 import java.util.List;
 import java.util.Optional;
