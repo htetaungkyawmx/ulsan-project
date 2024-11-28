@@ -1,9 +1,9 @@
 package org.mdt.busanproject.service.impl;
 
-import org.mdt.aioceaneye.dto.CaptainDto;
-import org.mdt.aioceaneye.model.Captain;
-import org.mdt.aioceaneye.repository.CaptainRepository;
-import org.mdt.aioceaneye.service.CaptainService;
+import org.mdt.busanproject.dto.CaptainDto;
+import org.mdt.busanproject.model.Captain;
+import org.mdt.busanproject.repository.CaptainRepository;
+import org.mdt.busanproject.service.CaptainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
