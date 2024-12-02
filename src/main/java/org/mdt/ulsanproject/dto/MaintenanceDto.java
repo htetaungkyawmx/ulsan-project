@@ -9,4 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MaintenanceDto {
 
+    private int id;
+    private String drone_id;
+    private String description;
+    private String date;
+    private String cost;
+
 }

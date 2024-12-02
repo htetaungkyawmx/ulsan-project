@@ -9,4 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DocumentDto {
 
+    private int id;
+    private String title;
+    private String content;
+    private String author_id;
+
 }

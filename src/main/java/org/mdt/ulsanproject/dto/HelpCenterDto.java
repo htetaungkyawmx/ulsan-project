@@ -9,4 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class HelpCenterDto {
 
+    private int id;
+    private String question;
+    private String answer;
+
 }
