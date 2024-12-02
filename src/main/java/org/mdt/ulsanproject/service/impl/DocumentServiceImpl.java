@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DocumentServiceImpl implements DocumentService {
@@ -16,22 +17,33 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public Document save(DocumentDto documentDto) {
-        return null;
+        Document document = Document.builder()
+                .title(documentDto.getTitle())
+                .content(documentDto.getContent())
+                .author_id(documentDto.getAuthor_id())
+                .build();
+        return documentRepository.save(document);
     }
 
     @Override
     public Document update(int id, DocumentDto documentDto) {
+
         return null;
     }
 
     @Override
     public List<Document> findAll() {
-        return List.of();
+        return documentRepository.findAll();
+    }
+
+    @Override
+    public Optional<Document> findById(int id) {
+        return documentRepository.findById(id);
     }
 
     @Override
     public void delete(int id) {
-
+        documentRepository.deleteById(id);
     }
 
 }

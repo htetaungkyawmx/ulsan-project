@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DroneServiceImpl implements DroneService {
@@ -16,22 +17,36 @@ public class DroneServiceImpl implements DroneService {
 
     @Override
     public Drone save(DroneDto droneDto) {
-        return null;
+        Drone drone = Drone.builder()
+                .model(droneDto.getModel())
+                .manufacturer(droneDto.getManufacturer())
+                .weight(droneDto.getWeight())
+                .max_altitude(droneDto.getMax_altitude())
+                .battery_capacity(droneDto.getBattery_capacity())
+                .range(droneDto.getRange())
+                .build();
+        return droneRepository.save(drone);
     }
 
     @Override
     public Drone update(int id, DroneDto droneDto) {
+
         return null;
     }
 
     @Override
     public List<Drone> findAll() {
-        return List.of();
+        return droneRepository.findAll();
+    }
+
+    @Override
+    public Optional<Drone> findById(int id) {
+        return droneRepository.findById(id);
     }
 
     @Override
     public void delete(int id) {
-
+        droneRepository.deleteById(id);
     }
 
 }

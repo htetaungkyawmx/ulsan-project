@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class HelpCenterServiceImpl implements HelpCenterService {
@@ -16,22 +17,32 @@ public class HelpCenterServiceImpl implements HelpCenterService {
 
     @Override
     public HelpCenter save(HelpCenterDto helpCenterDto) {
+        HelpCenter helpCenter = HelpCenter.builder()
+                .question(helpCenterDto.getQuestion())
+                .answer(helpCenterDto.getAnswer())
+                .build();
         return null;
     }
 
     @Override
     public HelpCenter update(int id, HelpCenterDto helpCenterDto) {
+
         return null;
     }
 
     @Override
     public List<HelpCenter> findAll() {
-        return List.of();
+        return helpCenterRepository.findAll();
+    }
+
+    @Override
+    public Optional<HelpCenter> findById(int id) {
+        return helpCenterRepository.findById(id);
     }
 
     @Override
     public void delete(int id) {
-
+        helpCenterRepository.deleteById(id);
     }
 
 }
