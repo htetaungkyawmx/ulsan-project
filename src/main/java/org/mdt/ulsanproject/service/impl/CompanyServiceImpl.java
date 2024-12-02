@@ -16,22 +16,28 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Company save(CompanyDto companyDto) {
-        return null;
+        Company company = Company.builder()
+                .name(companyDto.getName())
+                .address(companyDto.getAddress())
+                .email(companyDto.getEmail())
+                .build();
+        return companyRepository.save(company);
     }
 
     @Override
     public Company update(int id, CompanyDto companyDto) {
+
         return null;
     }
 
     @Override
     public List<Company> findAll() {
-        return List.of();
+        return companyRepository.findAll();
     }
 
     @Override
     public void delete(int id) {
-
+        companyRepository.deleteById(id);
     }
 
 }
