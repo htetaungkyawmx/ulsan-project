@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/maintenance")
 public class MaintenanceController {
     @Autowired
     private MaintenanceService maintenanceService;

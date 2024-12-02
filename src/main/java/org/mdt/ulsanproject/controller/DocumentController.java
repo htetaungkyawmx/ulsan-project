@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/document")
 public class DocumentController {
     @Autowired
     private DocumentService documentService;
