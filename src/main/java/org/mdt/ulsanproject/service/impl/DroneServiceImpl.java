@@ -23,7 +23,7 @@ public class DroneServiceImpl implements DroneService {
                 .weight(droneDto.getWeight())
                 .max_altitude(droneDto.getMax_altitude())
                 .battery_capacity(droneDto.getBattery_capacity())
-                .range(droneDto.getRange())
+                .Operating_Range(droneDto.getRange())
                 .build();
         return droneRepository.save(drone);
     }

@@ -1,9 +1,6 @@
 package org.mdt.ulsanproject.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name = "drone")
 public class Drone {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +21,7 @@ public class Drone {
     private String weight;
     private String max_altitude;
     private String battery_capacity;
-    private String range;
+    @Column(name = "operating_range")
+    private String Operating_Range;
 
 }
