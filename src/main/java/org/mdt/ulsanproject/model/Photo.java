@@ -20,6 +20,7 @@ public class Photo {
     private int id;
     private String title;
     private String description;
+    private String status;
     private String created_at;
     private String url;
 
