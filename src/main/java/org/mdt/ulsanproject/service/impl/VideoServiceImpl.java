@@ -24,7 +24,7 @@ public class VideoServiceImpl implements VideoService {
                 .created_at(videoDto.getCreated_at())
                 .url(videoDto.getUrl())
                 .build();
-        return null;
+        return videoRepository.save(video);
     }
 
     @Override

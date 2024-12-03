@@ -29,10 +29,12 @@ public class HelpCenterController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HelpCenter> update(@PathVariable int id) {
-        return helpCenterService.findById(id)
-                .map(helpCenter -> new ResponseEntity<>(helpCenter, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<HelpCenter> update(@PathVariable int id, @RequestBody HelpCenterDto helpCenterDto) {
+        HelpCenter updatedHelpCenter = helpCenterService.update(id, helpCenterDto);
+        if (updatedHelpCenter == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(updatedHelpCenter, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

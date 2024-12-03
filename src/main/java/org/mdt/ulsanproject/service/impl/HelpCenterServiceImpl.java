@@ -21,13 +21,16 @@ public class HelpCenterServiceImpl implements HelpCenterService {
                 .question(helpCenterDto.getQuestion())
                 .answer(helpCenterDto.getAnswer())
                 .build();
-        return null;
+        return helpCenterRepository.save(helpCenter);
     }
 
     @Override
     public HelpCenter update(int id, HelpCenterDto helpCenterDto) {
-
-        return null;
+        return helpCenterRepository.findById(id).map(existingHelpCenter -> {
+            existingHelpCenter.setQuestion(helpCenterDto.getQuestion());
+            existingHelpCenter.setAnswer(helpCenterDto.getAnswer());
+            return helpCenterRepository.save(existingHelpCenter);
+        }).orElse(null);
     }
 
     @Override
@@ -44,5 +47,4 @@ public class HelpCenterServiceImpl implements HelpCenterService {
     public void delete(int id) {
         helpCenterRepository.deleteById(id);
     }
-
 }

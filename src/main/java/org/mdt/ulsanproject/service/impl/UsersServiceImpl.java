@@ -22,7 +22,7 @@ public class UsersServiceImpl implements UsersService {
                 .email(usersDto.getEmail())
                 .password(usersDto.getPassword())
                 .build();
-        return null;
+        return usersRepository.save(users);
     }
 
     @Override

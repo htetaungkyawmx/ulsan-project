@@ -24,7 +24,7 @@ public class VesselServiceImpl implements VesselService {
                 .capacity(vesselDto.getCapacity())
                 .location(vesselDto.getLocation())
                 .build();
-        return null;
+        return vesselRepository.save(vessel);
     }
 
     @Override

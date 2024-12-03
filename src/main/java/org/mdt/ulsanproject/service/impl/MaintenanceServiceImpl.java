@@ -23,7 +23,7 @@ public class MaintenanceServiceImpl implements MaintenanceService {
                 .date(maintenanceDto.getDate())
                 .cost(maintenanceDto.getCost())
                 .build();
-        return null;
+        return maintenanceRepository.save(maintenance);
     }
 
     @Override
