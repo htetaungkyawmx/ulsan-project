@@ -30,9 +30,8 @@ public class DroneController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Drone> update(@PathVariable int id) {
-        return droneService.findById(id)
-                .map(drone -> new ResponseEntity<>(drone, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
+        return null;
     }
 
     @DeleteMapping("/{id}")

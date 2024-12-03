@@ -21,16 +21,26 @@ public class DroneServiceImpl implements DroneService {
                 .model(droneDto.getModel())
                 .manufacturer(droneDto.getManufacturer())
                 .weight(droneDto.getWeight())
-                .max_altitude(droneDto.getMax_altitude())
-                .battery_capacity(droneDto.getBattery_capacity())
-                .Operating_Range(droneDto.getRange())
+                .maxAltitude(droneDto.getMaxAltitude())
+                .batteryCapacity(droneDto.getBatteryCapacity())
+                .operatingRange(droneDto.getOperatingRange())
                 .build();
         return droneRepository.save(drone);
     }
 
     @Override
     public Drone update(int id, DroneDto droneDto) {
-
+        Optional<Drone> existingDrone = droneRepository.findById(id);
+        if (existingDrone.isPresent()) {
+            Drone droneToUpdate = existingDrone.get();
+            droneToUpdate.setModel(droneDto.getModel());
+            droneToUpdate.setManufacturer(droneDto.getManufacturer());
+            droneToUpdate.setWeight(droneDto.getWeight());
+            droneToUpdate.setMaxAltitude(droneDto.getMaxAltitude());
+            droneToUpdate.setBatteryCapacity(droneDto.getBatteryCapacity());
+            droneToUpdate.setOperatingRange(droneDto.getOperatingRange());
+            return droneRepository.save(droneToUpdate);
+        }
         return null;
     }
 
@@ -48,5 +58,4 @@ public class DroneServiceImpl implements DroneService {
     public void delete(int id) {
         droneRepository.deleteById(id);
     }
-
 }

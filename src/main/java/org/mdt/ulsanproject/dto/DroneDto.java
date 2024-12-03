@@ -8,13 +8,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DroneDto {
-
-    private int id;
     private String model;
     private String manufacturer;
     private String weight;
-    private String max_altitude;
-    private String battery_capacity;
-    private String range;
+    private String maxAltitude;
+    private String batteryCapacity;
+    private String operatingRange;
 
 }

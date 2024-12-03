@@ -19,9 +19,10 @@ public class Drone {
     private String model;
     private String manufacturer;
     private String weight;
-    private String max_altitude;
-    private String battery_capacity;
+    private String maxAltitude;
+    private String batteryCapacity;
+
     @Column(name = "operating_range")
-    private String Operating_Range;
+    private String operatingRange;
 
 }
