@@ -7,13 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Video {
+public class ReportDto {
 
     private int id;
     private String title;
-    private String description;
+    private String content;
     private String status;
     private String created_at;
-    private String url;
 
 }
