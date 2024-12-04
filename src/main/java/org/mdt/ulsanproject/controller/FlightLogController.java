@@ -16,22 +16,29 @@ public class FlightLogController {
     @Autowired
     private FlightLogService flightLogService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<FlightLog> create(@RequestBody FlightLogDto flightLogDto) {
         FlightLog createdFlightLog = flightLogService.save(flightLogDto);
         return new ResponseEntity<>(createdFlightLog, HttpStatus.CREATED);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<FlightLog>> getAll() {
         List<FlightLog> flightLogs = flightLogService.findAll();
         return new ResponseEntity<>(flightLogs, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<FlightLog> update(@PathVariable int id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<FlightLog> getById(@PathVariable int id) {
         return flightLogService.findById(id)
                 .map(flightLog -> new ResponseEntity<>(flightLog, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<FlightLog> update(@PathVariable int id, @RequestBody FlightLogDto flightLogDto) {
+        return flightLogService.update(id, flightLogDto)
+                .map(updateFlightLog -> new ResponseEntity<>(updateFlightLog, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
