@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface VesselService {
     Vessel save(VesselDto vesselDto);
-    Vessel update(int id, VesselDto vesselDto);
+    Optional<Vessel> update(int id, VesselDto vesselDto);
     List<Vessel> findAll();
     Optional<Vessel> findById(int id);
     void delete(int id);

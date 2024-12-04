@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface VideoService {
     Video save(VideoDto videoDto);
-    Video update(int id, VideoDto videoDto);
+    Optional<Video> update(int id, VideoDto videoDto);
     List<Video> findAll();
     Optional<Video> findById(int id);
     void delete(int id);

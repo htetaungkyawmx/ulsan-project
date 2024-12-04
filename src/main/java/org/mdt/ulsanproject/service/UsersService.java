@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface UsersService {
     Users save(UsersDto usersDto);
-    Users update(int id, UsersDto usersDto);
+    Optional<Users> update(int id, UsersDto usersDto);
     List<Users> findAll();
     Optional<Users> findById(int id);
     void delete(int id);
