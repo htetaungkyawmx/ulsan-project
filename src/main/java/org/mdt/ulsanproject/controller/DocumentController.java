@@ -16,22 +16,29 @@ public class DocumentController {
     @Autowired
     private DocumentService documentService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Document> create(@RequestBody DocumentDto documentDto) {
         Document createDocument = documentService.save(documentDto);
         return new ResponseEntity<>(createDocument, HttpStatus.CREATED);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<Document>> getAll() {
         List<Document> documents = documentService.findAll();
         return new ResponseEntity<>(documents, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Document> getById(@PathVariable int id) {
+       return documentService.findById(id)
+               .map(document -> new ResponseEntity<>(document, HttpStatus.OK))
+               .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<Document> update(@PathVariable int id) {
-        return documentService.findById(id)
-                .map(document -> new ResponseEntity<>(document, HttpStatus.OK))
+    public ResponseEntity<Document> update(@PathVariable int id, @RequestBody DocumentDto documentDto) {
+        return documentService.update(id, documentDto)
+                .map(updateDocument -> new ResponseEntity<>(updateDocument, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

@@ -16,22 +16,30 @@ public class DroneController {
     @Autowired
     private DroneService droneService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Drone> create(@RequestBody DroneDto droneDto) {
         Drone createdDrone = droneService.save(droneDto);
         return new ResponseEntity<>(createdDrone, HttpStatus.CREATED);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<Drone>> getAll() {
         List<Drone> drones = droneService.findAll();
         return new ResponseEntity<>(drones, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Drone> update(@PathVariable int id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Drone> getById(@PathVariable int id) {
+        return droneService.findById(id)
+                .map(drone -> new ResponseEntity<>(drone, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 
-        return null;
+    @PutMapping("/{id}")
+    public ResponseEntity<Drone> update(@PathVariable int id, @RequestBody DroneDto droneDto) {
+        return droneService.update(id, droneDto)
+                .map(updateDrone -> new ResponseEntity<>(updateDrone, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping("/{id}")
