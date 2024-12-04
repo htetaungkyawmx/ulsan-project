@@ -16,22 +16,29 @@ public class MaintenanceController {
     @Autowired
     private MaintenanceService maintenanceService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Maintenance> create(@RequestBody MaintenanceDto maintenanceDto) {
         Maintenance createdMaintenance = maintenanceService.save(maintenanceDto);
         return new ResponseEntity<>(createdMaintenance, HttpStatus.CREATED);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<Maintenance>> getAll() {
         List<Maintenance> maintenances = maintenanceService.findAll();
         return new ResponseEntity<>(maintenances, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Maintenance> update(@PathVariable int id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Maintenance> getById(@PathVariable int id) {
         return maintenanceService.findById(id)
                 .map(maintenance -> new ResponseEntity<>(maintenance, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Maintenance> update(@PathVariable int id, @RequestBody MaintenanceDto maintenanceDto) {
+        return maintenanceService.update(id, maintenanceDto)
+                .map(updatedMaintenance -> new ResponseEntity<>(updatedMaintenance, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

@@ -16,25 +16,30 @@ public class HelpCenterController {
     @Autowired
     private HelpCenterService helpCenterService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<HelpCenter> create(@RequestBody HelpCenterDto helpCenterDto) {
         HelpCenter createdHelpCenter = helpCenterService.save(helpCenterDto);
         return new ResponseEntity<>(createdHelpCenter, HttpStatus.CREATED);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<HelpCenter>> getAll() {
         List<HelpCenter> helpCenters = helpCenterService.findAll();
         return new ResponseEntity<>(helpCenters, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<HelpCenter> getById(@PathVariable int id) {
+       return helpCenterService.findById(id)
+               .map(helpCenter -> new ResponseEntity<>(helpCenter, HttpStatus.OK))
+               .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<HelpCenter> update(@PathVariable int id, @RequestBody HelpCenterDto helpCenterDto) {
-        HelpCenter updatedHelpCenter = helpCenterService.update(id, helpCenterDto);
-        if (updatedHelpCenter == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(updatedHelpCenter, HttpStatus.OK);
+        return helpCenterService.update(id, helpCenterDto)
+                .map(updateHelpCenter -> new ResponseEntity<>(updateHelpCenter, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping("/{id}")

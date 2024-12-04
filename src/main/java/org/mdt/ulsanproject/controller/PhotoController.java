@@ -16,22 +16,29 @@ public class PhotoController {
     @Autowired
     private PhotoService photoService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Photo> create(@RequestBody PhotoDto photoDto) {
         Photo createdPhoto = photoService.save(photoDto);
         return new ResponseEntity<>(createdPhoto, HttpStatus.CREATED);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<Photo>> getAll() {
         List<Photo> photos = photoService.findAll();
         return new ResponseEntity<>(photos, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Photo> update(@PathVariable int id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Photo> getById(@PathVariable int id) {
         return photoService.findById(id)
                 .map(photo -> new ResponseEntity<>(photo, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Photo> update(@PathVariable int id, @RequestBody PhotoDto photoDto) {
+        return photoService.update(id, photoDto)
+                .map(updatedPhoto -> new ResponseEntity<>(updatedPhoto, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
