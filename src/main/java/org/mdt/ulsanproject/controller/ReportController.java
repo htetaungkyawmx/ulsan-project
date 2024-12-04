@@ -16,22 +16,29 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Report> create(@RequestBody ReportDto reportDto) {
         Report createdReport = reportService.save(reportDto);
         return new ResponseEntity<>(createdReport, HttpStatus.CREATED);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<Report>> getAll() {
         List<Report> reports = reportService.findAll();
         return new ResponseEntity<>(reports, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Report> update(@PathVariable int id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Report> getById(@PathVariable int id) {
         return reportService.findById(id)
                 .map(report -> new ResponseEntity<>(report, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Report> update(@PathVariable int id, @RequestBody ReportDto reportDto) {
+        return reportService.update(id, reportDto)
+                .map(updatedReport -> new ResponseEntity<>(updatedReport, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

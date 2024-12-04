@@ -16,22 +16,29 @@ public class VideoController {
     @Autowired
     private VideoService videoService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Video> create(@RequestBody VideoDto videoDto) {
         Video createdVideo = videoService.save(videoDto);
         return new ResponseEntity<>(createdVideo, HttpStatus.CREATED);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<Video>> getAll() {
         List<Video> videos = videoService.findAll();
         return new ResponseEntity<>(videos, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Video> update(@PathVariable int id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Video> getById(@PathVariable int id) {
         return videoService.findById(id)
                 .map(video -> new ResponseEntity<>(video, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Video> update(@PathVariable int id, @RequestBody VideoDto videoDto) {
+        return videoService.update(id, videoDto)
+                .map(updatedVideo -> new ResponseEntity<>(updatedVideo, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

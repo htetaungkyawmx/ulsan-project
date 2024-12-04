@@ -16,22 +16,29 @@ public class UsersController {
     @Autowired
     private UsersService usersService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Users> create(@RequestBody UsersDto usersDto) {
         Users createdUsers = usersService.save(usersDto);
         return new ResponseEntity<>(createdUsers, HttpStatus.CREATED);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<Users>> getAll() {
         List<Users> users = usersService.findAll();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Users> update(@PathVariable int id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Users> getById(@PathVariable int id) {
         return usersService.findById(id)
                 .map(users -> new ResponseEntity<>(users, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Users> update(@PathVariable int id, @RequestBody UsersDto usersDto) {
+        return usersService.update(id, usersDto)
+                .map(updatedUsers -> new ResponseEntity<>(updatedUsers, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

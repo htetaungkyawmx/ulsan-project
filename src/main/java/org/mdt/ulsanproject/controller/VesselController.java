@@ -16,22 +16,29 @@ public class VesselController {
     @Autowired
     private VesselService vesselService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Vessel> create(@RequestBody VesselDto vesselDto) {
         Vessel createdVessel = vesselService.save(vesselDto);
         return new ResponseEntity<>(createdVessel, HttpStatus.CREATED);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<Vessel>> getAll() {
         List<Vessel> vessels = vesselService.findAll();
         return new ResponseEntity<>(vessels, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Vessel> update(@PathVariable int id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Vessel> getById(@PathVariable int id) {
         return vesselService.findById(id)
                 .map(vessel -> new ResponseEntity<>(vessel, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Vessel> update(@PathVariable int id, @RequestBody VesselDto vesselDto) {
+        return vesselService.update(id, vesselDto)
+                .map(updatedVessel -> new ResponseEntity<>(updatedVessel, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
