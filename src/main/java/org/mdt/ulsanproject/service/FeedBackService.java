@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface FeedBackService {
     FeedBack save(FeedBackDto feedBackDto);
-    FeedBack update(int id, FeedBackDto feedBackDto);
+    Optional<FeedBack> update(int id, FeedBackDto feedBackDto);
     List<FeedBack> findAll();
     Optional<FeedBack> findById(int id);
     void delete(int id);
