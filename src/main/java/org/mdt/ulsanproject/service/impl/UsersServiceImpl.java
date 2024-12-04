@@ -5,6 +5,7 @@ import org.mdt.ulsanproject.model.Users;
 import org.mdt.ulsanproject.repository.UsersRepository;
 import org.mdt.ulsanproject.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,26 +13,33 @@ import java.util.Optional;
 
 @Service
 public class UsersServiceImpl implements UsersService {
+
     @Autowired
     private UsersRepository usersRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public Users save(UsersDto usersDto) {
-        Users users = Users.builder()
+        Users user = Users.builder()
                 .username(usersDto.getUsername())
                 .email(usersDto.getEmail())
-                .password(usersDto.getPassword())
+                .password(passwordEncoder.encode(usersDto.getPassword()))
                 .build();
-        return usersRepository.save(users);
+        return usersRepository.save(user);
     }
 
     @Override
     public Optional<Users> update(int id, UsersDto usersDto) {
-        return usersRepository.findById(id).map(existingUsers -> {
-            existingUsers.setUsername(usersDto.getUsername());
-            existingUsers.setEmail(usersDto.getEmail());
-            existingUsers.setPassword(usersDto.getPassword());
-            return usersRepository.save(existingUsers);
+        return usersRepository.findById(id).map(existingUser -> {
+            if (usersDto.getPassword() != null && !usersDto.getPassword().isEmpty()) {
+                existingUser.setPassword(passwordEncoder.encode(usersDto.getPassword()));
+            }
+            existingUser.setUsername(usersDto.getUsername());
+            existingUser.setEmail(usersDto.getEmail());
+
+            return usersRepository.save(existingUser);
         });
     }
 
@@ -49,5 +57,4 @@ public class UsersServiceImpl implements UsersService {
     public void delete(int id) {
         usersRepository.deleteById(id);
     }
-
 }
