@@ -29,19 +29,16 @@ public class DroneServiceImpl implements DroneService {
     }
 
     @Override
-    public Drone update(int id, DroneDto droneDto) {
-        Optional<Drone> existingDrone = droneRepository.findById(id);
-        if (existingDrone.isPresent()) {
-            Drone droneToUpdate = existingDrone.get();
-            droneToUpdate.setModel(droneDto.getModel());
-            droneToUpdate.setManufacturer(droneDto.getManufacturer());
-            droneToUpdate.setWeight(droneDto.getWeight());
-            droneToUpdate.setMaxAltitude(droneDto.getMaxAltitude());
-            droneToUpdate.setBatteryCapacity(droneDto.getBatteryCapacity());
-            droneToUpdate.setOperatingRange(droneDto.getOperatingRange());
-            return droneRepository.save(droneToUpdate);
-        }
-        return null;
+    public Optional<Drone> update(int id, DroneDto droneDto) {
+        return droneRepository.findById(id).map(existingDrone -> {
+            existingDrone.setModel(droneDto.getModel());
+            existingDrone.setManufacturer(droneDto.getManufacturer());
+            existingDrone.setWeight(droneDto.getWeight());
+            existingDrone.setMaxAltitude(droneDto.getMaxAltitude());
+            existingDrone.setBatteryCapacity(droneDto.getBatteryCapacity());
+            existingDrone.setOperatingRange(droneDto.getOperatingRange());
+            return droneRepository.save(existingDrone);
+        });
     }
 
     @Override

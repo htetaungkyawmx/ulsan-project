@@ -27,9 +27,14 @@ public class FeedBackServiceImpl implements FeedBackService {
     }
 
     @Override
-    public FeedBack update(int id, FeedBackDto feedBackDto) {
-
-        return null;
+    public Optional<FeedBack> update(int id, FeedBackDto feedBackDto) {
+        return feedBackRepository.findById(id).map(existingFeedBack -> {
+            existingFeedBack.setRating(feedBackDto.getRating());
+            existingFeedBack.setComment(feedBackDto.getComment());
+            existingFeedBack.setCreated_at(feedBackDto.getCreated_at());
+            existingFeedBack.setUser_id(feedBackDto.getUser_id());
+            return feedBackRepository.save(existingFeedBack);
+        });
     }
 
     @Override
