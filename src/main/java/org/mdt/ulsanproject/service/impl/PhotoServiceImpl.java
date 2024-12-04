@@ -28,9 +28,15 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     @Override
-    public Photo update(int id, PhotoDto photoDto) {
-
-        return null;
+    public Optional<Photo> update(int id, PhotoDto photoDto) {
+        return photoRepository.findById(id).map(existingPhoto -> {
+            existingPhoto.setTitle(photoDto.getTitle());
+            existingPhoto.setDescription(photoDto.getDescription());
+            existingPhoto.setStatus(photoDto.getStatus());
+            existingPhoto.setCreated_at(photoDto.getCreated_at());
+            existingPhoto.setUrl(photoDto.getUrl());
+            return photoRepository.save(existingPhoto);
+        });
     }
 
     @Override

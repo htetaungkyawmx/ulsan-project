@@ -27,9 +27,13 @@ public class MaintenanceServiceImpl implements MaintenanceService {
     }
 
     @Override
-    public Maintenance update(int id, MaintenanceDto maintenanceDto) {
-
-        return null;
+    public Optional<Maintenance> update(int id, MaintenanceDto maintenanceDto) {
+        return maintenanceRepository.findById(id).map(existingMaintenance -> {
+            existingMaintenance.setDescription(maintenanceDto.getDescription());
+            existingMaintenance.setDate(maintenanceDto.getDate());
+            existingMaintenance.setCost(maintenanceDto.getCost());
+            return maintenanceRepository.save(existingMaintenance);
+        });
     }
 
     @Override
