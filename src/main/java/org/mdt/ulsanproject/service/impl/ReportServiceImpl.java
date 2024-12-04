@@ -27,9 +27,13 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public Report update(int id, ReportDto reportDto) {
-
-        return null;
+    public Optional<Report> update(int id, ReportDto reportDto) {
+        return reportRepository.findById(id).map(existingReport -> {
+            existingReport.setTitle(reportDto.getTitle());
+            existingReport.setContent(reportDto.getContent());
+            existingReport.setStatus(reportDto.getStatus());
+            return reportRepository.save(existingReport);
+        });
     }
 
     @Override

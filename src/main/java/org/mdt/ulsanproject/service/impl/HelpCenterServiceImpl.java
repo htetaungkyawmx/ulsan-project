@@ -25,12 +25,12 @@ public class HelpCenterServiceImpl implements HelpCenterService {
     }
 
     @Override
-    public HelpCenter update(int id, HelpCenterDto helpCenterDto) {
+    public Optional<HelpCenter> update(int id, HelpCenterDto helpCenterDto) {
         return helpCenterRepository.findById(id).map(existingHelpCenter -> {
             existingHelpCenter.setQuestion(helpCenterDto.getQuestion());
             existingHelpCenter.setAnswer(helpCenterDto.getAnswer());
             return helpCenterRepository.save(existingHelpCenter);
-        }).orElse(null);
+        });
     }
 
     @Override

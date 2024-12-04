@@ -26,9 +26,13 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public Users update(int id, UsersDto usersDto) {
-
-        return null;
+    public Optional<Users> update(int id, UsersDto usersDto) {
+        return usersRepository.findById(id).map(existingUsers -> {
+            existingUsers.setUsername(usersDto.getUsername());
+            existingUsers.setEmail(usersDto.getEmail());
+            existingUsers.setPassword(usersDto.getPassword());
+            return usersRepository.save(existingUsers);
+        });
     }
 
     @Override

@@ -30,9 +30,17 @@ public class FlightLogServiceImpl implements FlightLogService {
     }
 
     @Override
-    public FlightLog update(int id, FlightLogDto flightLogDto) {
-
-        return null;
+    public Optional<FlightLog> update(int id, FlightLogDto flightLogDto) {
+        return flightLogRepository.findById(id).map(existingFlightLog -> {
+            existingFlightLog.setFlight_number(flightLogDto.getFlight_number());
+            existingFlightLog.setCompany_id(flightLogDto.getCompany_id());
+            existingFlightLog.setDrone_id(flightLogDto.getDrone_id());
+            existingFlightLog.setPilot_name(flightLogDto.getPilot_name());
+            existingFlightLog.setFlight_date(flightLogDto.getFlight_date());
+            existingFlightLog.setDuration(flightLogDto.getDuration());
+            existingFlightLog.setStatus(flightLogDto.getStatus());
+            return flightLogRepository.save(existingFlightLog);
+        });
     }
 
     @Override
