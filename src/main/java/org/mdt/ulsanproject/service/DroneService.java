@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface DroneService {
     Drone save(DroneDto droneDto);
-    Drone update(int id, DroneDto droneDto);
+    Optional<Drone> update(int id, DroneDto droneDto);
     List<Drone> findAll();
     Optional<Drone> findById(int id);
     void delete(int id);

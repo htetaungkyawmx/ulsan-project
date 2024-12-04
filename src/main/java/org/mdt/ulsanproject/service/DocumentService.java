@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface DocumentService {
     Document save(DocumentDto documentDto);
-    Document update(int id, DocumentDto documentDto);
+    Optional<Document> update(int id, DocumentDto documentDto);
     List<Document> findAll();
     Optional<Document> findById(int id);
     void delete(int id);

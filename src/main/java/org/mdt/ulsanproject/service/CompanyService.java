@@ -8,8 +8,12 @@ import java.util.Optional;
 
 public interface CompanyService {
     Company save(CompanyDto companyDto);
-    Company update(int id, CompanyDto companyDto);
+
+    Optional<Company> update(int id, CompanyDto companyDto);
+
     List<Company> findAll();
+
     Optional<Company> findById(int id);
+
     void delete(int id);
 }
