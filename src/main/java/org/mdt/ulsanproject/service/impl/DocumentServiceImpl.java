@@ -26,9 +26,13 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public Document update(int id, DocumentDto documentDto) {
-
-        return null;
+    public Optional<Document> update(int id, DocumentDto documentDto) {
+        return documentRepository.findById(id).map(existingDocument -> {
+            existingDocument.setTitle(documentDto.getTitle());
+            existingDocument.setContent(documentDto.getContent());
+            existingDocument.setAuthor_id(documentDto.getAuthor_id());
+            return documentRepository.save(existingDocument);
+        });
     }
 
     @Override

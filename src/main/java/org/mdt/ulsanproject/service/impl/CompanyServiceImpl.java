@@ -26,9 +26,13 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Company update(int id, CompanyDto companyDto) {
-
-        return null;
+    public Optional<Company> update(int id, CompanyDto companyDto) {
+        return companyRepository.findById(id).map(existingCompany -> {
+            existingCompany.setName(companyDto.getName());
+            existingCompany.setAddress(companyDto.getAddress());
+            existingCompany.setEmail(companyDto.getEmail());
+            return companyRepository.save(existingCompany);
+        });
     }
 
     @Override
