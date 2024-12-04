@@ -26,6 +26,7 @@ public class UsersServiceImpl implements UsersService {
                 .username(usersDto.getUsername())
                 .email(usersDto.getEmail())
                 .password(passwordEncoder.encode(usersDto.getPassword()))
+                .roleId(usersDto.getRoleId())
                 .build();
         return usersRepository.save(user);
     }
@@ -38,6 +39,7 @@ public class UsersServiceImpl implements UsersService {
             }
             existingUser.setUsername(usersDto.getUsername());
             existingUser.setEmail(usersDto.getEmail());
+            existingUser.setRoleId(usersDto.getRoleId());
 
             return usersRepository.save(existingUser);
         });
