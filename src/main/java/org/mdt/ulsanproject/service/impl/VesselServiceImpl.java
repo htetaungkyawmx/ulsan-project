@@ -28,9 +28,15 @@ public class VesselServiceImpl implements VesselService {
     }
 
     @Override
-    public Vessel update(int id, VesselDto vesselDto) {
-
-        return null;
+    public Optional<Vessel> update(int id, VesselDto vesselDto) {
+        return vesselRepository.findById(id).map(existingVessel -> {
+            existingVessel.setName(vesselDto.getName());
+            existingVessel.setType(vesselDto.getType());
+            existingVessel.setStatus(vesselDto.getStatus());
+            existingVessel.setCapacity(vesselDto.getCapacity());
+            existingVessel.setLocation(vesselDto.getLocation());
+            return vesselRepository.save(existingVessel);
+        });
     }
 
     @Override

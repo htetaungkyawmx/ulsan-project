@@ -28,9 +28,15 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public Video update(int id, VideoDto videoDto) {
-
-        return null;
+    public Optional<Video> update(int id, VideoDto videoDto) {
+        return videoRepository.findById(id).map(existingVideo -> {
+            existingVideo.setTitle(videoDto.getTitle());
+            existingVideo.setDescription(videoDto.getDescription());
+            existingVideo.setStatus(videoDto.getStatus());
+            existingVideo.setCreated_at(videoDto.getCreated_at());
+            existingVideo.setUrl(videoDto.getUrl());
+            return videoRepository.save(existingVideo);
+        });
     }
 
     @Override
