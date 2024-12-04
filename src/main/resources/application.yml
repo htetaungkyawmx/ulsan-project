@@ -11,3 +11,4 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
 server:
   port: 8000
+logging.level.org.springframework.security: DEBUG
