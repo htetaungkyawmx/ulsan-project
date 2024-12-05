@@ -22,12 +22,17 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public Users save(UsersDto usersDto) {
+
+
+        Integer roleId = usersDto.getRoleId() != null ? usersDto.getRoleId() : 1;
+
         Users user = Users.builder()
-                .username(usersDto.getUsername())
-                .email(usersDto.getEmail())
-                .password(passwordEncoder.encode(usersDto.getPassword()))
-                .roleId(usersDto.getRoleId())
+                .username(validateString(usersDto.getUsername(), "Username"))
+                .email(validateString(usersDto.getEmail(), "Email"))
+                .password(passwordEncoder.encode(validateString(usersDto.getPassword(), "Password")))
+                .roleId(roleId)
                 .build();
+
         return usersRepository.save(user);
     }
 
@@ -37,9 +42,9 @@ public class UsersServiceImpl implements UsersService {
             if (usersDto.getPassword() != null && !usersDto.getPassword().isEmpty()) {
                 existingUser.setPassword(passwordEncoder.encode(usersDto.getPassword()));
             }
-            existingUser.setUsername(usersDto.getUsername());
-            existingUser.setEmail(usersDto.getEmail());
-            existingUser.setRoleId(usersDto.getRoleId());
+            existingUser.setUsername(validateString(usersDto.getUsername(), "Username"));
+            existingUser.setEmail(validateString(usersDto.getEmail(), "Email"));
+            existingUser.setRoleId(usersDto.getRoleId() != null ? usersDto.getRoleId() : existingUser.getRoleId());
 
             return usersRepository.save(existingUser);
         });
@@ -58,5 +63,16 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public void delete(int id) {
         usersRepository.deleteById(id);
+    }
+
+    /**
+     * Helper method to validate strings.
+     * Throws IllegalArgumentException if the input is null or empty.
+     */
+    private String validateString(String value, String fieldName) {
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalArgumentException(fieldName + " cannot be null or empty");
+        }
+        return value.trim();
     }
 }
