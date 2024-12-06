@@ -19,7 +19,18 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login").permitAll()
                         .requestMatchers("/auth/refresh").permitAll()
+                        .requestMatchers("/companies/**").permitAll()
+                        .requestMatchers("/document/**").permitAll()
+                        .requestMatchers("/drone/**").permitAll()
+                        .requestMatchers("/feedback/**").permitAll()
+                        .requestMatchers("/flight_log/**").permitAll()
+                        .requestMatchers("/help_center/**").permitAll()
+                        .requestMatchers("/maintenance/**").permitAll()
+                        .requestMatchers("/photo/**").permitAll()
+                        .requestMatchers("/report/**").permitAll()
                         .requestMatchers("/users/**").permitAll()
+                        .requestMatchers("/vessel/**").permitAll()
+                        .requestMatchers("/video/**").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();
