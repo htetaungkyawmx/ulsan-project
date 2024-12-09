@@ -31,8 +31,9 @@ public class SecurityConfig {
                         .requestMatchers("/users/**").permitAll()
                         .requestMatchers("/vessel/**").permitAll()
                         .requestMatchers("/video/**").permitAll()
-                        .requestMatchers("/roles").hasRole("ADMIN")
-                        .requestMatchers("/permissions/**").permitAll()
+
+                        .requestMatchers("/api/roles/**").permitAll()
+                        .requestMatchers("/api/permissions/**").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();
