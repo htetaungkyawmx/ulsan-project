@@ -1,3 +1,5 @@
+![Uploading image.png…]()
+
 # API Endpoints Documentation
 
 This document provides details about the available API endpoints for **POST** requests in the \`ulsan-project\` application.
