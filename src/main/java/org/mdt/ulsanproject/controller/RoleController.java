@@ -1,5 +1,6 @@
 package org.mdt.ulsanproject.controller;
 
+import org.mdt.ulsanproject.dto.AssignPermissionsDto;
 import org.mdt.ulsanproject.dto.RoleDto;
 import org.mdt.ulsanproject.model.Role;
 import org.mdt.ulsanproject.service.RoleService;
@@ -9,12 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/roles")
+@RequestMapping("/api/roles")
 public class RoleController {
-
     @Autowired
     private RoleService roleService;
 
@@ -31,21 +30,32 @@ public class RoleController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Role> getRoleById(@PathVariable int id) {
-        Optional<Role> role = roleService.findById(id);
-        return role.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<Role> getRoleById(@PathVariable Integer id) {
+        return roleService.findById(id)
+                .map(role -> new ResponseEntity<>(role, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PutMapping("/{roleId}/permissions")
+    public ResponseEntity<Role> assignPermissionsToRole(
+            @PathVariable Integer roleId, @RequestBody AssignPermissionsDto assignPermissionsDto) {
+        List<Integer> permissionIds = assignPermissionsDto.getPermissionIds();
+        Role role = roleService.assignPermissionsToRole(roleId, permissionIds);
+        if (role != null) {
+            return new ResponseEntity<>(role, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Role> updateRole(@PathVariable int id, @RequestBody RoleDto roleDto) {
-        Optional<Role> updatedRole = roleService.update(id, roleDto);
-        return updatedRole.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<Role> updateRole(@PathVariable Integer id, @RequestBody RoleDto roleDto) {
+        return roleService.update(id, roleDto)
+                .map(updatedRole -> new ResponseEntity<>(updatedRole, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRole(@PathVariable int id) {
+    public ResponseEntity<Void> deleteRole(@PathVariable Integer id) {
         roleService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
