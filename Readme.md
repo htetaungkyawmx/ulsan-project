@@ -15,8 +15,10 @@ This document provides details about the available API endpoints for **POST** re
 9. [Flight Log API](#9-flight-log-api)
 10. [Report API](#10-report-api)
 11. [Photo API](#11-photo-api)
-12. [Role API](#12-role-api)
-13. [Permission API](#13-permission-api)
+12. [Document API](#12-document-api)
+13. [Role API](#13-role-api)
+14. [Permission API](#14-permission-api)
+15. [Role_Permission API](#15-role_permission-api)
 
 ---
 
