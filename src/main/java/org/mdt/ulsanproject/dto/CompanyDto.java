@@ -8,10 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CompanyDto {
-
     private int id;
     private String name;
     private String address;
     private String email;
-
 }

@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @Service
 public class DocumentServiceImpl implements DocumentService {
+
     @Autowired
     private DocumentRepository documentRepository;
 
@@ -20,7 +21,14 @@ public class DocumentServiceImpl implements DocumentService {
         Document document = Document.builder()
                 .title(documentDto.getTitle())
                 .content(documentDto.getContent())
-                .author_id(documentDto.getAuthor_id())
+                .authorId(documentDto.getAuthor_id())
+                .summary(documentDto.getSummary())
+                .tags(documentDto.getTags())
+                .category(documentDto.getCategory())
+                .documentType(documentDto.getDocumentType())
+                .visibility(documentDto.isVisibility())
+                .filePath(documentDto.getFilePath())
+                .thumbnailPath(documentDto.getThumbnailPath())
                 .build();
         return documentRepository.save(document);
     }
@@ -30,7 +38,14 @@ public class DocumentServiceImpl implements DocumentService {
         return documentRepository.findById(id).map(existingDocument -> {
             existingDocument.setTitle(documentDto.getTitle());
             existingDocument.setContent(documentDto.getContent());
-            existingDocument.setAuthor_id(documentDto.getAuthor_id());
+            existingDocument.setAuthorId(documentDto.getAuthor_id());
+            existingDocument.setSummary(documentDto.getSummary());
+            existingDocument.setTags(documentDto.getTags());
+            existingDocument.setCategory(documentDto.getCategory());
+            existingDocument.setDocumentType(documentDto.getDocumentType());
+            existingDocument.setVisibility(documentDto.isVisibility());
+            existingDocument.setFilePath(documentDto.getFilePath());
+            existingDocument.setThumbnailPath(documentDto.getThumbnailPath());
             return documentRepository.save(existingDocument);
         });
     }
@@ -49,5 +64,4 @@ public class DocumentServiceImpl implements DocumentService {
     public void delete(int id) {
         documentRepository.deleteById(id);
     }
-
 }

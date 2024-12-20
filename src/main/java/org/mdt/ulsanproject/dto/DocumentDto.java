@@ -12,6 +12,12 @@ public class DocumentDto {
     private int id;
     private String title;
     private String content;
-    private String author_id;
-
+    private Integer author_id;  // Ensure it's Integer to accommodate null values
+    private String summary;
+    private String tags;
+    private String category;
+    private String documentType;
+    private boolean visibility;
+    private String filePath;
+    private String thumbnailPath;
 }

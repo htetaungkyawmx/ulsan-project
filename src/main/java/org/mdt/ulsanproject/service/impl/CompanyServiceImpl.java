@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
+
     @Autowired
     private CompanyRepository companyRepository;
 
@@ -49,5 +50,4 @@ public class CompanyServiceImpl implements CompanyService {
     public void delete(int id) {
         companyRepository.deleteById(id);
     }
-
 }
