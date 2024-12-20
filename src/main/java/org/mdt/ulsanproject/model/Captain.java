@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Company {
+public class Captain {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,46 +23,33 @@ public class Company {
     @Column(nullable = false, length = 255)
     private String name;
 
-    @Column(nullable = false, unique = true, length = 100)
-    private String registrationNo;
-
-    @Column(nullable = false, unique = true, length = 100)
-    private String taxId;
-
-    @Column(length = 255)
-    private String logoUrl;
-
     @Column(nullable = false, unique = true, length = 255)
-    private String email;
-
-    @Column(length = 500)
-    private String address;
-
-    @Column(length = 100)
-    private String industryType;
-
-    private int noOfEmployees;
-
-    private double capital;
-
-    private double annualRevenue;
-
-    @Column(length = 100)
-    private String status;
-
-    @Column(columnDefinition = "TEXT")
-    private String tags;
-
-    @Column(length = 100)
-    private String country;
-
-    private LocalDateTime foundingDate;
+    private String licenseNumber;
 
     @Column(length = 255)
-    private String website;
+    private String nationality;
 
     @Column(length = 255)
-    private String contactPerson;
+    private String picture;
+
+    private int yearsOfExperience;
+
+    @Column(length = 255)
+    private String certificates;
+
+    @Column(length = 255)
+    private String specializations;
+
+    private LocalDate medicalClearanceDate;
+
+    @Column
+    private Integer assignedVesselId;
+
+    @Column(length = 255)
+    private String languagesKnown;
+
+    @Column(length = 255)
+    private String contactInfo;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdDate;

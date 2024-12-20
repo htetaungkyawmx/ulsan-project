@@ -1,13 +1,12 @@
 package org.mdt.ulsanproject.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -15,13 +14,29 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class Photo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "title", nullable = false, unique = true)
     private String title;
+
+    @Column(name = "description")
     private String description;
-    private String status;
-    private String created_at;
+
+    @Column(name = "url", nullable = false)
     private String url;
 
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();  // Using LocalDateTime for timestamp
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    // Setter for updatedAt to handle automatic updates
+    @PreUpdate
+    public void setUpdatedAt() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }

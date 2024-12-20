@@ -1,8 +1,9 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/db_aioceaneye_java
-    username: root
-    password:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:db_aioceaneye_java}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update
@@ -11,4 +12,6 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
 server:
   port: 8000
-logging.level.org.springframework.security: DEBUG
+logging:
+  level:
+    org.springframework.security: DEBUG

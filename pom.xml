@@ -36,8 +36,14 @@
             <artifactId>lombok</artifactId>
             <version>1.18.36</version>
         </dependency>
-    <!--Security and JWT-->
+        <!-- https://mvnrepository.com/artifact/io.github.cdimascio/java-dotenv -->
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>java-dotenv</artifactId>
+            <version>5.2.2</version>
+        </dependency>
 
+        <!--Security and JWT-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
