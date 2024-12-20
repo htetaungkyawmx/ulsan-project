@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DroneRepository extends JpaRepository<Drone, Integer> {
-
+    // You can add custom queries here if needed
 }

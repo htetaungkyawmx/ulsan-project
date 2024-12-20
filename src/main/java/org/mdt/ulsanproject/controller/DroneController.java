@@ -9,42 +9,53 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/drone")
+@RequestMapping("/api/drones")
 public class DroneController {
+
     @Autowired
     private DroneService droneService;
 
+    // Create a new drone
     @PostMapping
-    public ResponseEntity<Drone> create(@RequestBody DroneDto droneDto) {
-        Drone createdDrone = droneService.save(droneDto);
-        return new ResponseEntity<>(createdDrone, HttpStatus.CREATED);
+    public ResponseEntity<Drone> createDrone(@RequestBody DroneDto droneDto) {
+        Drone savedDrone = droneService.save(droneDto);
+        return new ResponseEntity<>(savedDrone, HttpStatus.CREATED);
     }
 
+    // Get all drones
     @GetMapping
-    public ResponseEntity<List<Drone>> getAll() {
-        List<Drone> drones = droneService.findAll();
-        return new ResponseEntity<>(drones, HttpStatus.OK);
+    public List<Drone> getAllDrones() {
+        return droneService.findAll();
     }
 
+    // Get a drone by ID
     @GetMapping("/{id}")
-    public ResponseEntity<Drone> getById(@PathVariable int id) {
-        return droneService.findById(id)
-                .map(drone -> new ResponseEntity<>(drone, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<Drone> getDroneById(@PathVariable int id) {
+        Optional<Drone> drone = droneService.findById(id);
+        return drone.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
+    // Update a drone
     @PutMapping("/{id}")
-    public ResponseEntity<Drone> update(@PathVariable int id, @RequestBody DroneDto droneDto) {
-        return droneService.update(id, droneDto)
-                .map(updateDrone -> new ResponseEntity<>(updateDrone, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<Drone> updateDrone(@PathVariable int id, @RequestBody DroneDto droneDto) {
+        Optional<Drone> updatedDrone = droneService.update(id, droneDto);
+        return updatedDrone.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
+    // Delete a drone
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
-        droneService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<Void> deleteDrone(@PathVariable int id) {
+        Optional<Drone> drone = droneService.findById(id);
+        if (drone.isPresent()) {
+            droneService.delete(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }

@@ -12,18 +12,24 @@ import java.util.Optional;
 
 @Service
 public class DroneServiceImpl implements DroneService {
+
     @Autowired
     private DroneRepository droneRepository;
 
     @Override
     public Drone save(DroneDto droneDto) {
         Drone drone = Drone.builder()
-                .model(droneDto.getModel())
+                .droneModel(droneDto.getDroneModel())
                 .manufacturer(droneDto.getManufacturer())
+                .droneType(droneDto.getDroneType())
+                .category(droneDto.getCategory())
                 .weight(droneDto.getWeight())
                 .maxAltitude(droneDto.getMaxAltitude())
                 .batteryCapacity(droneDto.getBatteryCapacity())
                 .operatingRange(droneDto.getOperatingRange())
+                .droneCode(generateDroneCode(droneDto))
+                .image(droneDto.getImage())
+                .description(droneDto.getDescription())
                 .build();
         return droneRepository.save(drone);
     }
@@ -31,12 +37,16 @@ public class DroneServiceImpl implements DroneService {
     @Override
     public Optional<Drone> update(int id, DroneDto droneDto) {
         return droneRepository.findById(id).map(existingDrone -> {
-            existingDrone.setModel(droneDto.getModel());
+            existingDrone.setDroneModel(droneDto.getDroneModel());
             existingDrone.setManufacturer(droneDto.getManufacturer());
+            existingDrone.setDroneType(droneDto.getDroneType());
+            existingDrone.setCategory(droneDto.getCategory());
             existingDrone.setWeight(droneDto.getWeight());
             existingDrone.setMaxAltitude(droneDto.getMaxAltitude());
             existingDrone.setBatteryCapacity(droneDto.getBatteryCapacity());
             existingDrone.setOperatingRange(droneDto.getOperatingRange());
+            existingDrone.setImage(droneDto.getImage());
+            existingDrone.setDescription(droneDto.getDescription());
             return droneRepository.save(existingDrone);
         });
     }
@@ -54,5 +64,13 @@ public class DroneServiceImpl implements DroneService {
     @Override
     public void delete(int id) {
         droneRepository.deleteById(id);
+    }
+
+    // Helper method to generate drone code
+    private String generateDroneCode(DroneDto droneDto) {
+        String typeCode = droneDto.getDroneType() != null ? droneDto.getDroneType().substring(0, 4).toUpperCase() : "GEN";
+        String categoryCode = droneDto.getCategory() != null ? droneDto.getCategory().substring(0, 4).toUpperCase() : "GEN";
+        long count = droneRepository.count(); // Get total count to generate unique code
+        return String.format("%s-%s-%03d", typeCode, categoryCode, count + 1);
     }
 }

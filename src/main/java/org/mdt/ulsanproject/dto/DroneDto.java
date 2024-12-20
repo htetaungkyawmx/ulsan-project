@@ -1,18 +1,18 @@
 package org.mdt.ulsanproject.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class DroneDto {
-    private String model;
+    private String droneModel;
     private String manufacturer;
-    private String weight;
-    private String maxAltitude;
-    private String batteryCapacity;
-    private String operatingRange;
-
+    private String droneType;
+    private String category;
+    private float weight;
+    private float maxAltitude;
+    private float batteryCapacity;
+    private float operatingRange;
+    private String droneCode; // This can be generated in the service layer
+    private String image; // Image URL or path
+    private String description; // Optional description for the drone
 }
