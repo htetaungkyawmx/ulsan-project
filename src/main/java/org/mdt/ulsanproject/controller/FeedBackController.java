@@ -16,18 +16,21 @@ public class FeedBackController {
     @Autowired
     private FeedBackService feedBackService;
 
+    // Create feedback
     @PostMapping
     public ResponseEntity<FeedBack> create(@RequestBody FeedBackDto feedBackDto) {
         FeedBack createdFeedBack = feedBackService.save(feedBackDto);
         return new ResponseEntity<>(createdFeedBack, HttpStatus.CREATED);
     }
 
+    // Get all feedbacks
     @GetMapping
     public ResponseEntity<List<FeedBack>> getAll() {
         List<FeedBack> feedBacks = feedBackService.findAll();
         return new ResponseEntity<>(feedBacks, HttpStatus.OK);
     }
 
+    // Get feedback by ID
     @GetMapping("/{id}")
     public ResponseEntity<FeedBack> getById(@PathVariable int id) {
         return feedBackService.findById(id)
@@ -35,6 +38,7 @@ public class FeedBackController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    // Update feedback
     @PutMapping("/{id}")
     public ResponseEntity<FeedBack> update(@PathVariable int id, @RequestBody FeedBackDto feedBackDto) {
         return feedBackService.update(id, feedBackDto)
@@ -42,6 +46,7 @@ public class FeedBackController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    // Delete feedback
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         feedBackService.delete(id);

@@ -10,9 +10,6 @@ import lombok.NoArgsConstructor;
 public class FeedBackDto {
 
     private int id;
-    private String rating;
-    private String comment;
-    private String created_at;
-    private String user_id;
-
+    private String content;
+    private String userId;
 }
