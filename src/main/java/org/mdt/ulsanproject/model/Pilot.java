@@ -1,10 +1,7 @@
 package org.mdt.ulsanproject.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -67,7 +64,6 @@ public class Pilot {
     @Column(name = "is_delete", nullable = false)
     private boolean isDelete = false;
 
-    // Setter for updatedDate to handle automatic updates
     @PreUpdate
     public void setUpdatedDate() {
         this.updatedDate = LocalDateTime.now();
