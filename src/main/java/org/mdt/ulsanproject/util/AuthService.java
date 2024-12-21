@@ -1,8 +1,9 @@
 package org.mdt.ulsanproject.util;
 
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import io.jsonwebtoken.*;
+
 import java.util.Date;
 
 @Service
@@ -14,7 +15,6 @@ public class AuthService {
     @Value("${jwt.expiration}")
     private long expirationTime;
 
-    // Generate JWT token
     public String createToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
@@ -24,7 +24,6 @@ public class AuthService {
                 .compact();
     }
 
-    // Validate JWT token
     public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
@@ -34,16 +33,13 @@ public class AuthService {
         }
     }
 
-    // Get the username (email) from token
     public String getEmailFromToken(String token) {
         Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
         return claims.getSubject();
     }
 
-    // Role-based Authorization check
     public boolean isAuthorized(String email, String permission) {
         // Placeholder logic for role-based authorization
-        // Fetch roles from the database and match permissions
-        return true;  // Mock return, implement actual role-check logic
+        return true;
     }
 }
