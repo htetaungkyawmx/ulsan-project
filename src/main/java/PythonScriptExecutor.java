@@ -14,6 +14,13 @@ public class PythonScriptExecutor {
             // Create a ProcessBuilder instance
             ProcessBuilder processBuilder = new ProcessBuilder(command);
 
+            // Set environment variables for the Python script
+            processBuilder.environment().put("DB_HOST", "localhost");
+            processBuilder.environment().put("DB_PORT", "3306");
+            processBuilder.environment().put("DB_NAME", "db_aioceaneye_java");
+            processBuilder.environment().put("DB_USERNAME", "root");
+            processBuilder.environment().put("DB_PASSWORD", ""); // Update if password is needed
+
             // Redirect error stream to capture both output and errors
             processBuilder.redirectErrorStream(true);
 
