@@ -1,46 +1,23 @@
-# db_seed.py
-import os
-from sqlalchemy import create_engine, text
-from dotenv import load_dotenv
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import Session
+from passlib.context import CryptContext
+from database import SessionLocal, Base, engine
+from models.role_model import RoleModel
+from models.permission_model import PermissionModel
+from models.role_permission import role_permission
+from models.user_model import UserModel
 
-# Load environment variables from .env file
-load_dotenv()
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# Get database details from environment variables
-DB_HOST = os.getenv("DB_HOST", "localhost")
-DB_PORT = os.getenv("DB_PORT", "3306")
-DB_NAME = os.getenv("DB_NAME", "db_aioceaneye_java")
-DB_USERNAME = os.getenv("DB_USERNAME", "root")
-DB_PASSWORD = os.getenv("DB_PASSWORD", "")
-
-DATABASE_URL = f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-
-# Connect to the database
-engine = create_engine(DATABASE_URL)
-
-# Seed data into the database
-def seed_database():
+def reset_database(db: Session):
     try:
-        with engine.connect() as conn:
-            print("Connected to the database.")
+        db.query(role_permission).delete()
+        db.query(PermissionModel).delete()
+        db.query(RoleModel).delete()
+        db.query(UserModel).delete()
+        db.commit()
+        print("Database reset successfully.")
+    except SQLAlchemyError as e:
+        print(f"Database reset failed: {e}")
 
-            # Example: Create a table and insert some data
-            conn.execute(text("""
-                CREATE TABLE IF NOT EXISTS sample_data (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    name VARCHAR(255) NOT NULL,
-                    value INT NOT NULL
-                )
-            """))
-            conn.execute(text("""
-                INSERT INTO sample_data (name, value) VALUES
-                ('Example 1', 100),
-                ('Example 2', 200)
-                ON DUPLICATE KEY UPDATE value = VALUES(value)
-            """))
-            print("Database seeded successfully.")
-    except Exception as e:
-        print("Error seeding the database:", str(e))
-
-if __name__ == "__main__":
-    seed_database()
+# Other seeding functions follow the same structure
