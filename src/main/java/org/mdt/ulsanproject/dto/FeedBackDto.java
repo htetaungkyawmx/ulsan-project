@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class FeedBackDto {
 
-    private int id;
-    private String content;
-    private String userId;
+    private int id;              // ID of the feedback, an integer
+    private String content;      // Content of the feedback
+    private int userId;          // User ID (change this to integer for consistency)
 }
