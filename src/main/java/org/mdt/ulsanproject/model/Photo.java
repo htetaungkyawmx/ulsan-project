@@ -28,13 +28,15 @@ public class Photo {
     @Column(name = "url", nullable = false)
     private String url;
 
+    @Column(name = "status", nullable = false)
+    private String status; // E.g., ACTIVE, INACTIVE
+
     @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();  // Using LocalDateTime for timestamp
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // Setter for updatedAt to handle automatic updates
     @PreUpdate
     public void setUpdatedAt() {
         this.updatedAt = LocalDateTime.now();
