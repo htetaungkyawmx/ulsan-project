@@ -18,18 +18,21 @@ public class PermissionController {
     @Autowired
     private PermissionService permissionService;
 
+    // Create a new permission
     @PostMapping
     public ResponseEntity<Permission> createPermission(@RequestBody PermissionDto permissionDto) {
-        Permission permission = permissionService.save(permissionDto);
-        return new ResponseEntity<>(permission, HttpStatus.CREATED);
+        Permission createdPermission = permissionService.save(permissionDto);
+        return new ResponseEntity<>(createdPermission, HttpStatus.CREATED);
     }
 
+    // Retrieve all permissions
     @GetMapping
     public ResponseEntity<List<Permission>> getAllPermissions() {
         List<Permission> permissions = permissionService.findAll();
         return new ResponseEntity<>(permissions, HttpStatus.OK);
     }
 
+    // Retrieve a specific permission by ID
     @GetMapping("/{id}")
     public ResponseEntity<Permission> getPermissionById(@PathVariable int id) {
         Optional<Permission> permission = permissionService.findById(id);
@@ -37,6 +40,7 @@ public class PermissionController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    // Update an existing permission by ID
     @PutMapping("/{id}")
     public ResponseEntity<Permission> updatePermission(@PathVariable int id, @RequestBody PermissionDto permissionDto) {
         Optional<Permission> updatedPermission = permissionService.update(id, permissionDto);
@@ -44,6 +48,7 @@ public class PermissionController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    // Delete a permission by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePermission(@PathVariable int id) {
         permissionService.delete(id);

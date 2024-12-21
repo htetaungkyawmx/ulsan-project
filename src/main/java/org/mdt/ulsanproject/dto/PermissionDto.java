@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PermissionDto {
-    private int id;
-    private String name;
-
+    private String name;        // Permission name
+    private String description; // Permission description
 }

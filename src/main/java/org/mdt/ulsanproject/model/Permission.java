@@ -19,18 +19,16 @@ public class Permission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name", nullable = false, unique = true)
-    private String name;
+    @Column(nullable = false, unique = true)
+    private String name; // Unique permission name
 
-    @Column(name = "description")
-    private String description;
+    private String description; // Optional description
 
-    // Many-to-many relationship with Role through the "role_permission" join table
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "role_permission",
             joinColumns = @JoinColumn(name = "permission_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles;
+    private Set<Role> roles; // Many-to-many relationship with Role
 }
