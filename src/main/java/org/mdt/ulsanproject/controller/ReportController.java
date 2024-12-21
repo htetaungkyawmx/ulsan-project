@@ -11,23 +11,26 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/report")
+@RequestMapping("/reports")
 public class ReportController {
     @Autowired
     private ReportService reportService;
 
+    // Create Report
     @PostMapping
     public ResponseEntity<Report> create(@RequestBody ReportDto reportDto) {
         Report createdReport = reportService.save(reportDto);
         return new ResponseEntity<>(createdReport, HttpStatus.CREATED);
     }
 
+    // Get All Reports
     @GetMapping
     public ResponseEntity<List<Report>> getAll() {
         List<Report> reports = reportService.findAll();
         return new ResponseEntity<>(reports, HttpStatus.OK);
     }
 
+    // Get Report by ID
     @GetMapping("/{id}")
     public ResponseEntity<Report> getById(@PathVariable int id) {
         return reportService.findById(id)
@@ -35,6 +38,7 @@ public class ReportController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    // Update Report
     @PutMapping("/{id}")
     public ResponseEntity<Report> update(@PathVariable int id, @RequestBody ReportDto reportDto) {
         return reportService.update(id, reportDto)
@@ -42,9 +46,10 @@ public class ReportController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    // Delete Report (Soft Delete)
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
-        reportService.delete(id);
+        reportService.softDelete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

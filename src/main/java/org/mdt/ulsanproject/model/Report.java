@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class Report {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -33,7 +32,7 @@ public class Report {
     private String reportType;
 
     @Column(name = "visibility", nullable = false)
-    private String visibility = "Public";
+    private String visibility;
 
     @Column(name = "category")
     private String category;
@@ -44,7 +43,7 @@ public class Report {
     @Column(name = "failure_defects")
     private String failureDefects;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(name = "updated_at", nullable = false)
@@ -52,11 +51,6 @@ public class Report {
 
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = false;
-
-    // Optional relationship with User (if required)
-    // @ManyToOne
-    // @JoinColumn(name = "author_id", referencedColumnName = "id", insertable = false, updatable = false)
-    // private User author;
 
     @PreUpdate
     public void setUpdatedAt() {

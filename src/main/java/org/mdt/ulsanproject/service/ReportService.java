@@ -11,5 +11,5 @@ public interface ReportService {
     Optional<Report> update(int id, ReportDto reportDto);
     List<Report> findAll();
     Optional<Report> findById(int id);
-    void delete(int id);
+    void softDelete(int id);
 }

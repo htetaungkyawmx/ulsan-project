@@ -20,8 +20,12 @@ public class ReportServiceImpl implements ReportService {
         Report report = Report.builder()
                 .title(reportDto.getTitle())
                 .content(reportDto.getContent())
-                .status(reportDto.getStatus())
-                .created_at(reportDto.getCreated_at())
+                .authorId(reportDto.getAuthorId())
+                .reportType(reportDto.getReportType())
+                .visibility(reportDto.getVisibility())
+                .category(reportDto.getCategory())
+                .date(reportDto.getDate())
+                .failureDefects(reportDto.getFailureDefects())
                 .build();
         return reportRepository.save(report);
     }
@@ -31,7 +35,11 @@ public class ReportServiceImpl implements ReportService {
         return reportRepository.findById(id).map(existingReport -> {
             existingReport.setTitle(reportDto.getTitle());
             existingReport.setContent(reportDto.getContent());
-            existingReport.setStatus(reportDto.getStatus());
+            existingReport.setReportType(reportDto.getReportType());
+            existingReport.setVisibility(reportDto.getVisibility());
+            existingReport.setCategory(reportDto.getCategory());
+            existingReport.setDate(reportDto.getDate());
+            existingReport.setFailureDefects(reportDto.getFailureDefects());
             return reportRepository.save(existingReport);
         });
     }
@@ -47,7 +55,10 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public void delete(int id) {
-        reportRepository.deleteById(id);
+    public void softDelete(int id) {
+        reportRepository.findById(id).ifPresent(report -> {
+            report.setDeleted(true);
+            reportRepository.save(report);
+        });
     }
 }

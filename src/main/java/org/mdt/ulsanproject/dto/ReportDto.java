@@ -4,15 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReportDto {
-
-    private int id;
     private String title;
     private String content;
-    private String status;
-    private String created_at;
-
+    private int authorId;
+    private String reportType;
+    private String visibility;
+    private String category;
+    private LocalDate date;
+    private String failureDefects;
 }
