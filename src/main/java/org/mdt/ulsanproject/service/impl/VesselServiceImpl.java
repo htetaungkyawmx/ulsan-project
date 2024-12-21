@@ -12,17 +12,25 @@ import java.util.Optional;
 
 @Service
 public class VesselServiceImpl implements VesselService {
+
     @Autowired
     private VesselRepository vesselRepository;
 
     @Override
     public Vessel save(VesselDto vesselDto) {
         Vessel vessel = Vessel.builder()
+                .serialnumber(vesselDto.getSerialnumber())
                 .name(vesselDto.getName())
                 .type(vesselDto.getType())
-                .status(vesselDto.getStatus())
+                .manufacturer(vesselDto.getManufacturer())
+                .picture(vesselDto.getPicture())
+                .weight(vesselDto.getWeight())
                 .capacity(vesselDto.getCapacity())
-                .location(vesselDto.getLocation())
+                .IMO(vesselDto.getIMO())
+                .MMSI(vesselDto.getMMSI())
+                .callsign(vesselDto.getCallsign())
+                .nation(vesselDto.getNation())
+                .length(vesselDto.getLength())
                 .build();
         return vesselRepository.save(vessel);
     }
@@ -30,11 +38,18 @@ public class VesselServiceImpl implements VesselService {
     @Override
     public Optional<Vessel> update(int id, VesselDto vesselDto) {
         return vesselRepository.findById(id).map(existingVessel -> {
+            existingVessel.setSerialnumber(vesselDto.getSerialnumber());
             existingVessel.setName(vesselDto.getName());
             existingVessel.setType(vesselDto.getType());
-            existingVessel.setStatus(vesselDto.getStatus());
+            existingVessel.setManufacturer(vesselDto.getManufacturer());
+            existingVessel.setPicture(vesselDto.getPicture());
+            existingVessel.setWeight(vesselDto.getWeight());
             existingVessel.setCapacity(vesselDto.getCapacity());
-            existingVessel.setLocation(vesselDto.getLocation());
+            existingVessel.setIMO(vesselDto.getIMO());
+            existingVessel.setMMSI(vesselDto.getMMSI());
+            existingVessel.setCallsign(vesselDto.getCallsign());
+            existingVessel.setNation(vesselDto.getNation());
+            existingVessel.setLength(vesselDto.getLength());
             return vesselRepository.save(existingVessel);
         });
     }

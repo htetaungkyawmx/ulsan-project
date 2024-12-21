@@ -1,4 +1,4 @@
-package org.mdt.ulsanproject.service;
+package org.mdt.ulsanproject.util;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
