@@ -1,10 +1,7 @@
 package org.mdt.ulsanproject.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -20,10 +17,10 @@ public class HelpCenter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "question", length = 255)
+    @Column(name = "question", length = 255, nullable = false)
     private String question;
 
-    @Column(name = "answer", columnDefinition = "TEXT")
+    @Column(name = "answer", columnDefinition = "TEXT", nullable = false)
     private String answer;
 
     @Column(name = "category", length = 100)
@@ -36,16 +33,16 @@ public class HelpCenter {
     private LocalDateTime updatedAt;
 
     @Column(name = "status", length = 50, nullable = false)
-    private String status;
+    private String status = "active";
 
     @Column(name = "visibility", nullable = false)
-    private Boolean visibility;
+    private Boolean visibility = true;
 
     @Column(name = "tags", length = 255)
     private String tags;
 
-    @Column(name = "language", length = 10)
-    private String language;
+    @Column(name = "language", length = 10, nullable = false)
+    private String language = "en";
 
     @Column(name = "user_rating")
     private Integer userRating;
@@ -54,7 +51,7 @@ public class HelpCenter {
     private Integer createdBy;
 
     @Column(name = "is_deleted", nullable = false)
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;
 
     @PrePersist
     protected void onCreate() {

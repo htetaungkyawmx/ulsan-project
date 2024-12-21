@@ -11,5 +11,5 @@ public interface HelpCenterService {
     Optional<HelpCenter> update(int id, HelpCenterDto helpCenterDto);
     List<HelpCenter> findAll();
     Optional<HelpCenter> findById(int id);
-    void delete(int id);
+    boolean delete(int id);
 }

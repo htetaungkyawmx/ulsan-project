@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/help_center")
 public class HelpCenterController {
+
     @Autowired
     private HelpCenterService helpCenterService;
 
@@ -30,21 +31,25 @@ public class HelpCenterController {
 
     @GetMapping("/{id}")
     public ResponseEntity<HelpCenter> getById(@PathVariable int id) {
-       return helpCenterService.findById(id)
-               .map(helpCenter -> new ResponseEntity<>(helpCenter, HttpStatus.OK))
-               .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return helpCenterService.findById(id)
+                .map(helpCenter -> new ResponseEntity<>(helpCenter, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<HelpCenter> update(@PathVariable int id, @RequestBody HelpCenterDto helpCenterDto) {
         return helpCenterService.update(id, helpCenterDto)
-                .map(updateHelpCenter -> new ResponseEntity<>(updateHelpCenter, HttpStatus.OK))
+                .map(updatedHelpCenter -> new ResponseEntity<>(updatedHelpCenter, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
-        helpCenterService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        boolean deleted = helpCenterService.delete(id);
+        if (deleted) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

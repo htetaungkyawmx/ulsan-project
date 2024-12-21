@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @Service
 public class HelpCenterServiceImpl implements HelpCenterService {
+
     @Autowired
     private HelpCenterRepository helpCenterRepository;
 
@@ -20,6 +21,11 @@ public class HelpCenterServiceImpl implements HelpCenterService {
         HelpCenter helpCenter = HelpCenter.builder()
                 .question(helpCenterDto.getQuestion())
                 .answer(helpCenterDto.getAnswer())
+                .category(helpCenterDto.getCategory())
+                .tags(helpCenterDto.getTags())
+                .language(helpCenterDto.getLanguage())
+                .userRating(helpCenterDto.getUserRating())
+                .createdBy(helpCenterDto.getCreatedBy())
                 .build();
         return helpCenterRepository.save(helpCenter);
     }
@@ -29,6 +35,10 @@ public class HelpCenterServiceImpl implements HelpCenterService {
         return helpCenterRepository.findById(id).map(existingHelpCenter -> {
             existingHelpCenter.setQuestion(helpCenterDto.getQuestion());
             existingHelpCenter.setAnswer(helpCenterDto.getAnswer());
+            existingHelpCenter.setCategory(helpCenterDto.getCategory());
+            existingHelpCenter.setTags(helpCenterDto.getTags());
+            existingHelpCenter.setLanguage(helpCenterDto.getLanguage());
+            existingHelpCenter.setUserRating(helpCenterDto.getUserRating());
             return helpCenterRepository.save(existingHelpCenter);
         });
     }
@@ -44,7 +54,11 @@ public class HelpCenterServiceImpl implements HelpCenterService {
     }
 
     @Override
-    public void delete(int id) {
-        helpCenterRepository.deleteById(id);
+    public boolean delete(int id) {
+        return helpCenterRepository.findById(id).map(helpCenter -> {
+            helpCenter.setIsDeleted(true);
+            helpCenterRepository.save(helpCenter);
+            return true;
+        }).orElse(false);
     }
 }
