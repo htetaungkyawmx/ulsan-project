@@ -28,11 +28,6 @@ public class Video {
 
     private String url;  // URL or path of the video
 
-    // Optionally, you can set up a relationship here if you want to reference the User model
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "user_id")
-    // private User author;  // Assuming a relationship with the User model
-
     @Override
     public String toString() {
         return "Video{id=" + id + ", title='" + title + "', url='" + url + "'}";

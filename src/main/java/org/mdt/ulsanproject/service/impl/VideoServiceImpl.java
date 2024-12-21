@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @Service
 public class VideoServiceImpl implements VideoService {
+
     @Autowired
     private VideoRepository videoRepository;
 
@@ -21,7 +22,7 @@ public class VideoServiceImpl implements VideoService {
                 .title(videoDto.getTitle())
                 .description(videoDto.getDescription())
                 .status(videoDto.getStatus())
-                .created_at(videoDto.getCreated_at())
+                .createdAt(videoDto.getCreated_at())
                 .url(videoDto.getUrl())
                 .build();
         return videoRepository.save(video);
@@ -33,7 +34,7 @@ public class VideoServiceImpl implements VideoService {
             existingVideo.setTitle(videoDto.getTitle());
             existingVideo.setDescription(videoDto.getDescription());
             existingVideo.setStatus(videoDto.getStatus());
-            existingVideo.setCreated_at(videoDto.getCreated_at());
+            existingVideo.setCreatedAt(videoDto.getCreated_at());
             existingVideo.setUrl(videoDto.getUrl());
             return videoRepository.save(existingVideo);
         });
