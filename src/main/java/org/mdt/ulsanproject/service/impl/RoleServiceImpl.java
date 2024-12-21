@@ -12,26 +12,24 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class RoleServiceImpl implements RoleService {
 
     @Autowired
     private RoleRepository roleRepository;
+
     @Autowired
     private PermissionRepository permissionRepository;
 
     @Override
     public Role save(RoleDto roleDto) {
-        List<Permission> permissions = permissionRepository
-                .findAllById(roleDto.getPermissionIds());
-        if (permissions.isEmpty() && roleDto.getPermissionIds() != null) {
-            throw new IllegalArgumentException("Permissions not found for the provided IDs");
-        }
-
+        validateRoleName(roleDto.getName());
         Role role = Role.builder()
                 .name(roleDto.getName())
-                .permissions(new HashSet<>(permissions))
+                .description(roleDto.getDescription())
+                .permissions(fetchPermissions(roleDto.getPermissionIds()))
                 .build();
         return roleRepository.save(role);
     }
@@ -40,15 +38,10 @@ public class RoleServiceImpl implements RoleService {
     public Optional<Role> update(int id, RoleDto roleDto) {
         return roleRepository.findById(id).map(existingRole -> {
             existingRole.setName(roleDto.getName());
+            existingRole.setDescription(roleDto.getDescription());
             if (roleDto.getPermissionIds() != null) {
-                List<Permission> permissions = permissionRepository.findAllById(roleDto.getPermissionIds());
-                if (!permissions.isEmpty()) {
-                    existingRole.setPermissions(new HashSet<>(permissions));
-                } else {
-                    throw new IllegalArgumentException("Permissions not found for the provided IDs");
-                }
+                existingRole.setPermissions(fetchPermissions(roleDto.getPermissionIds()));
             }
-
             return roleRepository.save(existingRole);
         });
     }
@@ -70,17 +63,23 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role assignPermissionsToRole(int roleId, List<Integer> permissionIds) {
-        Optional<Role> roleOptional = roleRepository.findById(roleId);
-        if (roleOptional.isPresent()) {
-            Role role = roleOptional.get();
-            List<Permission> permissions = permissionRepository.findAllById(permissionIds);
-            if (!permissions.isEmpty()) {
-                role.setPermissions(new HashSet<>(permissions));
-                return roleRepository.save(role);
-            } else {
-                throw new IllegalArgumentException("Permissions not found for the provided IDs");
-            }
+        Role role = roleRepository.findById(roleId)
+                .orElseThrow(() -> new IllegalArgumentException("Role not found with ID: " + roleId));
+        role.setPermissions(fetchPermissions(permissionIds));
+        return roleRepository.save(role);
+    }
+
+    private void validateRoleName(String name) {
+        if (roleRepository.existsByName(name)) {
+            throw new IllegalArgumentException("Role with name '" + name + "' already exists.");
         }
-        throw new IllegalArgumentException("Role not found with ID: " + roleId);
+    }
+
+    private Set<Permission> fetchPermissions(List<Integer> permissionIds) {
+        List<Permission> permissions = permissionRepository.findAllById(permissionIds);
+        if (permissions.isEmpty() && !permissionIds.isEmpty()) {
+            throw new IllegalArgumentException("Invalid permission IDs provided.");
+        }
+        return new HashSet<>(permissions);
     }
 }

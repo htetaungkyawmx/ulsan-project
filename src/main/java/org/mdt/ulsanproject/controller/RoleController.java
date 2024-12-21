@@ -1,5 +1,6 @@
 package org.mdt.ulsanproject.controller;
 
+import jakarta.validation.Valid;
 import org.mdt.ulsanproject.dto.AssignPermissionsDto;
 import org.mdt.ulsanproject.dto.RoleDto;
 import org.mdt.ulsanproject.model.Role;
@@ -14,11 +15,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/roles")
 public class RoleController {
+
     @Autowired
     private RoleService roleService;
 
     @PostMapping
-    public ResponseEntity<Role> createRole(@RequestBody RoleDto roleDto) {
+    public ResponseEntity<Role> createRole(@Valid @RequestBody RoleDto roleDto) {
         Role role = roleService.save(roleDto);
         return new ResponseEntity<>(role, HttpStatus.CREATED);
     }
@@ -36,19 +38,8 @@ public class RoleController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/{roleId}/permissions")
-    public ResponseEntity<Role> assignPermissionsToRole(
-            @PathVariable Integer roleId, @RequestBody AssignPermissionsDto assignPermissionsDto) {
-        List<Integer> permissionIds = assignPermissionsDto.getPermissionIds();
-        Role role = roleService.assignPermissionsToRole(roleId, permissionIds);
-        if (role != null) {
-            return new ResponseEntity<>(role, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
     @PutMapping("/{id}")
-    public ResponseEntity<Role> updateRole(@PathVariable Integer id, @RequestBody RoleDto roleDto) {
+    public ResponseEntity<Role> updateRole(@PathVariable Integer id, @Valid @RequestBody RoleDto roleDto) {
         return roleService.update(id, roleDto)
                 .map(updatedRole -> new ResponseEntity<>(updatedRole, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -58,5 +49,14 @@ public class RoleController {
     public ResponseEntity<Void> deleteRole(@PathVariable Integer id) {
         roleService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/{roleId}/permissions")
+    public ResponseEntity<Role> assignPermissionsToRole(
+            @PathVariable Integer roleId,
+            @RequestBody AssignPermissionsDto assignPermissionsDto
+    ) {
+        Role role = roleService.assignPermissionsToRole(roleId, assignPermissionsDto.getPermissionIds());
+        return new ResponseEntity<>(role, HttpStatus.OK);
     }
 }

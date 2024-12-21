@@ -1,16 +1,18 @@
 package org.mdt.ulsanproject.dto;
 
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class RoleDto {
-    private Integer id;
+    @NotBlank(message = "Role name is required")
     private String name;
-    private Set<Integer> permissionIds;
+
+    private String description;
+
+    @NotNull(message = "Permission IDs must not be null")
+    private List<Integer> permissionIds;
 }

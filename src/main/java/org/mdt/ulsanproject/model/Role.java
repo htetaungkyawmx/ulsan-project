@@ -1,12 +1,8 @@
 package org.mdt.ulsanproject.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -15,27 +11,19 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 public class Role {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "name", unique = true, nullable = false)
     private String name;
 
-    @Column(name = "description")
     private String description;
 
-    // Many-to-many relationship with Permission
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "role_permission",  // Name of the join table
-            joinColumns = @JoinColumn(name = "role_id"),  // Foreign key column for Role
-            inverseJoinColumns = @JoinColumn(name = "permission_id")  // Foreign key column for Permission
+            name = "role_permissions",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
-    private Set<Permission> permissions = new HashSet<>();
-
-    // Optional one-to-many relationship with User (if applicable)
-    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
-    private Set<Users> users = new HashSet<>();
+    private Set<Permission> permissions;
 }

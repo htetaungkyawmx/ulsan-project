@@ -6,5 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PermissionRepository extends JpaRepository<Permission, Integer> {
-    boolean existsByName(String name); // Check for duplicate permissions by name
 }
