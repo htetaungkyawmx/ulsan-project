@@ -15,8 +15,8 @@ import java.util.Map;
 public class JwtUtil {
 
     private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    private final long accessTokenValidity = 1000 * 60 * 15;
-    private final long refreshTokenValidity = 1000 * 60 * 60 * 24;
+    private final long accessTokenValidity = 1000 * 60 * 15; // 15 minutes
+    private final long refreshTokenValidity = 1000 * 60 * 60 * 24; // 24 hours
 
     public String generateAccessToken(String username) {
         return generateToken(username, accessTokenValidity);

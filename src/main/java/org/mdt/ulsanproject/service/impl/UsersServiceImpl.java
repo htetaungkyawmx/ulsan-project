@@ -13,18 +13,19 @@ import java.util.Optional;
 
 @Service
 public class UsersServiceImpl implements UsersService {
+
     @Autowired
     private UsersRepository usersRepository;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
     public Users save(UsersDto usersDto) {
-        Users user = Users.builder()
-                .username(usersDto.getUsername())
-                .email(usersDto.getEmail())
-                .password(passwordEncoder.encode(usersDto.getPassword()))
-                .build();
+        Users user = new Users();
+        user.setUsername(usersDto.getUsername());
+        user.setEmail(usersDto.getEmail());
+        user.setPassword(passwordEncoder.encode(usersDto.getPassword()));
         return usersRepository.save(user);
     }
 
