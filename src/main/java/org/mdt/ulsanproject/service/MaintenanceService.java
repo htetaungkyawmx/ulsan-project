@@ -8,8 +8,12 @@ import java.util.Optional;
 
 public interface MaintenanceService {
     Maintenance save(MaintenanceDto maintenanceDto);
-    Optional<Maintenance> update(int id, MaintenanceDto maintenanceDto);
+
     List<Maintenance> findAll();
+
     Optional<Maintenance> findById(int id);
+
+    Optional<Maintenance> update(int id, MaintenanceDto maintenanceDto);
+
     void delete(int id);
 }
