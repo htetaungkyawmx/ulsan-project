@@ -20,15 +20,15 @@ public class Permission {
     private int id;
 
     @Column(nullable = false, unique = true)
-    private String name; // Unique permission name
+    private String name;
 
-    private String description; // Optional description
+    private String description;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "role_permission",
             joinColumns = @JoinColumn(name = "permission_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles; // Many-to-many relationship with Role
+    private Set<Role> roles;
 }

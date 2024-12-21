@@ -16,12 +16,15 @@ public class PermissionServiceImpl implements PermissionService {
     @Autowired
     private PermissionRepository permissionRepository;
 
-    // Save a new permission
     @Override
     public Permission save(PermissionDto permissionDto) {
-        if (permissionRepository.existsByName(permissionDto.getName())) {
+        // Check if a permission with the same name already exists
+        Optional<Permission> existingPermission = permissionRepository.findByName(permissionDto.getName());
+        if (existingPermission.isPresent()) {
             throw new IllegalArgumentException("Permission with this name already exists");
         }
+
+        // Create a new Permission object and save it
         Permission permission = Permission.builder()
                 .name(permissionDto.getName())
                 .description(permissionDto.getDescription())
@@ -29,7 +32,7 @@ public class PermissionServiceImpl implements PermissionService {
         return permissionRepository.save(permission);
     }
 
-    // Update an existing permission
+
     @Override
     public Optional<Permission> update(int id, PermissionDto permissionDto) {
         return permissionRepository.findById(id).map(existingPermission -> {
@@ -39,24 +42,18 @@ public class PermissionServiceImpl implements PermissionService {
         });
     }
 
-    // Retrieve all permissions
     @Override
     public List<Permission> findAll() {
         return permissionRepository.findAll();
     }
 
-    // Retrieve a permission by ID
     @Override
     public Optional<Permission> findById(int id) {
         return permissionRepository.findById(id);
     }
 
-    // Delete a permission by ID
     @Override
     public void delete(int id) {
-        if (!permissionRepository.existsById(id)) {
-            throw new IllegalArgumentException("Permission not found with ID: " + id);
-        }
         permissionRepository.deleteById(id);
     }
 }

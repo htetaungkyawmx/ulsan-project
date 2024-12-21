@@ -27,13 +27,11 @@ public class Users {
     @JoinColumn(name = "role_id", nullable = true)
     private Role role;
 
-    // One-to-many relationship with Feedback model
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<FeedBack> feedbacks;
 
     @Override
     public String toString() {
-        // Customize the string representation
         return "Users{id=" + id + ", username='" + username + "', email='" + email + "', role_id=" + role.getId() + "}";
     }
 }
