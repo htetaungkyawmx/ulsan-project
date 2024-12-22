@@ -30,7 +30,7 @@ public class AuthController {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
         );
-        return jwtUtil.generateAccessToken(authentication.getName());
+        return jwtUtil.generateAccessToken(authentication.getName());  // Generate and return access token
     }
 
     @PostMapping("/refresh")
@@ -38,7 +38,7 @@ public class AuthController {
         String refreshToken = request.get("refreshToken");
         if (jwtUtil.validateToken(refreshToken)) {
             String username = jwtUtil.extractUsername(refreshToken);
-            return jwtUtil.generateAccessToken(username); // Generate new access token
+            return jwtUtil.generateAccessToken(username);  // Generate new access token
         } else {
             throw new RuntimeException("Invalid refresh token");
         }

@@ -12,8 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 @Configuration
 public class SecurityConfig {
@@ -28,40 +26,24 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login").permitAll() // This ensures the login endpoint is open
-                        .requestMatchers("/api/auth/refresh").permitAll()
-                        .requestMatchers("/users").permitAll()  // Allow access to user creation
-                        .anyRequest().authenticated()  // Require authentication for other endpoints
+                        .requestMatchers("/api/auth/login", "/api/auth/refresh", "/users").permitAll()  // Allow unauthenticated access to these paths
+                        .anyRequest().authenticated()  // Require authentication for all other paths
                 )
-                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);  // Add the JWT filter
+                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);  // Add JWT filter
         return http.build();
     }
 
     @Bean
     public AuthenticationManager authManager(HttpSecurity http, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(userDetailsService)  // Your custom UserDetailsService
-                .passwordEncoder(passwordEncoder)  // Password encoder for matching the credentials
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder)
                 .and()
                 .build();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();  // Use BCrypt for password encoding
-    }
-
-    @Bean
-    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.addAllowedOrigin("http://localhost:3000");  // Allow localhost:3000 for frontend requests
-        corsConfig.addAllowedMethod("*");  // Allow all methods (GET, POST, etc.)
-        corsConfig.addAllowedHeader("*");  // Allow all headers
-        corsConfig.setAllowCredentials(true);  // Allow credentials (cookies, authorization headers)
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfig);  // Apply CORS configuration to all endpoints
-
-        return source;
+        return new BCryptPasswordEncoder();
     }
 }
