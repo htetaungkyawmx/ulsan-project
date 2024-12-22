@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/flight_log")
+@RequestMapping("/api/flight_log")
 public class FlightLogController {
     @Autowired
     private FlightLogService flightLogService;

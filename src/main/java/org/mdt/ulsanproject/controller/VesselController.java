@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/vessel")
+@RequestMapping("/api/vessel")
 public class VesselController {
 
     @Autowired
