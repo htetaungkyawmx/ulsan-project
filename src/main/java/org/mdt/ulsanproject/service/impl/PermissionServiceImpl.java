@@ -18,20 +18,17 @@ public class PermissionServiceImpl implements PermissionService {
 
     @Override
     public Permission save(PermissionDto permissionDto) {
-        // Check if a permission with the same name already exists
         Optional<Permission> existingPermission = permissionRepository.findByName(permissionDto.getName());
         if (existingPermission.isPresent()) {
-            throw new IllegalArgumentException("Permission with this name already exists");
+            throw new IllegalArgumentException("Permission with name '" + permissionDto.getName() + "' already exists.");
         }
 
-        // Create a new Permission object and save it
         Permission permission = Permission.builder()
                 .name(permissionDto.getName())
                 .description(permissionDto.getDescription())
                 .build();
         return permissionRepository.save(permission);
     }
-
 
     @Override
     public Optional<Permission> update(int id, PermissionDto permissionDto) {

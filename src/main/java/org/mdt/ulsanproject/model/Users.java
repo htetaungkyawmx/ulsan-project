@@ -1,10 +1,7 @@
 package org.mdt.ulsanproject.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
@@ -14,24 +11,26 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 public class Users {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(nullable = false, unique = true)
     private String username;
+
+    @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
     private String password;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = true)
     private Role role;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<FeedBack> feedbacks;
-
     @Override
     public String toString() {
-        return "Users{id=" + id + ", username='" + username + "', email='" + email + "', role_id=" + role.getId() + "}";
+        return "Users{id=" + id + ", username='" + username + "', email='" + email + "', role_id=" +
+                (role != null ? role.getId() : "null") + "}";
     }
 }

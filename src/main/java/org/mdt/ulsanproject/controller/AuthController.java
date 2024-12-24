@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,20 +28,28 @@ public class AuthController {
 
     @PostMapping("/login")
     public String login(@RequestBody LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
-        );
-        return jwtUtil.generateAccessToken(authentication.getName());  // Generate and return access token
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+            );
+
+            // After successful authentication, generate the access token
+            return jwtUtil.generateAccessToken(authentication.getName());
+        } catch (Exception e) {
+            throw new RuntimeException("Invalid username or password", e); // Handle authentication failure
+        }
     }
 
     @PostMapping("/refresh")
     public String refresh(@RequestBody Map<String, String> request) {
         String refreshToken = request.get("refreshToken");
-        if (jwtUtil.validateToken(refreshToken)) {
+
+        // Validate refresh token
+        if (refreshToken != null && jwtUtil.validateToken(refreshToken)) {
             String username = jwtUtil.extractUsername(refreshToken);
-            return jwtUtil.generateAccessToken(username);  // Generate new access token
+            return jwtUtil.generateAccessToken(username);  // Generate a new access token
         } else {
-            throw new RuntimeException("Invalid refresh token");
+            throw new RuntimeException("Invalid or expired refresh token");
         }
     }
 

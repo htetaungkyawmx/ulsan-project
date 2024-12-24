@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PermissionDto {
-    private String name;        // Permission name
-    private String description; // Permission description
+    private String name;
+    private String description;
 }
