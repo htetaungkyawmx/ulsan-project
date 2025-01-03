@@ -1,15 +1,19 @@
 server:
   port: 8000
 
+mavlink:
+  host: 127.0.0.1
+  port: 14550
+
 spring:
   datasource:
     url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:db_aioceaneye_java}
     username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:}  # Ensure DB_PASSWORD is set as an environment variable for security
+    password: ${DB_PASSWORD:}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update  # You can change this to 'validate' or 'none' for production
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
@@ -20,7 +24,8 @@ logging:
 
 jwt:
   secret.key: ${JWT_SECRET_KEY:95665662b3fd6efe8a7e9e46c8b19a9823316ef70b3905d0ecc572c8a0d70dd83c1e7bac8e1e24c7cbea7fdc6ce19a3f46beb0b533223027f4f215cb09e8d8d9e922cd756ea5efad2d75d96a59e21fc1b240a726f940e2e365008d42788586de1d7cac0fdaccefd614337a7dad7c2760cd9c5be77eeac93bdf56b9504ffd623ea25ec177df65c07d6d732389bb13cca4fba9847e91337b9132a9f1609aef679e9c807e744299572cbae46b9d2f122a00d713e4f9dd71347bd5070b2ff6bccedae0ee037c05da4dcaac8e10d94ec57d0de039b8ebba91688fef7219ad3676165c944802504641d9bca033c5b972a508d803afe042f86f0e3d8d457d59ce7bbc6f}
-  expiration: 86400000  # Example expiration time (24 hours in ms)
+  expiration: 86400000
 
   main:
     allow-bean-definition-overriding: true
+    web-application-type: servlet

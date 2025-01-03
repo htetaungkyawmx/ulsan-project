@@ -1,4 +1,4 @@
-package org.mdt.ulsanproject;
+package org.mdt.ulsanproject.db;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
