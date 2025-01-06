@@ -15,47 +15,55 @@ import java.util.Optional;
 @RequestMapping("/api/drones")
 public class DroneController {
 
+    private final DroneService droneService;
+
     @Autowired
-    private DroneService droneService;
+    public DroneController(DroneService droneService) {
+        this.droneService = droneService;
+    }
 
     // Create a new drone
+//    @PostMapping
+//    public ResponseEntity<Drone> createDrone(@RequestBody DroneDto droneDto) {
+//        Drone savedDrone = droneService.save(droneDto);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(savedDrone);
+//    }
     @PostMapping
-    public ResponseEntity<Drone> createDrone(@RequestBody DroneDto droneDto) {
-        Drone savedDrone = droneService.save(droneDto);
-        return new ResponseEntity<>(savedDrone, HttpStatus.CREATED);
+    public ResponseEntity<String> createDrone(@RequestBody DroneDto droneDTO) {
+        droneService.save(droneDTO);
+        return ResponseEntity.ok("Drone created successfully!");
     }
 
     // Get all drones
     @GetMapping
-    public List<Drone> getAllDrones() {
-        return droneService.findAll();
+    public ResponseEntity<List<Drone>> getAllDrones() {
+        List<Drone> drones = droneService.findAll();
+        return ResponseEntity.ok(drones);
     }
 
     // Get a drone by ID
     @GetMapping("/{id}")
     public ResponseEntity<Drone> getDroneById(@PathVariable int id) {
-        Optional<Drone> drone = droneService.findById(id);
-        return drone.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        return droneService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     // Update a drone
     @PutMapping("/{id}")
     public ResponseEntity<Drone> updateDrone(@PathVariable int id, @RequestBody DroneDto droneDto) {
-        Optional<Drone> updatedDrone = droneService.update(id, droneDto);
-        return updatedDrone.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        return droneService.update(id, droneDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    // Delete a drone
+    // Delete a drone (soft delete)
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDrone(@PathVariable int id) {
-        Optional<Drone> drone = droneService.findById(id);
-        if (drone.isPresent()) {
+        if (droneService.findById(id).isPresent()) {
             droneService.delete(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.noContent().build();
         }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }

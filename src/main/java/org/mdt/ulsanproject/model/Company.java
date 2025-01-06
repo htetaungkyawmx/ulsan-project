@@ -40,11 +40,14 @@ public class Company {
     @Column(length = 100)
     private String industryType;
 
-    private int noOfEmployees;
+    @Column(nullable = true)
+    private Integer noOfEmployees;
 
-    private double capital;
+    @Column(nullable = true)
+    private Double capital;
 
-    private double annualRevenue;
+    @Column(nullable = true)
+    private Double annualRevenue;
 
     @Column(length = 100)
     private String status;

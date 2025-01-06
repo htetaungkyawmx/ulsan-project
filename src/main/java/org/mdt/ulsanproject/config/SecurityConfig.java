@@ -19,9 +19,12 @@ public class SecurityConfig {
                 // Disable CSRF for stateless REST APIs
                 .csrf().disable()
 
+                // Configure CORS globally
+                .cors()
+
                 // Configure authorization rules
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() // Allow public access to authentication endpoints
+                .and().authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**", "/api/**").permitAll() // Allow public access to authentication endpoints
                         .anyRequest().authenticated()              // Require authentication for other endpoints
                 )
 

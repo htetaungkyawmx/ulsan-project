@@ -13,8 +13,12 @@ import java.util.Optional;
 @Service
 public class DroneServiceImpl implements DroneService {
 
+    private final DroneRepository droneRepository;
+
     @Autowired
-    private DroneRepository droneRepository;
+    public DroneServiceImpl(DroneRepository droneRepository) {
+        this.droneRepository = droneRepository;
+    }
 
     @Override
     public Drone save(DroneDto droneDto) {
@@ -27,9 +31,16 @@ public class DroneServiceImpl implements DroneService {
                 .maxAltitude(droneDto.getMaxAltitude())
                 .batteryCapacity(droneDto.getBatteryCapacity())
                 .operatingRange(droneDto.getOperatingRange())
-                .droneCode(generateDroneCode(droneDto))
+                .serialNo(droneDto.getSerialNo()) // Added field
+                .controller(droneDto.getController()) // Added field
+                .motor(droneDto.getMotor()) // Added field
+                .camera(droneDto.getCamera()) // Added field
+                .battery(droneDto.getBattery()) // Added field
+                .charger(droneDto.getCharger()) // Added field
+                .communicationType(droneDto.getCommunicationType()) // Added field
                 .image(droneDto.getImage())
                 .description(droneDto.getDescription())
+                .isDelete(droneDto.isDelete()) // Soft delete
                 .build();
         return droneRepository.save(drone);
     }
@@ -45,8 +56,16 @@ public class DroneServiceImpl implements DroneService {
             existingDrone.setMaxAltitude(droneDto.getMaxAltitude());
             existingDrone.setBatteryCapacity(droneDto.getBatteryCapacity());
             existingDrone.setOperatingRange(droneDto.getOperatingRange());
+            existingDrone.setSerialNo(droneDto.getSerialNo()); // Added field
+            existingDrone.setController(droneDto.getController()); // Added field
+            existingDrone.setMotor(droneDto.getMotor()); // Added field
+            existingDrone.setCamera(droneDto.getCamera()); // Added field
+            existingDrone.setBattery(droneDto.getBattery()); // Added field
+            existingDrone.setCharger(droneDto.getCharger()); // Added field
+            existingDrone.setCommunicationType(droneDto.getCommunicationType()); // Added field
             existingDrone.setImage(droneDto.getImage());
             existingDrone.setDescription(droneDto.getDescription());
+            existingDrone.setDelete(droneDto.isDelete()); // Soft delete
             return droneRepository.save(existingDrone);
         });
     }
@@ -63,14 +82,11 @@ public class DroneServiceImpl implements DroneService {
 
     @Override
     public void delete(int id) {
-        droneRepository.deleteById(id);
-    }
-
-    // Helper method to generate drone code
-    private String generateDroneCode(DroneDto droneDto) {
-        String typeCode = droneDto.getDroneType() != null ? droneDto.getDroneType().substring(0, 4).toUpperCase() : "GEN";
-        String categoryCode = droneDto.getCategory() != null ? droneDto.getCategory().substring(0, 4).toUpperCase() : "GEN";
-        long count = droneRepository.count(); // Get total count to generate unique code
-        return String.format("%s-%s-%03d", typeCode, categoryCode, count + 1);
+        Optional<Drone> droneOptional = droneRepository.findById(id);
+        if (droneOptional.isPresent()) {
+            Drone drone = droneOptional.get();
+            drone.setDelete(true); // Soft delete
+            droneRepository.save(drone);
+        }
     }
 }
