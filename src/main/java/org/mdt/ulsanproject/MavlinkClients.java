@@ -14,6 +14,7 @@ public class MavlinkClients implements CommandLineRunner {
 	}
 
 	public static void main(String[] args) {
+		System.setProperty("server.port", "8001");  // Set port 8001
 		SpringApplication.run(MavlinkClients.class, args);
 	}
 
