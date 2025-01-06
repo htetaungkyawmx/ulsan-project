@@ -105,20 +105,16 @@ public class RoleServiceImpl implements RoleService {
 
     // Method to fetch permissions based on a list of permission IDs
     private Set<Permission> fetchPermissions(List<Integer> permissionIds) {
-        // If the permissionIds is null or empty, return an empty set
         if (permissionIds == null || permissionIds.isEmpty()) {
             return new HashSet<>();
         }
 
-        // Fetch the permissions from the repository based on provided IDs
         List<Permission> permissions = permissionRepository.findAllById(permissionIds);
 
-        // If no permissions are found for the provided IDs, throw an exception
         if (permissions.isEmpty()) {
             throw new IllegalArgumentException("Invalid permission IDs provided.");
         }
 
-        // Return the permissions as a set to ensure uniqueness
         return new HashSet<>(permissions);
     }
 }
