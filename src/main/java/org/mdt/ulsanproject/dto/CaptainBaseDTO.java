@@ -1,6 +1,7 @@
 package org.mdt.ulsanproject.dto;
 
 import lombok.Data;
+
 import java.time.LocalDate;
 
 @Data
@@ -9,7 +10,7 @@ public class CaptainBaseDTO {
     private String licenseNumber;
     private String nationality;
     private String picture;
-    private int yearsOfExperience;
+    private Integer yearsOfExperience; // Changed to Integer for consistency
     private String certificates;
     private String specializations;
     private LocalDate medicalClearanceDate;
