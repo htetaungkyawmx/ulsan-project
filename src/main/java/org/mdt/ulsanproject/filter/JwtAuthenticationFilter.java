@@ -27,19 +27,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        if (request.getRequestURI().equals("/api/auth/login") || request.getRequestURI().equals("/api/auth/refresh")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         String jwt = getJwtFromRequest(request);
-        if (jwt != null && jwtUtil.validateToken(jwt)) {
-            String username = jwtUtil.extractUsername(jwt);
-            UserDetails userDetails = new User(username, "", Collections.emptyList());
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        if (jwt != null) {
+            try {
+                if (jwtUtil.validateToken(jwt)) {
+                    String username = jwtUtil.extractUsername(jwt);
+                    UserDetails userDetails = new User(username, "", Collections.emptyList());
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            } catch (Exception ex) {
+                logger.error("Invalid JWT: {}");
+            }
         }
 
         filterChain.doFilter(request, response);
