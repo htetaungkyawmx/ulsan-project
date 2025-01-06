@@ -1,7 +1,11 @@
 package org.mdt.ulsanproject.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
@@ -21,5 +25,6 @@ public class Permission {
     private String description;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "permissions")
+    @JsonBackReference  // This is the "back" side of the relationship
     private Set<Role> roles;
 }
