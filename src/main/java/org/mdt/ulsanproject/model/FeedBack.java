@@ -1,5 +1,6 @@
 package org.mdt.ulsanproject.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Table(name = "feedbacks")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})  // Ignore Hibernate lazy properties
 public class FeedBack {
 
     @Id
@@ -23,5 +25,6 @@ public class FeedBack {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})  // Ignore Hibernate lazy properties for the user
     private Users user;
 }
