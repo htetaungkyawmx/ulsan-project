@@ -9,6 +9,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 public class SecurityConfig {
@@ -19,8 +22,8 @@ public class SecurityConfig {
                 // Disable CSRF for stateless REST APIs
                 .csrf().disable()
 
-                // Configure CORS globally
-                .cors()
+                // Configure CORS globally using the CorsConfigurationSource bean
+                .cors().configurationSource(corsConfigurationSource())
 
                 // Configure authorization rules
                 .and().authorizeHttpRequests(auth -> auth
@@ -33,6 +36,21 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         return http.build();
+    }
+
+    // Define CORS configuration
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.addAllowedOrigin("http://localhost:3000");  // Allow React app running on port 3000
+        corsConfig.addAllowedMethod("*");  // Allow all methods (GET, POST, PUT, DELETE, etc.)
+        corsConfig.addAllowedHeader("*");  // Allow all headers
+        corsConfig.setAllowCredentials(true);  // Allow credentials (cookies, etc.)
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfig);  // Apply CORS globally
+
+        return source;
     }
 
     @Bean

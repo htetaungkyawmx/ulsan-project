@@ -22,7 +22,9 @@ public class DroneServiceImpl implements DroneService {
 
     @Override
     public Drone save(DroneDto droneDto) {
+        // Ensure droneCode is set, either from DTO or generate
         Drone drone = Drone.builder()
+                .droneCode(droneDto.getDroneCode())  // Ensure you have this field in DroneDto
                 .droneModel(droneDto.getDroneModel())
                 .manufacturer(droneDto.getManufacturer())
                 .droneType(droneDto.getDroneType())
@@ -31,19 +33,20 @@ public class DroneServiceImpl implements DroneService {
                 .maxAltitude(droneDto.getMaxAltitude())
                 .batteryCapacity(droneDto.getBatteryCapacity())
                 .operatingRange(droneDto.getOperatingRange())
-                .serialNo(droneDto.getSerialNo()) // Added field
-                .controller(droneDto.getController()) // Added field
-                .motor(droneDto.getMotor()) // Added field
-                .camera(droneDto.getCamera()) // Added field
-                .battery(droneDto.getBattery()) // Added field
-                .charger(droneDto.getCharger()) // Added field
-                .communicationType(droneDto.getCommunicationType()) // Added field
+                .serialNo(droneDto.getSerialNo())
+                .controller(droneDto.getController())
+                .motor(droneDto.getMotor())
+                .camera(droneDto.getCamera())
+                .battery(droneDto.getBattery())
+                .charger(droneDto.getCharger())
+                .communicationType(droneDto.getCommunicationType())
                 .image(droneDto.getImage())
                 .description(droneDto.getDescription())
-                .isDelete(droneDto.isDelete()) // Soft delete
+                .isDelete(droneDto.isDelete())
                 .build();
         return droneRepository.save(drone);
     }
+
 
     @Override
     public Optional<Drone> update(int id, DroneDto droneDto) {
