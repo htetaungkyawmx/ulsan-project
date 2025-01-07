@@ -1,10 +1,7 @@
 package org.mdt.ulsanproject.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,45 +12,51 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class Report {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "title", unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private String title;
 
-    @Column(name = "content", nullable = false)
+    @Column(nullable = false)
     private String content;
 
     @Column(name = "author_id", nullable = false)
     private int authorId;
 
-    @Column(name = "report_type")
     private String reportType;
 
-    @Column(name = "visibility", nullable = false)
+    @Column(nullable = false)
     private String visibility;
 
-    @Column(name = "category")
     private String category;
 
-    @Column(name = "date", nullable = false)
+    @Column(nullable = false)
     private LocalDate date;
 
-    @Column(name = "failure_defects")
     private String failureDefects;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
 
-    @Column(name = "is_deleted", nullable = false)
-    private boolean isDeleted = false;
+    @Column(nullable = false)
+    private boolean isDeleted;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = this.createdAt;
+        this.visibility = (this.visibility == null || this.visibility.isBlank()) ? "Public" : this.visibility;
+        this.isDeleted = false;
+    }
 
     @PreUpdate
-    public void setUpdatedAt() {
+    public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
 }
