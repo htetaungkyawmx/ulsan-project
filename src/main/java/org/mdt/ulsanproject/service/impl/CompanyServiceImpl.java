@@ -7,6 +7,7 @@ import org.mdt.ulsanproject.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,8 +21,23 @@ public class CompanyServiceImpl implements CompanyService {
     public Company save(CompanyDto companyDto) {
         Company company = Company.builder()
                 .name(companyDto.getName())
-                .address(companyDto.getAddress())
+                .registrationNo(companyDto.getRegistrationNo())  // Ensure this is provided
+                .taxId(companyDto.getTaxId())  // Ensure this is provided
+                .logoUrl(companyDto.getLogoUrl())
                 .email(companyDto.getEmail())
+                .address(companyDto.getAddress())
+                .industryType(companyDto.getIndustryType())
+                .noOfEmployees(companyDto.getNoOfEmployees())
+                .capital(companyDto.getCapital())
+                .annualRevenue(companyDto.getAnnualRevenue())
+                .status(companyDto.getStatus())
+                .tags(companyDto.getTags())
+                .country(companyDto.getCountry())
+                .website(companyDto.getWebsite())
+                .contactPerson(companyDto.getContactPerson())
+                .createdDate(LocalDateTime.now())
+                .updatedDate(LocalDateTime.now())
+                .isDelete(false) // Assuming 'isDelete' is false by default when saving
                 .build();
         return companyRepository.save(company);
     }
@@ -30,8 +46,21 @@ public class CompanyServiceImpl implements CompanyService {
     public Optional<Company> update(int id, CompanyDto companyDto) {
         return companyRepository.findById(id).map(existingCompany -> {
             existingCompany.setName(companyDto.getName());
-            existingCompany.setAddress(companyDto.getAddress());
+            existingCompany.setRegistrationNo(companyDto.getRegistrationNo());  // Ensure this is provided
+            existingCompany.setTaxId(companyDto.getTaxId());  // Ensure this is provided
+            existingCompany.setLogoUrl(companyDto.getLogoUrl());
             existingCompany.setEmail(companyDto.getEmail());
+            existingCompany.setAddress(companyDto.getAddress());
+            existingCompany.setIndustryType(companyDto.getIndustryType());
+            existingCompany.setNoOfEmployees(companyDto.getNoOfEmployees());
+            existingCompany.setCapital(companyDto.getCapital());
+            existingCompany.setAnnualRevenue(companyDto.getAnnualRevenue());
+            existingCompany.setStatus(companyDto.getStatus());
+            existingCompany.setTags(companyDto.getTags());
+            existingCompany.setCountry(companyDto.getCountry());
+            existingCompany.setWebsite(companyDto.getWebsite());
+            existingCompany.setContactPerson(companyDto.getContactPerson());
+            existingCompany.setUpdatedDate(LocalDateTime.now());
             return companyRepository.save(existingCompany);
         });
     }
