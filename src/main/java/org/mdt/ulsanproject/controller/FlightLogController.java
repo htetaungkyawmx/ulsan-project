@@ -29,21 +29,21 @@ public class FlightLogController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FlightLog> getById(@PathVariable int id) {
+    public ResponseEntity<FlightLog> getById(@PathVariable Long id) {  // Changed to Long
         return flightLogService.findById(id)
                 .map(flightLog -> new ResponseEntity<>(flightLog, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FlightLog> update(@PathVariable int id, @RequestBody FlightLogDto flightLogDto) {
-        return flightLogService.update(id, flightLogDto)
+    public ResponseEntity<FlightLog> update(@PathVariable Long id, @RequestBody FlightLogDto flightLogDto) {  // Changed to Long
+        return flightLogService.update(Math.toIntExact(id), flightLogDto)
                 .map(updateFlightLog -> new ResponseEntity<>(updateFlightLog, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {  // Changed to Long
         flightLogService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

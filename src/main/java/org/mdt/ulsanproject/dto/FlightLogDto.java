@@ -46,5 +46,4 @@ public class FlightLogDto {
     private LocalDateTime whitewave2DiscoveryTime;
     private String whitewave2Latitude;
     private String whitewave2Hardness;
-
 }

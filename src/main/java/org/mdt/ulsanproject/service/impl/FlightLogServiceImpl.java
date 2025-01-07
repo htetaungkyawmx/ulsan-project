@@ -29,41 +29,35 @@ public class FlightLogServiceImpl implements FlightLogService {
 
     @Override
     public Optional<FlightLog> update(int id, FlightLogDto flightLogDto) {
-        return Optional.empty();
+        return flightLogRepository.findById((long) id)
+                .map(existingFlightLog -> {
+                    updateEntityFromDto(existingFlightLog, flightLogDto);
+                    existingFlightLog.setUpdatedAt(LocalDateTime.now());
+                    return flightLogRepository.save(existingFlightLog);
+                });
+    }
+
+    @Override
+    public Optional<FlightLog> update(int id, FlightLogUpdateDto flightLogUpdateDto) {
+        return flightLogRepository.findById((long) id)
+                .map(existingFlightLog -> {
+                    updateEntityFromUpdateDto(existingFlightLog, flightLogUpdateDto);
+                    existingFlightLog.setUpdatedAt(LocalDateTime.now());
+                    return flightLogRepository.save(existingFlightLog);
+                });
     }
 
     @Override
     public List<FlightLog> findAll() {
-        return List.of();
-    }
-
-    @Override
-    public Optional<FlightLog> findById(int id) {
-        return Optional.empty();
-    }
-
-    @Override
-    public void delete(int id) {
-
-    }
-
-    public List<FlightLog> getAll() {
         return flightLogRepository.findAll();
     }
 
+    @Override
     public Optional<FlightLog> findById(Long id) {
         return flightLogRepository.findById(id);
     }
 
-    public FlightLog update(Long id, FlightLogUpdateDto flightLogUpdateDto) {
-        FlightLog existingFlightLog = flightLogRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Flight Log not found"));
-
-        updateEntityFromDto(existingFlightLog, flightLogUpdateDto);
-        existingFlightLog.setUpdatedAt(LocalDateTime.now());
-        return flightLogRepository.save(existingFlightLog);
-    }
-
+    @Override
     public void delete(Long id) {
         FlightLog flightLog = flightLogRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Flight Log not found"));
@@ -72,9 +66,10 @@ public class FlightLogServiceImpl implements FlightLogService {
         flightLogRepository.save(flightLog);
     }
 
+    // Helper method to map DTO to Entity
     private FlightLog mapDtoToEntity(FlightLogDto dto) {
         FlightLog flightLog = new FlightLog();
-        // Map all fields from DTO to Entity
+        // Mapping all fields from dto to entity
         flightLog.setPilotSerialNumber(dto.getPilotSerialNumber());
         flightLog.setDroneSerialNumber(dto.getDroneSerialNumber());
         flightLog.setFlightIdx(dto.getFlightIdx());
@@ -108,17 +103,16 @@ public class FlightLogServiceImpl implements FlightLogService {
         return flightLog;
     }
 
-    private void updateEntityFromDto(FlightLog flightLog, FlightLogUpdateDto dto) {
-        // Update fields selectively based on DTO values
-        if (dto.getWindChurningWind() != null) {
-            flightLog.setWindChurningWind(dto.getWindChurningWind());
-        }
-        if (dto.getLandingMap() != null) {
-            flightLog.setLandingMap(dto.getLandingMap());
-        }
-        if (dto.getLandingSituationVesselSpeed() != null) {
-            flightLog.setLandingSituationVesselSpeed(dto.getLandingSituationVesselSpeed());
-        }
-        // Add other fields as needed for the update
+    // Helper method to update FlightLog entity from FlightLogDto
+    private void updateEntityFromDto(FlightLog flightLog, FlightLogDto dto) {
+        if (dto.getPilotSerialNumber() != null) flightLog.setPilotSerialNumber(dto.getPilotSerialNumber());
+        if (dto.getDroneSerialNumber() != null) flightLog.setDroneSerialNumber(dto.getDroneSerialNumber());
+        // Similarly for other fields...
+    }
+
+    // Helper method to update FlightLog entity from FlightLogUpdateDto
+    private void updateEntityFromUpdateDto(FlightLog flightLog, FlightLogUpdateDto updateDto) {
+        if (updateDto.getPilotSerialNumber() != null) flightLog.setPilotSerialNumber(updateDto.getPilotSerialNumber());
+        // Similarly for other fields...
     }
 }
