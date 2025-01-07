@@ -17,21 +17,18 @@ public class DocumentController {
     @Autowired
     private DocumentService documentService;
 
-    // Create Document (POST /documents/)
     @PostMapping
     public ResponseEntity<Document> create(@RequestBody DocumentDto documentDto) {
         Document createdDocument = documentService.save(documentDto);
         return new ResponseEntity<>(createdDocument, HttpStatus.CREATED);
     }
 
-    // Get all documents (GET /documents/)
     @GetMapping
     public ResponseEntity<List<Document>> getAll() {
         List<Document> documents = documentService.findAll();
         return new ResponseEntity<>(documents, HttpStatus.OK);
     }
 
-    // Get document by ID (GET /documents/{id})
     @GetMapping("/{id}")
     public ResponseEntity<Document> getById(@PathVariable int id) {
         return documentService.findById(id)
@@ -39,7 +36,6 @@ public class DocumentController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // Update document (PUT /documents/{id})
     @PutMapping("/{id}")
     public ResponseEntity<Document> update(@PathVariable int id, @RequestBody DocumentDto documentDto) {
         return documentService.update(id, documentDto)
@@ -47,7 +43,13 @@ public class DocumentController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // Delete document (DELETE /documents/{id})
+    @PatchMapping("/{id}/increment-views")
+    public ResponseEntity<Document> incrementViews(@PathVariable int id) {
+        return documentService.incrementViews(id)
+                .map(updatedDocument -> new ResponseEntity<>(updatedDocument, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         documentService.delete(id);

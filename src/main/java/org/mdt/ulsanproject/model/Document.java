@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.mdt.ulsanproject.dto.DocumentStatus;
 
 import java.time.LocalDateTime;
 
@@ -34,14 +35,15 @@ public class Document {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    @Enumerated(EnumType.STRING)
     @Column(length = 50, nullable = false)
-    private String status = "draft"; // Options: draft, published, archived
+    private DocumentStatus status = DocumentStatus.DRAFT;
 
     @Column(columnDefinition = "TEXT")
     private String summary;
 
     @Column(length = 255)
-    private String tags;
+    private String tags; // Store tags as a comma-separated string
 
     @Column(length = 100)
     private String category;

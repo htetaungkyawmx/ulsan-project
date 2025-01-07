@@ -12,6 +12,8 @@ public interface DocumentService {
 
     Optional<Document> update(int id, DocumentDto documentDto);
 
+    Optional<Document> incrementViews(int id);
+
     List<Document> findAll();
 
     Optional<Document> findById(int id);

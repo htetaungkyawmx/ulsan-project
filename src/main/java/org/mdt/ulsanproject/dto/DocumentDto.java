@@ -1,20 +1,16 @@
 package org.mdt.ulsanproject.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class DocumentDto {
-
-    private int id;
     private String title;
     private String content;
-    private Integer author_id;  // Ensure it's Integer to accommodate null values
+    private Integer authorId;
     private String summary;
-    private String tags;
+    private List<String> tags; // List for handling tags in the DTO
     private String category;
     private String documentType;
     private boolean visibility;
