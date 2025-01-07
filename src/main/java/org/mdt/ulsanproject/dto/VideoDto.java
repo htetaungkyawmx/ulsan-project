@@ -15,5 +15,4 @@ public class VideoDto {
     private String status;
     private String created_at;
     private String url;
-
 }
