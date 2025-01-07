@@ -1,6 +1,6 @@
 package org.mdt.ulsanproject.controller;
 
-import org.mdt.ulsanproject.dto.CaptainBaseDTO;
+import org.mdt.ulsanproject.dto.CaptainBaseDto;
 import org.mdt.ulsanproject.model.Captain;
 import org.mdt.ulsanproject.service.CaptainService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class CaptainController {
     private CaptainService captainService;
 
     @PostMapping
-    public ResponseEntity<Captain> createCaptain(@RequestBody CaptainBaseDTO captainBaseDTO) {
+    public ResponseEntity<Captain> createCaptain(@RequestBody CaptainBaseDto captainBaseDTO) {
         Captain newCaptain = captainService.createCaptain(captainBaseDTO);
         return ResponseEntity.ok(newCaptain);
     }
@@ -33,7 +33,7 @@ public class CaptainController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Captain> updateCaptain(@PathVariable int id, @RequestBody CaptainBaseDTO captainBaseDTO) {
+    public ResponseEntity<Captain> updateCaptain(@PathVariable int id, @RequestBody CaptainBaseDto captainBaseDTO) {
         return ResponseEntity.ok(captainService.updateCaptain(id, captainBaseDTO));
     }
 

@@ -1,6 +1,6 @@
 package org.mdt.ulsanproject.service.impl;
 
-import org.mdt.ulsanproject.dto.CaptainBaseDTO;
+import org.mdt.ulsanproject.dto.CaptainBaseDto;
 import org.mdt.ulsanproject.model.Captain;
 import org.mdt.ulsanproject.repository.CaptainRepository;
 import org.mdt.ulsanproject.service.CaptainService;
@@ -16,7 +16,7 @@ public class CaptainServiceImpl implements CaptainService {
     private CaptainRepository captainRepository;
 
     @Override
-    public Captain createCaptain(CaptainBaseDTO captainBaseDTO) {
+    public Captain createCaptain(CaptainBaseDto captainBaseDTO) {
         if (captainRepository.findByLicenseNumber(captainBaseDTO.getLicenseNumber()).isPresent()) {
             throw new RuntimeException("Captain with this license number already exists");
         }
@@ -51,7 +51,7 @@ public class CaptainServiceImpl implements CaptainService {
     }
 
     @Override
-    public Captain updateCaptain(int id, CaptainBaseDTO captainBaseDTO) {
+    public Captain updateCaptain(int id, CaptainBaseDto captainBaseDTO) {
         Captain captain = getCaptainById(id);
         if (captainBaseDTO.getName() != null) captain.setName(captainBaseDTO.getName());
         if (captainBaseDTO.getLicenseNumber() != null) captain.setLicenseNumber(captainBaseDTO.getLicenseNumber());
