@@ -19,7 +19,7 @@ public class Pilot {
     @Column(name = "serial_number", nullable = false, unique = true)
     private String serialNumber;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "personal_no", nullable = false, unique = true)
@@ -37,7 +37,7 @@ public class Pilot {
     @Column(name = "accident_counts", nullable = false)
     private int accidentCounts = 0;
 
-    @Column(name = "address")
+    @Column(name = "address", length = 500)
     private String address;
 
     @Column(name = "medical_certificate", nullable = false)
@@ -52,10 +52,10 @@ public class Pilot {
     @Column(name = "registration_drone_id")
     private String registrationDroneId;
 
-    @Column(name = "contact")
+    @Column(name = "contact", nullable = false)
     private String contact;
 
-    @Column(name = "created_date", nullable = false)
+    @Column(name = "created_date", nullable = false, updatable = false)
     private LocalDateTime createdDate = LocalDateTime.now();
 
     @Column(name = "updated_date")
@@ -64,8 +64,13 @@ public class Pilot {
     @Column(name = "is_delete", nullable = false)
     private boolean isDelete = false;
 
+    @PrePersist
+    protected void onCreate() {
+        this.createdDate = LocalDateTime.now();
+    }
+
     @PreUpdate
-    public void setUpdatedDate() {
+    protected void onUpdate() {
         this.updatedDate = LocalDateTime.now();
     }
 }
