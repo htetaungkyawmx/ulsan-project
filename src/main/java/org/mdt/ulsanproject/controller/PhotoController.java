@@ -13,33 +13,21 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @RestController
 @RequestMapping("/api/photo")
 public class PhotoController {
-    private static final String UPLOAD_DIR = "public/uploads";
 
     @Autowired
     private PhotoService photoService;
 
-    @PostMapping
+    @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<Photo> create(
             @Validated @RequestPart("photo") PhotoDto photoDto,
             @RequestPart("file") MultipartFile file) throws IOException {
 
-        // Save file
-        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-        Path path = Paths.get(UPLOAD_DIR, fileName);
-        Files.createDirectories(path.getParent());
-        Files.write(path, file.getBytes());
-
-        // Set file URL
-        photoDto.setUrl(path.toString());
-
-        Photo createdPhoto = photoService.save(photoDto);
+        byte[] fileData = file.getBytes();
+        Photo createdPhoto = photoService.save(photoDto, fileData);
         return new ResponseEntity<>(createdPhoto, HttpStatus.CREATED);
     }
 
@@ -58,8 +46,18 @@ public class PhotoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Photo> update(@PathVariable int id, @Validated @RequestBody PhotoDto photoDto) {
-        return photoService.update(id, photoDto)
+    public ResponseEntity<Photo> update(
+            @PathVariable int id,
+            @Validated @RequestPart("photo") PhotoDto photoDto,
+            @RequestPart("file") MultipartFile file) throws IOException {
+
+        if (file.isEmpty() || file.getSize() == 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(null);
+        }
+
+        byte[] fileData = file.getBytes();
+        return photoService.update(id, photoDto, fileData)
                 .map(updatedPhoto -> new ResponseEntity<>(updatedPhoto, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }

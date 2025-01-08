@@ -19,8 +19,5 @@ public class PhotoDto {
     private String description;
 
     @NotNull(message = "Status is required")
-    private String status; // E.g., ACTIVE, INACTIVE
-
-    @NotBlank(message = "URL is required")
-    private String url;
+    private String status;
 }

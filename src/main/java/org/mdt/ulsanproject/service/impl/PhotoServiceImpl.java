@@ -17,23 +17,23 @@ public class PhotoServiceImpl implements PhotoService {
     private PhotoRepository photoRepository;
 
     @Override
-    public Photo save(PhotoDto photoDto) {
+    public Photo save(PhotoDto photoDto, byte[] fileData) {
         Photo photo = Photo.builder()
                 .title(photoDto.getTitle())
                 .description(photoDto.getDescription())
                 .status(photoDto.getStatus())
-                .url(photoDto.getUrl())
+                .fileData(fileData)
                 .build();
         return photoRepository.save(photo);
     }
 
     @Override
-    public Optional<Photo> update(int id, PhotoDto photoDto) {
+    public Optional<Photo> update(int id, PhotoDto photoDto, byte[] fileData) {
         return photoRepository.findById(id).map(existingPhoto -> {
             existingPhoto.setTitle(photoDto.getTitle());
             existingPhoto.setDescription(photoDto.getDescription());
             existingPhoto.setStatus(photoDto.getStatus());
-            existingPhoto.setUrl(photoDto.getUrl());
+            existingPhoto.setFileData(fileData);
             return photoRepository.save(existingPhoto);
         });
     }
