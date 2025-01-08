@@ -5,10 +5,9 @@ import org.mdt.ulsanproject.model.Photo;
 import org.mdt.ulsanproject.repository.PhotoRepository;
 import org.mdt.ulsanproject.service.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,32 +17,31 @@ public class PhotoServiceImpl implements PhotoService {
     private PhotoRepository photoRepository;
 
     @Override
-    public Photo save(PhotoDto photoDto, byte[] fileData) {
+    public Photo save(PhotoDto photoDto) {
         Photo photo = Photo.builder()
                 .title(photoDto.getTitle())
                 .description(photoDto.getDescription())
-                .status(photoDto.getStatus())
-                .url(photoDto.getUrl())  // Save the URL as per the input
-                .fileData(fileData)
+                .url(photoDto.getUrl())
                 .build();
         return photoRepository.save(photo);
     }
 
     @Override
-    public Optional<Photo> update(int id, PhotoDto photoDto, byte[] fileData) {
-        return photoRepository.findById(id).map(existingPhoto -> {
-            existingPhoto.setTitle(photoDto.getTitle());
-            existingPhoto.setDescription(photoDto.getDescription());
-            existingPhoto.setStatus(photoDto.getStatus());
-            existingPhoto.setUrl(photoDto.getUrl());  // Update the URL if provided
-            existingPhoto.setFileData(fileData);
-            return photoRepository.save(existingPhoto);
-        });
+    public Optional<Photo> update(int id, PhotoDto photoDto) {
+        Optional<Photo> optionalPhoto = photoRepository.findById(id);
+        if (optionalPhoto.isPresent()) {
+            Photo photo = optionalPhoto.get();
+            if (photoDto.getTitle() != null) photo.setTitle(photoDto.getTitle());
+            if (photoDto.getDescription() != null) photo.setDescription(photoDto.getDescription());
+            if (photoDto.getUrl() != null) photo.setUrl(photoDto.getUrl());
+            return Optional.of(photoRepository.save(photo));
+        }
+        return Optional.empty();
     }
 
     @Override
-    public Page<Photo> findAll(Pageable pageable) {
-        return photoRepository.findAll(pageable);
+    public List<Photo> findAll() {
+        return photoRepository.findAll();
     }
 
     @Override

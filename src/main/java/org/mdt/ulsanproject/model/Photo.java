@@ -1,6 +1,7 @@
 package org.mdt.ulsanproject.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,30 +20,29 @@ public class Photo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "title", nullable = false, unique = true)
-    private String title;
+    @Column(nullable = false)
+    private String title = "Untitled";
 
     @Column(name = "description")
     private String description;
 
-    @Lob
-    @Column(name = "file_data", nullable = false)
-    private byte[] fileData; // Store file as a BLOB
-
     @Column(name = "url", nullable = false)
-    private String url; // URL path for the photo
+    private String url;
 
-    @Column(name = "status", nullable = false)
-    private String status; // E.g., ACTIVE, INACTIVE
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    @Column(name = "updated_at")
+    @NotNull
     private LocalDateTime updatedAt;
 
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
+
     @PreUpdate
-    public void setUpdatedAt() {
+    public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
 }

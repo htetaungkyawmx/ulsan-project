@@ -1,7 +1,6 @@
 package org.mdt.ulsanproject.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,17 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PhotoDto {
-
-    private int id;
-
-    @NotBlank(message = "Title is required")
+    @NotEmpty(message = "Title cannot be empty")
     private String title;
-
     private String description;
-
-    @NotNull(message = "Status is required")
-    private String status;
-
-    @NotNull(message = "URL is required")
-    private String url;  // Added URL field for the photo location
+    private String url;
 }
