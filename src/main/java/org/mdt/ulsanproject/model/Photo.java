@@ -29,6 +29,9 @@ public class Photo {
     @Column(name = "file_data", nullable = false)
     private byte[] fileData; // Store file as a BLOB
 
+    @Column(name = "url", nullable = false)
+    private String url; // URL path for the photo
+
     @Column(name = "status", nullable = false)
     private String status; // E.g., ACTIVE, INACTIVE
 

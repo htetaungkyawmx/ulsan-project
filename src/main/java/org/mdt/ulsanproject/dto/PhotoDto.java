@@ -20,4 +20,7 @@ public class PhotoDto {
 
     @NotNull(message = "Status is required")
     private String status;
+
+    @NotNull(message = "URL is required")
+    private String url;  // Added URL field for the photo location
 }

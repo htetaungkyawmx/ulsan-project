@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @Service
 public class PhotoServiceImpl implements PhotoService {
+
     @Autowired
     private PhotoRepository photoRepository;
 
@@ -22,6 +23,7 @@ public class PhotoServiceImpl implements PhotoService {
                 .title(photoDto.getTitle())
                 .description(photoDto.getDescription())
                 .status(photoDto.getStatus())
+                .url(photoDto.getUrl())  // Save the URL as per the input
                 .fileData(fileData)
                 .build();
         return photoRepository.save(photo);
@@ -33,6 +35,7 @@ public class PhotoServiceImpl implements PhotoService {
             existingPhoto.setTitle(photoDto.getTitle());
             existingPhoto.setDescription(photoDto.getDescription());
             existingPhoto.setStatus(photoDto.getStatus());
+            existingPhoto.setUrl(photoDto.getUrl());  // Update the URL if provided
             existingPhoto.setFileData(fileData);
             return photoRepository.save(existingPhoto);
         });
