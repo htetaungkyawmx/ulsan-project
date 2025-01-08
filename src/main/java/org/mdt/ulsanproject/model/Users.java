@@ -1,5 +1,6 @@
 package org.mdt.ulsanproject.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,6 +27,7 @@ public class Users {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = true)
+    @JsonIgnore
     private Role role;
 
     @Override
