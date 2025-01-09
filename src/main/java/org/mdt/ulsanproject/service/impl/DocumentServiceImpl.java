@@ -24,7 +24,7 @@ public class DocumentServiceImpl implements DocumentService {
                 .content(documentDto.getContent())
                 .authorId(documentDto.getAuthorId())
                 .summary(documentDto.getSummary())
-                .tags(String.join(",", documentDto.getTags())) // Convert list to comma-separated string
+                .tags(String.join(",", documentDto.getTags()))
                 .category(documentDto.getCategory())
                 .documentType(documentDto.getDocumentType())
                 .visibility(documentDto.isVisibility())
@@ -45,7 +45,7 @@ public class DocumentServiceImpl implements DocumentService {
             existingDocument.setContent(documentDto.getContent());
             existingDocument.setAuthorId(documentDto.getAuthorId());
             existingDocument.setSummary(documentDto.getSummary());
-            existingDocument.setTags(String.join(",", documentDto.getTags())); // Convert list to string
+            existingDocument.setTags(String.join(",", documentDto.getTags()));
             existingDocument.setCategory(documentDto.getCategory());
             existingDocument.setDocumentType(documentDto.getDocumentType());
             existingDocument.setVisibility(documentDto.isVisibility());

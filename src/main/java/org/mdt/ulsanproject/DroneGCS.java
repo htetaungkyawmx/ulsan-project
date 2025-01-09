@@ -55,10 +55,9 @@ public class DroneGCS {
 
     private void fetchTelemetry(String droneId, String connectionString) {
         System.out.printf("Fetching telemetry for %s using %s%n", droneId, connectionString);
-        // Simulated drone connection logic
         while (!Thread.currentThread().isInterrupted()) {
             try {
-                Thread.sleep(5000); // Replace with actual telemetry logic
+                Thread.sleep(5000);
                 System.out.printf("Drone %s: Data fetched%n", droneId);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
