@@ -14,8 +14,8 @@ public class JwtUtil {
     @Value("${jwt.secret.key}")
     private String jwtSecretKey;
 
-    private final long accessTokenValidity = 1000 * 60 * 15; // 15 minutes
-    private final long refreshTokenValidity = 1000 * 60 * 60 * 24; // 24 hours
+    private final long accessTokenValidity = 1000 * 60 * 15;
+    private final long refreshTokenValidity = 1000 * 60 * 60 * 24;
 
     public String generateAccessToken(String username) {
         return generateToken(username, accessTokenValidity);

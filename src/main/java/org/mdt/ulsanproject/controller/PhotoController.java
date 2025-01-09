@@ -18,21 +18,18 @@ public class PhotoController {
     @Autowired
     private PhotoService photoService;
 
-    // Create a new photo
     @PostMapping
     public ResponseEntity<Photo> create(@Valid @RequestBody PhotoDto photoDto) {
         Photo createdPhoto = photoService.save(photoDto);
         return new ResponseEntity<>(createdPhoto, HttpStatus.CREATED);
     }
 
-    // Get all photos
     @GetMapping
     public ResponseEntity<List<Photo>> getAll() {
         List<Photo> photos = photoService.findAll();
         return new ResponseEntity<>(photos, HttpStatus.OK);
     }
 
-    // Get a photo by ID
     @GetMapping("/{id}")
     public ResponseEntity<Photo> getById(@PathVariable int id) {
         return photoService.findById(id)
@@ -40,7 +37,6 @@ public class PhotoController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // Update an existing photo
     @PutMapping("/{id}")
     public ResponseEntity<Photo> update(@PathVariable int id, @RequestBody PhotoDto photoDto) {
         return photoService.update(id, photoDto)
@@ -48,7 +44,6 @@ public class PhotoController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // Delete a photo by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         photoService.delete(id);

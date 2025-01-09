@@ -1,33 +1,27 @@
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class PythonScriptExecutor {
     public static void main(String[] args) {
-        // Path to the Python script
-        String scriptPath = "scripts/db_seed.py"; // Adjust the path if necessary
 
-        // Command to execute the Python script
+        String scriptPath = "scripts/db_seed.py";
+
         String[] command = {"python", scriptPath};
 
         try {
-            // Create a ProcessBuilder instance
-            ProcessBuilder processBuilder = new ProcessBuilder(command);
 
-            // Set environment variables for the Python script
+            ProcessBuilder processBuilder = new ProcessBuilder(command);
             processBuilder.environment().put("DB_HOST", "localhost");
             processBuilder.environment().put("DB_PORT", "3306");
             processBuilder.environment().put("DB_NAME", "db_aioceaneye_java");
             processBuilder.environment().put("DB_USERNAME", "root");
-            processBuilder.environment().put("DB_PASSWORD", ""); // Update if password is needed
+            processBuilder.environment().put("DB_PASSWORD", "");
 
-            // Redirect error stream to capture both output and errors
             processBuilder.redirectErrorStream(true);
 
-            // Start the process
             Process process = processBuilder.start();
 
-            // Capture the output
             try (BufferedReader reader = new BufferedReader(
                     new InputStreamReader(process.getInputStream()))) {
 
@@ -38,7 +32,6 @@ public class PythonScriptExecutor {
                 }
             }
 
-            // Wait for the process to finish and capture the exit code
             int exitCode = process.waitFor();
             System.out.println("Python script exited with code: " + exitCode);
 

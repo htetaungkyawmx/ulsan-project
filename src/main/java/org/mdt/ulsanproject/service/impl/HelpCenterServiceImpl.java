@@ -26,7 +26,7 @@ public class HelpCenterServiceImpl implements HelpCenterService {
                 .language(helpCenterDto.getLanguage())
                 .userRating(helpCenterDto.getUserRating())
                 .createdBy(helpCenterDto.getCreatedBy())
-                .visibility(true) // Explicitly setting visibility or relying on default value
+                .visibility(true)
                 .status("active")
                 .build();
         return helpCenterRepository.save(helpCenter);

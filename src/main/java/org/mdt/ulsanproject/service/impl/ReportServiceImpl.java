@@ -18,7 +18,6 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public Report save(ReportDto reportDto) {
-        // Validate input
         if (reportDto.getTitle() == null || reportDto.getContent() == null) {
             throw new IllegalArgumentException("Title and content cannot be null");
         }
@@ -40,7 +39,6 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public Optional<Report> update(int id, ReportDto reportDto) {
         return reportRepository.findById(id).map(existingReport -> {
-            // Update fields only if they are provided
             if (reportDto.getTitle() != null) existingReport.setTitle(reportDto.getTitle());
             if (reportDto.getContent() != null) existingReport.setContent(reportDto.getContent());
             if (reportDto.getReportType() != null) existingReport.setReportType(reportDto.getReportType());

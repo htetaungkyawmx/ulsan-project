@@ -36,7 +36,7 @@ public class HelpCenter {
     private String status = "active";
 
     @Column(name = "visibility", nullable = false)
-    private Boolean visibility = true;  // Default value set to true
+    private Boolean visibility = true;
 
     @Column(name = "tags", length = 255)
     private String tags;
@@ -50,7 +50,7 @@ public class HelpCenter {
     @Column(name = "created_by")
     private Integer createdBy;
 
-    @Column(nullable = true) // Allow null values
+    @Column(nullable = true)
     private Boolean isDeleted = false;
 
     @PrePersist
