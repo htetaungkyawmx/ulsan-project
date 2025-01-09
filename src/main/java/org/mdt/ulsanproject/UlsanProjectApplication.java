@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class UlsanProjectApplication {
 
     public static void main(String[] args) {
-        System.setProperty("server.port", "8000");  // Set port 8000
+        System.setProperty("server.port", "8000");
         SpringApplication.run(UlsanProjectApplication.class, args);
     }
 

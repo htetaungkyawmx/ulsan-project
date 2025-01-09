@@ -19,26 +19,26 @@ public class Vessel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String serialnumber;  // Unique serial number for the vessel
-    private String name;  // Vessel name
-    private String type;  // Vessel type (e.g., cargo, tanker)
-    private String manufacturer;  // Manufacturer name
-    private String picture;  // URL or file path to vessel image
-    private float weight;  // Weight of the vessel in tons
-    private float capacity;  // Cargo/passenger capacity in tons
-    private String IMO;  // International Maritime Organization number
-    private String MMSI;  // Maritime Mobile Service Identity number
-    private String callsign;  // Callsign of the vessel
-    private String nation;  // Nation of registration
-    private float length;  // Length of the vessel in meters
+    private String serialnumber;
+    private String name;
+    private String type;
+    private String manufacturer;
+    private String picture;
+    private float weight;
+    private float capacity;
+    private String IMO;
+    private String MMSI;
+    private String callsign;
+    private String nation;
+    private float length;
 
     @Column(name = "created_date", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime createdDate = LocalDateTime.now();  // Record creation timestamp
+    private LocalDateTime createdDate = LocalDateTime.now();
 
     @Column(name = "updated_date", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime updatedDate = LocalDateTime.now();  // Last update timestamp
+    private LocalDateTime updatedDate = LocalDateTime.now();
 
-    private boolean isDelete = false;  // Logical delete flag
+    private boolean isDelete = false;
 
     @PrePersist
     public void prePersist() {

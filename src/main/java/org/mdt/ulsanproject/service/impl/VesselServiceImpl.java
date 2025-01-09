@@ -50,7 +50,6 @@ public class VesselServiceImpl implements VesselService {
             existingVessel.setCallsign(vesselDto.getCallsign());
             existingVessel.setNation(vesselDto.getNation());
             existingVessel.setLength(vesselDto.getLength());
-            // updatedDate will be automatically updated due to @PreUpdate in Vessel entity
             return vesselRepository.save(existingVessel);
         });
     }

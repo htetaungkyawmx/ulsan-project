@@ -11,8 +11,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        // Register the WebSocket handler
         registry.addHandler(new DroneWebSocketHandler(), "/api/drones/")
-                .setAllowedOrigins("*");  // Allow connections from any origin
+                .setAllowedOrigins("*");
     }
 }

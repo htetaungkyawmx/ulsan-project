@@ -22,17 +22,14 @@ public class UsersController {
     @Autowired
     private AuthService authService;
 
-    // Create User (POST /users/)
     @PostMapping
     public ResponseEntity<Users> create(@RequestBody UsersDto usersDto) {
         Users createdUser = usersService.save(usersDto);
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
-    // Get all users (GET /users/)
     @GetMapping
     public ResponseEntity<List<Users>> getAll(@AuthenticationPrincipal String currentUserEmail) {
-        // Using JWT-based user information (email) for authentication check
         if (authService.isAuthorized(currentUserEmail, "read_user")) {
             List<Users> users = usersService.findAll();
             return new ResponseEntity<>(users, HttpStatus.OK);
@@ -40,7 +37,6 @@ public class UsersController {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
-    // Get user by ID (GET /users/{id})
     @GetMapping("/{id}")
     public ResponseEntity<Users> getById(@PathVariable int id) {
         return usersService.findById(id)
@@ -48,7 +44,6 @@ public class UsersController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // Update user (PUT /users/{id})
     @PutMapping("/{id}")
     public ResponseEntity<Users> update(@PathVariable int id, @RequestBody UsersDto usersDto) {
         return usersService.update(id, usersDto)
@@ -56,7 +51,6 @@ public class UsersController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // Delete user (DELETE /users/{id})
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         usersService.delete(id);
