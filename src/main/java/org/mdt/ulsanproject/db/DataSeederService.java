@@ -29,18 +29,17 @@ public class DataSeederService {
     private UsersRepository usersRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;  // For password encryption
+    private PasswordEncoder passwordEncoder;
 
     @Transactional
     public void seedDatabase() {
-        // Seed roles
+
         Role adminRole = createRoleIfNotExists("admin", "Full access to all system features.");
         Role pilotRole = createRoleIfNotExists("pilot", "Can manage drone flights.");
         Role mechanicRole = createRoleIfNotExists("mechanic", "Can perform drone maintenance.");
         Role captainRole = createRoleIfNotExists("captain", "Can manage vessel operations.");
         Role companyRole = createRoleIfNotExists("company", "Can manage company-related data.");
 
-        // Seed permissions
         List<String> permissionNames = Arrays.asList(
                 "create_company", "read_company", "update_company", "delete_company",
                 "create_document", "read_document", "update_document", "delete_document",
@@ -60,14 +59,12 @@ public class DataSeederService {
 
         permissionNames.forEach(this::createPermissionIfNotExists);
 
-        // Seed users
         createUserIfNotExists("Admin", "admin@marine-drone.co.kr", adminRole);
         createUserIfNotExists("Pilot", "pilot@marine-drone.co.kr", pilotRole);
         createUserIfNotExists("Mechanic", "mechanic@marine-drone.co.kr", mechanicRole);
         createUserIfNotExists("Captain", "captain@marine-drone.co.kr", captainRole);
         createUserIfNotExists("Company", "company@marine-drone.co.kr", companyRole);
 
-        // Optionally, associate role permissions (e.g., for admin role)
         associatePermissionsToRole(adminRole);
         associatePermissionsToRole(pilotRole);
         associatePermissionsToRole(mechanicRole);
@@ -98,17 +95,16 @@ public class DataSeederService {
             Users user = new Users();
             user.setUsername(username);
             user.setEmail(email);
-            user.setPassword(passwordEncoder.encode("password123")); // Password encryption
+            user.setPassword(passwordEncoder.encode("password123"));
             user.setRole(role);
             return usersRepository.save(user);
         });
     }
 
-    // This method associates permissions to the given role.
     private void associatePermissionsToRole(Role role) {
         List<Permission> permissions = permissionRepository.findAll();
-        Set<Permission> permissionSet = new HashSet<>(permissions);  // Convert List to Set
-        role.setPermissions(permissionSet);  // Many-to-many association
-        roleRepository.save(role);  // Save the role with associated permissions
+        Set<Permission> permissionSet = new HashSet<>(permissions);
+        role.setPermissions(permissionSet);
+        roleRepository.save(role);
     }
 }

@@ -17,21 +17,18 @@ public class CompanyController {
     @Autowired
     private CompanyService companyService;
 
-    // Create Company
     @PostMapping
     public ResponseEntity<Company> create(@RequestBody CompanyDto companyDto) {
         Company createdCompany = companyService.save(companyDto);
         return new ResponseEntity<>(createdCompany, HttpStatus.CREATED);
     }
 
-    // Get all companies
     @GetMapping
     public ResponseEntity<List<Company>> getAll() {
         List<Company> companies = companyService.findAll();
         return new ResponseEntity<>(companies, HttpStatus.OK);
     }
 
-    // Get company by ID
     @GetMapping("/{id}")
     public ResponseEntity<Company> getById(@PathVariable int id) {
         return companyService.findById(id)
@@ -39,7 +36,6 @@ public class CompanyController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // Update company by ID
     @PutMapping("/{id}")
     public ResponseEntity<Company> update(@PathVariable int id, @RequestBody CompanyDto companyDto) {
         return companyService.update(id, companyDto)
@@ -47,7 +43,6 @@ public class CompanyController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // Delete company by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         companyService.delete(id);

@@ -21,8 +21,8 @@ public class CompanyServiceImpl implements CompanyService {
     public Company save(CompanyDto companyDto) {
         Company company = Company.builder()
                 .name(companyDto.getName())
-                .registrationNo(companyDto.getRegistrationNo())  // Ensure this is provided
-                .taxId(companyDto.getTaxId())  // Ensure this is provided
+                .registrationNo(companyDto.getRegistrationNo())
+                .taxId(companyDto.getTaxId())
                 .logoUrl(companyDto.getLogoUrl())
                 .email(companyDto.getEmail())
                 .address(companyDto.getAddress())
@@ -37,7 +37,7 @@ public class CompanyServiceImpl implements CompanyService {
                 .contactPerson(companyDto.getContactPerson())
                 .createdDate(LocalDateTime.now())
                 .updatedDate(LocalDateTime.now())
-                .isDelete(false) // Assuming 'isDelete' is false by default when saving
+                .isDelete(false)
                 .build();
         return companyRepository.save(company);
     }
@@ -46,8 +46,8 @@ public class CompanyServiceImpl implements CompanyService {
     public Optional<Company> update(int id, CompanyDto companyDto) {
         return companyRepository.findById(id).map(existingCompany -> {
             existingCompany.setName(companyDto.getName());
-            existingCompany.setRegistrationNo(companyDto.getRegistrationNo());  // Ensure this is provided
-            existingCompany.setTaxId(companyDto.getTaxId());  // Ensure this is provided
+            existingCompany.setRegistrationNo(companyDto.getRegistrationNo());
+            existingCompany.setTaxId(companyDto.getTaxId());
             existingCompany.setLogoUrl(companyDto.getLogoUrl());
             existingCompany.setEmail(companyDto.getEmail());
             existingCompany.setAddress(companyDto.getAddress());
