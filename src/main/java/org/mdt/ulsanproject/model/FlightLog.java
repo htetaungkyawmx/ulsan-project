@@ -75,6 +75,6 @@ public class FlightLog {
 
     @PreRemove
     public void preRemove() {
-        this.isDeleted = true; // Soft delete
+        this.isDeleted = true;
     }
 }

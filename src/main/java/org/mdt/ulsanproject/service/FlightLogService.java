@@ -9,9 +9,15 @@ import java.util.Optional;
 
 public interface FlightLogService {
     FlightLog save(FlightLogDto flightLogDto);
+
     Optional<FlightLog> update(int id, FlightLogDto flightLogDto);
+
     Optional<FlightLog> update(int id, FlightLogUpdateDto flightLogUpdateDto);
+
     List<FlightLog> findAll();
-    Optional<FlightLog> findById(Long id);  // Use Long for consistency
-    void delete(Long id);  // Keep delete method consistent with Long
+
+    Optional<FlightLog> findById(Long id);
+
+    void delete(Long id);
+
 }

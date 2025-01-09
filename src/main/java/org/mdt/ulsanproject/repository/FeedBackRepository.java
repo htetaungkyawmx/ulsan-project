@@ -8,6 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface FeedBackRepository extends JpaRepository<FeedBack, Integer> {
-    // Correct the method signature: findById should return Optional<FeedBack> with Integer id
     Optional<FeedBack> findById(Integer id);
 }

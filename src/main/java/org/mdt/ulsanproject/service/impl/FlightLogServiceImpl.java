@@ -66,10 +66,8 @@ public class FlightLogServiceImpl implements FlightLogService {
         flightLogRepository.save(flightLog);
     }
 
-    // Helper method to map DTO to Entity
     private FlightLog mapDtoToEntity(FlightLogDto dto) {
         FlightLog flightLog = new FlightLog();
-        // Mapping all fields from dto to entity
         flightLog.setPilotSerialNumber(dto.getPilotSerialNumber());
         flightLog.setDroneSerialNumber(dto.getDroneSerialNumber());
         flightLog.setFlightIdx(dto.getFlightIdx());
@@ -103,16 +101,12 @@ public class FlightLogServiceImpl implements FlightLogService {
         return flightLog;
     }
 
-    // Helper method to update FlightLog entity from FlightLogDto
     private void updateEntityFromDto(FlightLog flightLog, FlightLogDto dto) {
         if (dto.getPilotSerialNumber() != null) flightLog.setPilotSerialNumber(dto.getPilotSerialNumber());
         if (dto.getDroneSerialNumber() != null) flightLog.setDroneSerialNumber(dto.getDroneSerialNumber());
-        // Similarly for other fields...
     }
 
-    // Helper method to update FlightLog entity from FlightLogUpdateDto
     private void updateEntityFromUpdateDto(FlightLog flightLog, FlightLogUpdateDto updateDto) {
         if (updateDto.getPilotSerialNumber() != null) flightLog.setPilotSerialNumber(updateDto.getPilotSerialNumber());
-        // Similarly for other fields...
     }
 }
