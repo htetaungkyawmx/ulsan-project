@@ -10,7 +10,7 @@ public class CaptainBaseDto {
     private String licenseNumber;
     private String nationality;
     private String picture;
-    private Integer yearsOfExperience; // Changed to Integer for consistency
+    private Integer yearsOfExperience;
     private String certificates;
     private String specializations;
     private LocalDate medicalClearanceDate;

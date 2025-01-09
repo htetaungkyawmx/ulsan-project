@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class CaptainCreateDto extends CaptainBaseDto {
-    // Inherits all fields from CaptainBaseDTO
+
 }
