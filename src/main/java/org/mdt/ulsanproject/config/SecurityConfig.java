@@ -19,36 +19,31 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // Disable CSRF for stateless REST APIs
                 .csrf().disable()
 
-                // Configure CORS globally using the CorsConfigurationSource bean
                 .cors().configurationSource(corsConfigurationSource())
 
-                // Configure authorization rules
                 .and().authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/api/**").permitAll() // Allow public access to authentication endpoints
-                        .anyRequest().authenticated()              // Require authentication for other endpoints
+                        .requestMatchers("/api/auth/**", "/api/**").permitAll()
+                        .anyRequest().authenticated()
                 )
 
-                // Configure stateless session management
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         return http.build();
     }
 
-    // Define CORS configuration
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.addAllowedOrigin("http://localhost:3000");  // Allow React app running on port 3000
-        corsConfig.addAllowedMethod("*");  // Allow all methods (GET, POST, PUT, DELETE, etc.)
-        corsConfig.addAllowedHeader("*");  // Allow all headers
-        corsConfig.setAllowCredentials(true);  // Allow credentials (cookies, etc.)
+        corsConfig.addAllowedOrigin("http://localhost:3000");
+        corsConfig.addAllowedMethod("*");
+        corsConfig.addAllowedHeader("*");
+        corsConfig.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfig);  // Apply CORS globally
+        source.registerCorsConfiguration("/**", corsConfig);
 
         return source;
     }
