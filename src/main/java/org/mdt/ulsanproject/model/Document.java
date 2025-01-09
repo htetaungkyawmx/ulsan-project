@@ -43,7 +43,7 @@ public class Document {
     private String summary;
 
     @Column(length = 255)
-    private String tags; // Store tags as a comma-separated string
+    private String tags;
 
     @Column(length = 100)
     private String category;
