@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Table(name = "feedbacks")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})  // Ignore Hibernate lazy properties
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class FeedBack {
 
     @Id
@@ -25,6 +25,6 @@ public class FeedBack {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})  // Ignore Hibernate lazy properties for the user
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Users user;
 }

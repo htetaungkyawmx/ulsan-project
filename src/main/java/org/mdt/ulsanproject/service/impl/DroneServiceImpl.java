@@ -22,9 +22,8 @@ public class DroneServiceImpl implements DroneService {
 
     @Override
     public Drone save(DroneDto droneDto) {
-        // Ensure droneCode is set, either from DTO or generate
         Drone drone = Drone.builder()
-                .droneCode(droneDto.getDroneCode())  // Ensure you have this field in DroneDto
+                .droneCode(droneDto.getDroneCode())
                 .droneModel(droneDto.getDroneModel())
                 .manufacturer(droneDto.getManufacturer())
                 .droneType(droneDto.getDroneType())
@@ -59,16 +58,16 @@ public class DroneServiceImpl implements DroneService {
             existingDrone.setMaxAltitude(droneDto.getMaxAltitude());
             existingDrone.setBatteryCapacity(droneDto.getBatteryCapacity());
             existingDrone.setOperatingRange(droneDto.getOperatingRange());
-            existingDrone.setSerialNo(droneDto.getSerialNo()); // Added field
-            existingDrone.setController(droneDto.getController()); // Added field
-            existingDrone.setMotor(droneDto.getMotor()); // Added field
-            existingDrone.setCamera(droneDto.getCamera()); // Added field
-            existingDrone.setBattery(droneDto.getBattery()); // Added field
-            existingDrone.setCharger(droneDto.getCharger()); // Added field
-            existingDrone.setCommunicationType(droneDto.getCommunicationType()); // Added field
+            existingDrone.setSerialNo(droneDto.getSerialNo());
+            existingDrone.setController(droneDto.getController());
+            existingDrone.setMotor(droneDto.getMotor());
+            existingDrone.setCamera(droneDto.getCamera());
+            existingDrone.setBattery(droneDto.getBattery());
+            existingDrone.setCharger(droneDto.getCharger());
+            existingDrone.setCommunicationType(droneDto.getCommunicationType());
             existingDrone.setImage(droneDto.getImage());
             existingDrone.setDescription(droneDto.getDescription());
-            existingDrone.setDelete(droneDto.isDelete()); // Soft delete
+            existingDrone.setDelete(droneDto.isDelete());
             return droneRepository.save(existingDrone);
         });
     }
@@ -88,7 +87,7 @@ public class DroneServiceImpl implements DroneService {
         Optional<Drone> droneOptional = droneRepository.findById(id);
         if (droneOptional.isPresent()) {
             Drone drone = droneOptional.get();
-            drone.setDelete(true); // Soft delete
+            drone.setDelete(true);
             droneRepository.save(drone);
         }
     }
