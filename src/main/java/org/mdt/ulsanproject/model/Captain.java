@@ -32,7 +32,7 @@ public class Captain {
     @Column(length = 255)
     private String picture;
 
-    private Integer yearsOfExperience; // Changed to Integer for consistency
+    private Integer yearsOfExperience;
 
     @Column(length = 255)
     private String certificates;

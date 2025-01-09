@@ -27,12 +27,11 @@ public class AuthController {
     @PostMapping("/login")
     public Map<String, String> login(@RequestBody LoginRequest loginRequest) {
         try {
-            // Authenticate using the provided email and password
+
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
             );
 
-            // Generate tokens for the authenticated user
             String accessToken = jwtUtil.generateAccessToken(authentication.getName());
             String refreshToken = jwtUtil.generateRefreshToken(authentication.getName());
 
@@ -53,7 +52,6 @@ public class AuthController {
             throw new RuntimeException("Invalid or expired refresh token");
         }
 
-        // Extract the username and generate a new access token
         String username = jwtUtil.extractUsername(refreshToken);
         String newAccessToken = jwtUtil.generateAccessToken(username);
 
@@ -61,10 +59,9 @@ public class AuthController {
     }
 
     public static class LoginRequest {
-        private String email;   // Changed to email for email-based login
+        private String email;
         private String password;
 
-        // Getters and setters
         public String getEmail() {
             return email;
         }
