@@ -20,14 +20,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-
                 .cors().configurationSource(corsConfigurationSource())
-
-                .and().authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/api/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-
+                .and()
+                .authorizeHttpRequests()
+                .requestMatchers("/api/auth/**", "/api/**").permitAll()
+                .requestMatchers("/api/drones/**").permitAll() // Allow WebSocket paths
+                .anyRequest().authenticated()
+                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

@@ -1,6 +1,7 @@
 package org.mdt.ulsanproject.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +23,7 @@ public class Drone {
     private int id;
 
     @Column(name = "drone_code", unique = true, nullable = false)
-    @NotNull
+    @NotBlank
     private String droneCode;
 
     @Column(name = "drone_model", nullable = false)

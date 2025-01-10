@@ -43,7 +43,7 @@ public class DroneController {
     public ResponseEntity<Drone> getDroneById(@PathVariable int id) {
         return droneService.findById(id)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
     }
 
     @PutMapping("/{id}")
