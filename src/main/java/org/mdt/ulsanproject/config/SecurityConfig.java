@@ -24,7 +24,6 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/api/auth/**", "/api/**").permitAll()
-                .requestMatchers("/api/drones/**").permitAll() // Allow WebSocket paths
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()

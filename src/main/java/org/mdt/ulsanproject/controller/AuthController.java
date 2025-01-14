@@ -15,7 +15,9 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
 
+    @Autowired
     private final AuthenticationManager authenticationManager;
+    @Autowired
     private final JwtUtil jwtUtil;
 
     @Autowired
