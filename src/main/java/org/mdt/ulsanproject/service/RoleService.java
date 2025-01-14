@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RoleService {
+
     Role save(RoleDto roleDto);
     Optional<Role> update(int id, RoleDto roleDto);
     List<Role> findAll();
