@@ -142,8 +142,8 @@ public class MavlinkClient implements Runnable {
             telemetryData.put("waypoints", waypointsList);
         }
 
-        System.out.println("Updated telemetry data: " + telemetryData);
+        System.out.println("Output of telemetry data: " + telemetryData);
 
-        telemetryService.updateTelemetryData(telemetryData.toString());
+        telemetryService.outputTelemetryData(telemetryData.toString());
     }
 }
