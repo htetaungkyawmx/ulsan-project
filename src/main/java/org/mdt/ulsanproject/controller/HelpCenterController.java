@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/help_center")
+@RequestMapping("/api/help_center/")
 public class HelpCenterController {
 
     @Autowired
@@ -29,21 +29,21 @@ public class HelpCenterController {
         return new ResponseEntity<>(helpCenters, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}/")
     public ResponseEntity<HelpCenter> getById(@PathVariable int id) {
         return helpCenterService.findById(id)
                 .map(helpCenter -> new ResponseEntity<>(helpCenter, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}/")
     public ResponseEntity<HelpCenter> update(@PathVariable int id, @RequestBody HelpCenterDto helpCenterDto) {
         return helpCenterService.update(id, helpCenterDto)
                 .map(updatedHelpCenter -> new ResponseEntity<>(updatedHelpCenter, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}/")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         boolean deleted = helpCenterService.delete(id);
         if (deleted) {

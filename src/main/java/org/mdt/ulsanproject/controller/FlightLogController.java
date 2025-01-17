@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/flight_log")
+@RequestMapping("/api/flight_logs/")
 public class FlightLogController {
     @Autowired
     private FlightLogService flightLogService;
@@ -28,21 +28,21 @@ public class FlightLogController {
         return new ResponseEntity<>(flightLogs, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}/")
     public ResponseEntity<FlightLog> getById(@PathVariable Long id) {
         return flightLogService.findById(id)
                 .map(flightLog -> new ResponseEntity<>(flightLog, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}/")
     public ResponseEntity<FlightLog> update(@PathVariable Long id, @RequestBody FlightLogDto flightLogDto) {
         return flightLogService.update(Math.toIntExact(id), flightLogDto)
                 .map(updateFlightLog -> new ResponseEntity<>(updateFlightLog, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}/")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         flightLogService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

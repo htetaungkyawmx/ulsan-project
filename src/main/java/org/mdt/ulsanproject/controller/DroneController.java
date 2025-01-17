@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/drones")
+@RequestMapping("/api/drones/")
 public class DroneController {
 
     private final DroneService droneService;
@@ -39,21 +39,21 @@ public class DroneController {
         return ResponseEntity.ok(drones);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}/")
     public ResponseEntity<Drone> getDroneById(@PathVariable int id) {
         return droneService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}/")
     public ResponseEntity<Drone> updateDrone(@PathVariable int id, @RequestBody DroneDto droneDto) {
         return droneService.update(id, droneDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}/")
     public ResponseEntity<Void> deleteDrone(@PathVariable int id) {
         if (droneService.findById(id).isPresent()) {
             droneService.delete(id);

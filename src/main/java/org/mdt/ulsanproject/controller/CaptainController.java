@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/captains")
+@RequestMapping("/api/captains/")
 public class CaptainController {
 
     @Autowired
@@ -27,17 +27,17 @@ public class CaptainController {
         return ResponseEntity.ok(captainService.getAllCaptains());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}/")
     public ResponseEntity<Captain> getCaptainById(@PathVariable int id) {
         return ResponseEntity.ok(captainService.getCaptainById(id));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}/")
     public ResponseEntity<Captain> updateCaptain(@PathVariable int id, @RequestBody CaptainBaseDto captainBaseDTO) {
         return ResponseEntity.ok(captainService.updateCaptain(id, captainBaseDTO));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}/")
     public ResponseEntity<Captain> deleteCaptain(@PathVariable int id) {
         return ResponseEntity.ok(captainService.deleteCaptain(id));
     }

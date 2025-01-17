@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/document")
+@RequestMapping("/api/document/")
 public class DocumentController {
 
     @Autowired
@@ -29,28 +29,28 @@ public class DocumentController {
         return new ResponseEntity<>(documents, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}/")
     public ResponseEntity<Document> getById(@PathVariable int id) {
         return documentService.findById(id)
                 .map(document -> new ResponseEntity<>(document, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}/")
     public ResponseEntity<Document> update(@PathVariable int id, @RequestBody DocumentDto documentDto) {
         return documentService.update(id, documentDto)
                 .map(updatedDocument -> new ResponseEntity<>(updatedDocument, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PatchMapping("/{id}/increment-views")
+    @PatchMapping("{id}/increment-views/")
     public ResponseEntity<Document> incrementViews(@PathVariable int id) {
         return documentService.incrementViews(id)
                 .map(updatedDocument -> new ResponseEntity<>(updatedDocument, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}/")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         documentService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

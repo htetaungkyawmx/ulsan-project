@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/companies")
+@RequestMapping("/api/companies/")
 public class CompanyController {
 
     @Autowired
@@ -29,21 +29,21 @@ public class CompanyController {
         return new ResponseEntity<>(companies, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}/")
     public ResponseEntity<Company> getById(@PathVariable int id) {
         return companyService.findById(id)
                 .map(company -> new ResponseEntity<>(company, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}/")
     public ResponseEntity<Company> update(@PathVariable int id, @RequestBody CompanyDto companyDto) {
         return companyService.update(id, companyDto)
                 .map(updatedCompany -> new ResponseEntity<>(updatedCompany, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}/")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         companyService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
