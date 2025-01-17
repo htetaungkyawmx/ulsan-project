@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/users/")
 public class UsersController {
 
     @Autowired
@@ -37,21 +37,21 @@ public class UsersController {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}/")
     public ResponseEntity<Users> getById(@PathVariable int id) {
         return usersService.findById(id)
                 .map(users -> new ResponseEntity<>(users, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}/")
     public ResponseEntity<Users> update(@PathVariable int id, @RequestBody UsersDto usersDto) {
         return usersService.update(id, usersDto)
                 .map(updatedUser -> new ResponseEntity<>(updatedUser, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}/")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         usersService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

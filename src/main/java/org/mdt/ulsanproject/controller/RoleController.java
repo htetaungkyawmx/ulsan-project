@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/roles")
+@RequestMapping("/api/roles/")
 public class RoleController {
 
     @Autowired
@@ -31,27 +31,27 @@ public class RoleController {
         return new ResponseEntity<>(roles, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}/")
     public ResponseEntity<Role> getRoleById(@PathVariable Integer id) {
         return roleService.findById(id)
                 .map(role -> new ResponseEntity<>(role, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}/")
     public ResponseEntity<Role> updateRole(@PathVariable Integer id, @Valid @RequestBody RoleDto roleDto) {
         return roleService.update(id, roleDto)
                 .map(updatedRole -> new ResponseEntity<>(updatedRole, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}/")
     public ResponseEntity<Void> deleteRole(@PathVariable Integer id) {
         roleService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/{roleId}/permissions")
+    @PutMapping("/{roleId}/permissions/")
     public ResponseEntity<Role> assignPermissionsToRole(
             @PathVariable Integer roleId,
             @RequestBody AssignPermissionsDto assignPermissionsDto
