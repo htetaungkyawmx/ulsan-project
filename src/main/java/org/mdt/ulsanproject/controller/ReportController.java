@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/reports")
+@RequestMapping("/api/reports/")
 public class ReportController {
     @Autowired
     private ReportService reportService;
@@ -25,21 +25,21 @@ public class ReportController {
         return ResponseEntity.ok(reportService.findAll());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}/")
     public ResponseEntity<Report> getById(@PathVariable int id) {
         return reportService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}/")
     public ResponseEntity<Report> update(@PathVariable int id, @RequestBody ReportDto reportDto) {
         return reportService.update(id, reportDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}/")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         reportService.softDelete(id);
         return ResponseEntity.noContent().build();

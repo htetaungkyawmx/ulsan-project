@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/pilots")
+@RequestMapping("/api/pilots/")
 public class PilotController {
     private final PilotService pilotService;
 
@@ -26,17 +26,17 @@ public class PilotController {
         return ResponseEntity.ok(pilotService.getAllPilots());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}/")
     public ResponseEntity<PilotDto> getPilotById(@PathVariable int id) {
         return ResponseEntity.ok(pilotService.getPilotById(id));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}/")
     public ResponseEntity<PilotDto> updatePilot(@PathVariable int id, @RequestBody PilotDto pilotDto) {
         return ResponseEntity.ok(pilotService.updatePilot(id, pilotDto));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}/")
     public ResponseEntity<PilotDto> deletePilot(@PathVariable int id) {
         return ResponseEntity.ok(pilotService.deletePilot(id));
     }
