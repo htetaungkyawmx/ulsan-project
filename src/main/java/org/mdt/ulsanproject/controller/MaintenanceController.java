@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/maintenance")
+@RequestMapping("/api/maintenance/")
 public class MaintenanceController {
     @Autowired
     private MaintenanceService maintenanceService;
@@ -28,21 +28,21 @@ public class MaintenanceController {
         return new ResponseEntity<>(maintenances, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}/")
     public ResponseEntity<Maintenance> getById(@PathVariable int id) {
         return maintenanceService.findById(id)
                 .map(maintenance -> new ResponseEntity<>(maintenance, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}/")
     public ResponseEntity<Maintenance> update(@PathVariable int id, @RequestBody MaintenanceDto maintenanceDto) {
         return maintenanceService.update(id, maintenanceDto)
                 .map(updatedMaintenance -> new ResponseEntity<>(updatedMaintenance, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}/")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         maintenanceService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

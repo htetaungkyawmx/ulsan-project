@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/photo")
+@RequestMapping("/api/photos/")
 public class PhotoController {
 
     @Autowired
@@ -30,21 +30,21 @@ public class PhotoController {
         return new ResponseEntity<>(photos, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}/")
     public ResponseEntity<Photo> getById(@PathVariable int id) {
         return photoService.findById(id)
                 .map(photo -> new ResponseEntity<>(photo, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}/")
     public ResponseEntity<Photo> update(@PathVariable int id, @RequestBody PhotoDto photoDto) {
         return photoService.update(id, photoDto)
                 .map(updatedPhoto -> new ResponseEntity<>(updatedPhoto, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}/")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         photoService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

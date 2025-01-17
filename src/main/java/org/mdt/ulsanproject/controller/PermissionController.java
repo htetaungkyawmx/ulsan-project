@@ -30,21 +30,21 @@ public class PermissionController {
         return new ResponseEntity<>(permissions, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}/")
     public ResponseEntity<Permission> getPermissionById(@PathVariable int id) {
         Optional<Permission> permission = permissionService.findById(id);
         return permission.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}/")
     public ResponseEntity<Permission> updatePermission(@PathVariable int id, @RequestBody PermissionDto permissionDto) {
         Optional<Permission> updatedPermission = permissionService.update(id, permissionDto);
         return updatedPermission.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}/")
     public ResponseEntity<Void> deletePermission(@PathVariable int id) {
         permissionService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
