@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/videos")
+@RequestMapping("/api/videos/")
 public class VideoController {
 
     @Autowired
@@ -29,21 +29,21 @@ public class VideoController {
         return new ResponseEntity<>(videos, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}/")
     public ResponseEntity<Video> getById(@PathVariable int id) {
         return videoService.findById(id)
                 .map(video -> new ResponseEntity<>(video, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}/")
     public ResponseEntity<Video> update(@PathVariable int id, @RequestBody VideoDto videoDto) {
         return videoService.update(id, videoDto)
                 .map(updatedVideo -> new ResponseEntity<>(updatedVideo, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}/")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         videoService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
