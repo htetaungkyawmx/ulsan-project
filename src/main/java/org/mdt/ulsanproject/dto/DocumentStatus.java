@@ -5,3 +5,4 @@ public enum DocumentStatus {
     PUBLISHED,
     ARCHIVED
 }
+
