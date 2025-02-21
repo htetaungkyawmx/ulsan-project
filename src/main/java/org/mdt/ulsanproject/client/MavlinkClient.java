@@ -5,11 +5,8 @@ import io.dronefleet.mavlink.MavlinkMessage;
 import io.dronefleet.mavlink.common.*;
 import org.springframework.stereotype.Component;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +19,7 @@ public class MavlinkClient implements Runnable {
 
     private final String missionPlannerHost = "localhost";
     private final int missionPlannerPort = 14550; // Self
-    // private final int udpPort = 14556; // UDP Port for MAVLink messages
+//     private final int udpPort = 14556; // UDP Port for MAVLink messages
     // private final int udpPort = 14557; // Alternate UDP Port for MAVLink messages
 
     private final Map<String, Object> telemetryData = new HashMap<String, Object>() {{
@@ -55,6 +52,8 @@ public class MavlinkClient implements Runnable {
         put("waypoints", new ArrayList<String>());
     }};
 
+    private long startTime = System.currentTimeMillis();  // Track the start time
+
     public MavlinkClient(TelemetryService telemetryService) {
         this.telemetryService = telemetryService;
     }
@@ -69,36 +68,36 @@ public class MavlinkClient implements Runnable {
         new Thread(this::startTcpListener).start();
 
         // Uncomment to start UDP listener
-        // startUdpListener();
+      //  startUdpListener();
     }
 
-    /*private void startUdpListener() {
-        try (DatagramSocket datagramSocket = new DatagramSocket(udpPort)) {
-            System.out.println("Listening for MAVLink messages on UDP port " + udpPort);
-
-            byte[] buffer = new byte[2048];
-            DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-
-            while (true) {
-                datagramSocket.receive(packet);
-                System.out.println("Received UDP packet from " + packet.getAddress() + ":" + packet.getPort());
-
-                try (InputStream inputStream = new ByteArrayInputStream(packet.getData(), packet.getOffset(), packet.getLength())) {
-                    MavlinkConnection connection = MavlinkConnection.create(inputStream, null);
-                    MavlinkMessage<?> mavlinkMessage = connection.next();
-                    if (mavlinkMessage != null) {
-                        processTelemetryMessage(mavlinkMessage);
-                    }
-                } catch (Exception e) {
-                    if (!"End of stream".equals(e.getMessage())) {
-                        System.err.println("Error processing UDP MAVLink message: " + e.getMessage());
-                    }
-                }
-            }
-        } catch (Exception e) {
-            System.err.println("Error in UDP Listener: " + e.getMessage());
-        }
-    }*/
+//    private void startUdpListener() {
+//        try (DatagramSocket datagramSocket = new DatagramSocket(udpPort)) {
+//            System.out.println("Listening for MAVLink messages on UDP port " + udpPort);
+//
+//            byte[] buffer = new byte[2048];
+//            DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+//
+//            while (true) {
+//                datagramSocket.receive(packet);
+//                System.out.println("Received UDP packet from " + packet.getAddress() + ":" + packet.getPort());
+//
+//                try (InputStream inputStream = new ByteArrayInputStream(packet.getData(), packet.getOffset(), packet.getLength())) {
+//                    MavlinkConnection connection = MavlinkConnection.create(inputStream, null);
+//                    MavlinkMessage<?> mavlinkMessage = connection.next();
+//                    if (mavlinkMessage != null) {
+//                        processTelemetryMessage(mavlinkMessage);
+//                    }
+//                } catch (Exception e) {
+//                    if (!"End of stream".equals(e.getMessage())) {
+//                        System.err.println("Error processing UDP MAVLink message: " + e.getMessage());
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//            System.err.println("Error in UDP Listener: " + e.getMessage());
+//        }
+//    }
 
     private void startTcpListener() {
         try (Socket socket = new Socket(missionPlannerHost, missionPlannerPort);
@@ -122,6 +121,16 @@ public class MavlinkClient implements Runnable {
     private void processTelemetryMessage(MavlinkMessage<?> mavlinkMessage) {
         Object payload = mavlinkMessage.getPayload();
 
+        // Calculate time in air
+        long currentTime = System.currentTimeMillis();
+        double timeInAir = (currentTime - startTime) / 1000.0; // Time in seconds
+        telemetryData.put("time_in_air", timeInAir);
+
+        // Calculate time in air in minutes and seconds
+        double timeInAirMinSec = Math.round(timeInAir / 60.0 + (timeInAir % 60) / 100.0);
+        telemetryData.put("time_in_air_min_sec", timeInAirMinSec);
+
+        // Process other telemetry data based on message payload type
         if (payload instanceof GpsRawInt gpsData) {
             telemetryData.put("lat", gpsData.lat() / 1e7);
             telemetryData.put("lon", gpsData.lon() / 1e7);
@@ -136,14 +145,27 @@ public class MavlinkClient implements Runnable {
             telemetryData.put("roll", Math.toDegrees(attitude.roll()));
             telemetryData.put("pitch", Math.toDegrees(attitude.pitch()));
             telemetryData.put("yaw", Math.toDegrees(attitude.yaw()));
-        } else if (payload instanceof MissionItem missionItem) {
-            List<String> waypointsList = (List<String>) telemetryData.get("waypoints");
-            waypointsList.add("Waypoint: " + missionItem.toString());
-            telemetryData.put("waypoints", waypointsList);
+        } else if (payload instanceof GlobalPositionInt globalPosition) {
+            telemetryData.put("alt", globalPosition.relativeAlt() / 1000.0); // Relative altitude
+            telemetryData.put("dist_to_home", globalPosition.hdg()); // Heading
+        } else if (payload instanceof NavControllerOutput navControllerOutput) {
+            telemetryData.put("wp_dist", navControllerOutput.wpDist()); // Waypoint distance
+        } else if (payload instanceof MissionCurrent missionCurrent) {
+            telemetryData.put("current_wp", missionCurrent.seq()); // Current waypoint index
+        } else if (payload instanceof SysStatus sysStatus) {
+            telemetryData.put("battery_voltage", sysStatus.voltageBattery() / 1000.0); // Battery voltage (V)
+            telemetryData.put("battery_current", sysStatus.currentBattery() / 100.0); // Battery current (A)
+            telemetryData.put("time_in_air", sysStatus.onboardControlSensorsEnabled()); // Approximation
+        } else if (payload instanceof RcChannels rcChannels) {
+            telemetryData.put("ch9out", rcChannels.chan9Raw()); // Channel 9 output
+        } else if (payload instanceof MissionItemInt missionItem) {
+            List<String> waypoints = (List<String>) telemetryData.get("waypoints");
+            waypoints.add("Lat: " + (missionItem.x() / 1e7) + ", Lon: " + (missionItem.y() / 1e7));
+            telemetryData.put("waypoints", waypoints);
         }
 
+        // Output telemetry data
         System.out.println("Output of telemetry data: " + telemetryData);
-
         telemetryService.outputTelemetryData(telemetryData.toString());
     }
 }
