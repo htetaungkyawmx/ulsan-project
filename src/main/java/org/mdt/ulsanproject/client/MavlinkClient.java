@@ -167,7 +167,7 @@ public class MavlinkClient implements Runnable {
         Integer currentWaypoint = (Integer) telemetryData.getOrDefault("current_wp", -1);
         List<String> waypoints = (List<String>) telemetryData.get("waypoints");
 
-        System.out.println("---Mavlink---");
+        System.out.println("---Mavlink Data---");
         System.out.println("Waypoint: [" + (currentWaypoint != null ? currentWaypoint : "N/A") + "]");
 
         // Print each telemetry data entry on a new line
