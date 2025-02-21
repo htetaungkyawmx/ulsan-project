@@ -21,9 +21,9 @@ public class MavlinkClient implements Runnable {
     private final TelemetryService telemetryService;
 
     private final String missionPlannerHost = "localhost";
-    private final int missionPlannerPort = 14550; // Self
-   // private final int udpPort = 14556; // UDP Port for MAVLink messages
-    private final int udpPort = 14557; // Alternate UDP Port for MAVLink messages
+    private final int missionPlannerPort = 14550; // TCP Port for Mission Planner
+    private final int udpPort = 14557; // UDP Port for MAVLink messages
+
 
     private final Map<String, Object> telemetryData = new HashMap<String, Object>() {{
         put("lat", 0.0);
@@ -67,11 +67,9 @@ public class MavlinkClient implements Runnable {
 
     @Override
     public void run() {
-        // Start TCP listener in a separate thread
+        // Start UDP and TCP listeners in separate threads
+        new Thread(this::startUdpListener).start();
         new Thread(this::startTcpListener).start();
-
-        // Uncomment to start UDP listener
-        startUdpListener();
     }
 
     private void startUdpListener() {
@@ -169,7 +167,7 @@ public class MavlinkClient implements Runnable {
         Integer currentWaypoint = (Integer) telemetryData.getOrDefault("current_wp", -1);
         List<String> waypoints = (List<String>) telemetryData.get("waypoints");
 
-        System.out.println("--- 원격측정 데이터 ---");
+        System.out.println("---Mavlink Data---");
         System.out.println("Waypoint: [" + (currentWaypoint != null ? currentWaypoint : "N/A") + "]");
 
         // Print each telemetry data entry on a new line
